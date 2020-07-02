@@ -36,8 +36,18 @@ autocmd InsertEnter,InsertLeave * set cul! " Toggle cursor line (normal/insert)
 set autoindent
 set softtabstop=4
 set shiftwidth=4
-set expandtab
-set nowrap
+
+function! MyExpandTabs(settings_file)
+    if filereadable(expand(a:settings_file))
+        echo "Hello"
+        for line in readfile(expand(a:settings_file))
+            " TODO: Check if the line contains the project being worked on
+            " (i.e. the current working path). If so, then expand the tabs.
+        endfor
+    endif
+endfunction
+
+call MyExpandTabs("~/.vim_special_tabs_projects")
 
 "------------------------------------------------------------------------------
 " Format: FoldSettings
