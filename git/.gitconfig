@@ -1,0 +1,15 @@
+[alias]
+	co = checkout
+	dlog = log --decorate --oneline --graph
+	rs = restore
+	rss = restore --staged
+	fpush = push --force-with-lease
+[core]
+	editor = nvim
+[init]
+	defaultBranch = main
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

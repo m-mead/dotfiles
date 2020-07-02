@@ -1,0 +1,4 @@
+*.local
+.zcoredump/
+.zcompdump
+.zsh_sessions/
