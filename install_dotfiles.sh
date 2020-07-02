@@ -1,13 +1,14 @@
 #!/bin/bash
 
-directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+this_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+dotfiles_directory=${this_directory}/dotfiles
 
-if [[ -f "${directory}/.vimrc" ]]; then
-    cp ${directory}/.vimrc ~/.vimrc
+if [[ -f "${dotfiles_directory}/.vimrc" ]]; then
+    cp ${dotfiles_directory}/.vimrc ~/.vimrc
 fi
 
-if [[ -f "${directory}/.pretty_prompt" ]]; then
-    cp ${directory}/.pretty_prompt ~/.pretty_prompt
+if [[ -f "${dotfiles_directory}/.pretty_prompt" ]]; then
+    cp ${dotfiles_directory}/.pretty_prompt ~/.pretty_prompt
 
     cp ~/.bashrc ~/.bashrc.bk
     echo "#--------------------------------------------------------------------------------------#" >> ~/.bashrc
