@@ -8,6 +8,7 @@ neovim:
 	if [ ! -d $(HOME)/.config/nvim ]; then ln -s $(PWD)/nvim $(HOME)/.config/nvim; fi
 
 zsh:
+	if [ $(shell uname) = "Darwin" ]; then brew install neofetch; fi
 	if [ ! -d $(HOME)/.config/zsh ]; then ln -s $(PWD)/zsh $(HOME)/.config/zsh; fi
 	if [ ! -f $(HOME)/.zshenv ]; then echo "#!/bin/env zsh" >> $(HOME)/.zshenv; echo "export ZDOTDIR=$(HOME)/.config/zsh" >> $(HOME)/.zshenv; fi
 
