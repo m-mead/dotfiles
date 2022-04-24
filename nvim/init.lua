@@ -5,57 +5,39 @@
 -- -------------------------------------------------------------------------------------
 -- Core
 -- -------------------------------------------------------------------------------------
-
-vim.cmd([[
-set nocompatible
-
-syntax enable
-filetype on
-filetype plugin on
-set nowrap
-
-set number
-set wildmenu
-set laststatus=2
-set noerrorbells
-set relativenumber
-
-set hidden
-set splitright
-set splitbelow
-
-set autoindent
-set smartindent
-set shiftwidth=4
-set tabstop=4
-set expandtab
-
-set nostartofline
-set backspace=indent,eol,start
-set ignorecase
-set smartcase
-set incsearch
-set nohlsearch
-set wildignore+=.pyc,.swp,*/.git/*,*/.DS_Store,*/build/*,*/tmp/*,*/venv/*
-set wildmode=longest:full,full
-
-set ttyfast
-
-set noswapfile
-set autoread
-
-set timeout
-set timeoutlen=500
-set ttimeoutlen=100
-
-set signcolumn=yes
-set mouse=a
-set scrolloff=8
-
-set showtabline=2
-]])
-
 vim.g.mapleader = " "
+vim.api.nvim_set_keymap('i', 'jk', '<esc>', {noremap=True, silent=True})
+
+vim.o.filetype = "on"
+vim.o.wrap = false
+vim.o.number = true
+vim.o.relativenumber = true
+vim.o.wildmenu = true
+vim.o.laststatus = 2
+vim.o.errorbells = false
+vim.o.splitright = true
+vim.o.splitbelow = true
+vim.o.shiftwidth = 4
+vim.o.tabstop = 4
+vim.o.expandtab = true
+vim.o.startofline = false
+vim.o.backspace = 'indent,eol,start'
+vim.o.ignorecase = true
+vim.o.smartcase = true
+vim.o.incsearch = true
+vim.o.hlsearch = false
+vim.o.wildignore = '.pyc,.swp,*/.git/*,*/.DS_Store,*/build/*,*/tmp/*,*/venv/*'
+vim.o.wildmode = 'longest:full,full'
+vim.o.swapfile = false
+vim.o.timeout = true
+vim.o.timeoutlen = 500
+vim.o.ttimeoutlen = 100
+vim.o.signcolumn = 'yes'
+vim.o.mouse = 'a'
+vim.o.scrolloff = 8
+vim.o.showtabline = 2
+vim.o.cursorline = true
+vim.o.termguicolors = true
 
 vim.cmd([[
 au! BufWritePost $MYVIMRC source %
@@ -68,54 +50,43 @@ if has("autocmd")
 endif
 ]])
 
--- Edit config
-vim.api.nvim_set_keymap('n', '<leader>ve', ':edit ~/.config/nvim/init.lua<cr>', {noremap=True})
+local opts = { noremap = True, silent=True }
+vim.api.nvim_set_keymap('n', '<leader>ve', ':edit ~/.config/nvim/init.lua<cr>', opts)
 
--- Modes
-vim.api.nvim_set_keymap('i', 'jk', '<esc>', {noremap=True})
+vim.api.nvim_set_keymap('n', '<leader>to', ':tabnew<cr>', opts)
+vim.api.nvim_set_keymap('n', '<leader>tn', ':tabnext<cr>', opts)
+vim.api.nvim_set_keymap('n', '<leader>tp', ':tabprev<cr>', opts)
+vim.api.nvim_set_keymap('n', '<leader>tc', ':tabclose<cr>', opts)
 
--- Tabs
-vim.api.nvim_set_keymap('n', '<leader>to', ':tabnew<cr>', {noremap=True})
-vim.api.nvim_set_keymap('n', '<leader>tn', ':tabnext<cr>', {noremap=True})
-vim.api.nvim_set_keymap('n', '<leader>tp', ':tabprev<cr>', {noremap=True})
-vim.api.nvim_set_keymap('n', '<leader>tc', ':tabclose<cr>', {noremap=True})
+vim.api.nvim_set_keymap('n', '<leader>bn', ':bn<cr>', opts)
+vim.api.nvim_set_keymap('n', '<leader>bp', ':bp<cr>', opts)
+vim.api.nvim_set_keymap('n', '<leader>bc', ':bd<cr>', opts)
 
--- Buffers
-vim.api.nvim_set_keymap('n', '<leader>bn', ':bn<cr>', {noremap=True})
-vim.api.nvim_set_keymap('n', '<leader>bp', ':bp<cr>', {noremap=True})
-vim.api.nvim_set_keymap('n', '<leader>bc', ':bd<cr>', {noremap=True})
-vim.api.nvim_set_keymap('n', '<leader>Q', ':bufdo bdelete<cr>', {noremap=True})
+vim.api.nvim_set_keymap('n', '<C-J>', '<C-W>j', opts)
+vim.api.nvim_set_keymap('n', '<C-k>', '<C-W>k', opts)
+vim.api.nvim_set_keymap('n', '<C-h>', '<C-W>h', opts)
+vim.api.nvim_set_keymap('n', '<C-l>', '<C-W>l', opts)
 
--- Change windows in Normal Mode
-vim.api.nvim_set_keymap('n', '<C-J>', '<C-W>j', {noremap=True})
-vim.api.nvim_set_keymap('n', '<C-k>', '<C-W>k', {noremap=True})
-vim.api.nvim_set_keymap('n', '<C-h>', '<C-W>h', {noremap=True})
-vim.api.nvim_set_keymap('n', '<C-l>', '<C-W>l', {noremap=True})
+vim.api.nvim_set_keymap('i', '$1', '()<esc>i', opts)
+vim.api.nvim_set_keymap('i', '$2', '[]<esc>i', opts)
+vim.api.nvim_set_keymap('i', '$3', '{}<esc>i', opts)
+vim.api.nvim_set_keymap('i', '$4', '{<esc>o}<esc>O', opts)
+vim.api.nvim_set_keymap('i', '$q', '\'\'<esc>i', opts)
+vim.api.nvim_set_keymap('i', '$Q', '\"\"<esc>i', opts)
 
--- Insert matching characters in Insert Mode
-vim.api.nvim_set_keymap('i', '$1', '()<esc>i', {noremap=True})
-vim.api.nvim_set_keymap('i', '$2', '[]<esc>i', {noremap=True})
-vim.api.nvim_set_keymap('i', '$3', '{}<esc>i', {noremap=True})
-vim.api.nvim_set_keymap('i', '$4', '{<esc>o}<esc>O', {noremap=True})
-vim.api.nvim_set_keymap('i', '$q', '\'\'<esc>i', {noremap=True})
-vim.api.nvim_set_keymap('i', '$Q', '\"\"<esc>i', {noremap=True})
+vim.api.nvim_set_keymap('v', '$1', '<esc>`>a)<esc>`<i(<esc>', opts)
+vim.api.nvim_set_keymap('v', '$2', '<esc>`>a]<esc>`<i[<esc>', opts)
+vim.api.nvim_set_keymap('v', '$3', '<esc>`>a}<esc>`<i{<esc>', opts)
+vim.api.nvim_set_keymap('v', '$q', '<esc>`>a\'<esc>`<i\'<esc>', opts)
+vim.api.nvim_set_keymap('v', '$Q', '<esc>`>a\"<esc>`<i\"<esc>', opts)
 
--- Insert matching characters in Visual Mode
-vim.api.nvim_set_keymap('v', '$1', '<esc>`>a)<esc>`<i(<esc>', {noremap=True})
-vim.api.nvim_set_keymap('v', '$2', '<esc>`>a]<esc>`<i[<esc>', {noremap=True})
-vim.api.nvim_set_keymap('v', '$3', '<esc>`>a}<esc>`<i{<esc>', {noremap=True})
-vim.api.nvim_set_keymap('v', '$q', '<esc>`>a\'<esc>`<i\'<esc>', {noremap=True})
-vim.api.nvim_set_keymap('v', '$Q', '<esc>`>a\"<esc>`<i\"<esc>', {noremap=True})
+vim.api.nvim_set_keymap('n', 'zj', 'o<esc>^Dk', opts)
+vim.api.nvim_set_keymap('n', 'zk', 'O<esc>^Dj', opts)
+vim.api.nvim_set_keymap('n', 'zh', 'i<space><esc>l', opts)
+vim.api.nvim_set_keymap('n', 'zl', 'a<space><esc>h', opts)
 
--- Insert lines and spaces in normal mode
-vim.api.nvim_set_keymap('n', 'zj', 'o<esc>^Dk', {noremap=True})
-vim.api.nvim_set_keymap('n', 'zk', 'O<esc>^Dj', {noremap=True})
-vim.api.nvim_set_keymap('n', 'zh', 'i<space><esc>l', {noremap=True})
-vim.api.nvim_set_keymap('n', 'zl', 'a<space><esc>h', {noremap=True})
-
--- Keep selection highlighted when indenting
-vim.api.nvim_set_keymap('v', '<', '<gv', {noremap=True})
-vim.api.nvim_set_keymap('v', '>', '>gv', {noremap=True})
+vim.api.nvim_set_keymap('v', '<', '<gv', opts)
+vim.api.nvim_set_keymap('v', '>', '>gv', opts)
 
 -- -------------------------------------------------------------------------------------
 -- Plugin: Packer
@@ -130,7 +101,9 @@ require('packer').startup(function()
   use 'hrsh7th/cmp-buffer'
   use {
     'nvim-telescope/telescope.nvim',
-    requires = { 'nvim-lua/plenary.nvim' }
+    requires = {
+      'nvim-lua/plenary.nvim'
+    }
   }
   use {
     'nvim-treesitter/nvim-treesitter',
@@ -149,19 +122,15 @@ require('packer').startup(function()
     }
   }
   use 'tpope/vim-commentary'
-
-  use 'aonemd/quietlight.vim'
   use 'folke/tokyonight.nvim'
+  use 'aonemd/quietlight.vim'
 end)
 
-vim.cmd([[
-set termguicolors
-
-let g:tokyonight_style = "night"
-colorscheme tokyonight
-
-"colorscheme quietlight
-]])
+-- -------------------------------------------------------------------------------------
+-- Plugin: tokyonight
+-- -------------------------------------------------------------------------------------
+vim.g.tokyonight_style = 'night'
+vim.cmd([[colorscheme tokyonight]])
 
 -- -------------------------------------------------------------------------------------
 -- Plugin: lualine
@@ -271,25 +240,27 @@ require'telescope'.setup{
   }
 }
 
-vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>Telescope find_files<CR>', {noremap=True})
-vim.api.nvim_set_keymap('n', '<leader>fg', '<cmd>Telescope git_files<CR>', {noremap=True})
+local opts = { noremap=True, silent=True }
+vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>Telescope find_files<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>fg', '<cmd>Telescope git_files<CR>', opts)
 
-vim.api.nvim_set_keymap('n', '<leader>gg', '<cmd>Telescope live_grep<CR>', {noremap=True})
-vim.api.nvim_set_keymap('n', '<leader>gb', '<cmd>Telescope current_buffer_fuzzy_find<CR>', {noremap=True})
+vim.api.nvim_set_keymap('n', '<leader>gg', '<cmd>Telescope live_grep<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>gb', '<cmd>Telescope current_buffer_fuzzy_find<CR>', opts)
 
-vim.api.nvim_set_keymap('n', '<leader>bb', '<cmd>Telescope buffers<CR>', {noremap=True})
+vim.api.nvim_set_keymap('n', '<leader>bb', '<cmd>Telescope buffers<CR>', opts)
 
-vim.api.nvim_set_keymap('n', '<leader>G', '<cmd>Telescope git_branches<CR>', {noremap=True})
-vim.api.nvim_set_keymap('n', '<leader>Gc', '<cmd>Telescope git_commits<CR>', {noremap=True})
+vim.api.nvim_set_keymap('n', '<leader>G', '<cmd>Telescope git_branches<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>Gs', '<cmd>Telescope git_status<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>Gc', '<cmd>Telescope git_commits<CR>', opts)
 
-vim.api.nvim_set_keymap('n', '<leader>ss', '<cmd>Telescope spell_suggest<CR>', {noremap=True})
-vim.api.nvim_set_keymap('n', '<leader>sh', '<cmd>Telescope search_history<CR>', {noremap=True})
+vim.api.nvim_set_keymap('n', '<leader>ss', '<cmd>Telescope spell_suggest<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>sh', '<cmd>Telescope search_history<CR>', opts)
 
 -- -------------------------------------------------------------------------------------
 -- Plugin: nvim-tree
 -- -------------------------------------------------------------------------------------
 require'nvim-tree'.setup{}
-vim.api.nvim_set_keymap('n', '<leader>fb', '<cmd>NvimTreeToggle<CR>', {noremap=True})
+vim.api.nvim_set_keymap('n', '<leader>fb', '<cmd>NvimTreeToggle<CR>', { noremap=True })
 
 -- -------------------------------------------------------------------------------------
 -- Plugin: Treesitter
