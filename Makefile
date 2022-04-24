@@ -5,7 +5,7 @@ all: neovim zsh tmux git
 
 neovim:
 	if [ $(shell uname) = "Darwin" ]; then brew install neovim; fi
-	if [ ! -d $(HOME)/.config/nvim ]; then ln -s $(PWD)/.config/nvim $(HOME)/.config/nvim; fi
+	if [ ! -d $(HOME)/.config/nvim ]; then ln -s $(PWD)/nvim $(HOME)/.config/nvim; fi
 
 zsh:
 	if [ ! -d $(HOME)/.config/zsh ]; then ln -s $(PWD)/zsh $(HOME)/.config/zsh; fi
