@@ -51,11 +51,9 @@ vim.api.nvim_set_keymap('n', '<leader>ve', ':edit ~/.config/nvim/init.lua<cr>', 
 vim.api.nvim_set_keymap('n', '<leader>to', ':tabnew<cr>', opts)
 vim.api.nvim_set_keymap('n', '<leader>tn', ':tabnext<cr>', opts)
 vim.api.nvim_set_keymap('n', '<leader>tp', ':tabprev<cr>', opts)
-vim.api.nvim_set_keymap('n', '<leader>tc', ':tabclose<cr>', opts)
 
 vim.api.nvim_set_keymap('n', '<leader>bn', ':bn<cr>', opts)
 vim.api.nvim_set_keymap('n', '<leader>bp', ':bp<cr>', opts)
-vim.api.nvim_set_keymap('n', '<leader>bc', ':bd<cr>', opts)
 
 vim.api.nvim_set_keymap('n', '<C-J>', '<C-W>j', opts)
 vim.api.nvim_set_keymap('n', '<C-k>', '<C-W>k', opts)
@@ -66,14 +64,10 @@ vim.api.nvim_set_keymap('i', '$1', '()<esc>i', opts)
 vim.api.nvim_set_keymap('i', '$2', '[]<esc>i', opts)
 vim.api.nvim_set_keymap('i', '$3', '{}<esc>i', opts)
 vim.api.nvim_set_keymap('i', '$4', '{<esc>o}<esc>O', opts)
-vim.api.nvim_set_keymap('i', '$q', '\'\'<esc>i', opts)
-vim.api.nvim_set_keymap('i', '$Q', '\"\"<esc>i', opts)
 
 vim.api.nvim_set_keymap('v', '$1', '<esc>`>a)<esc>`<i(<esc>', opts)
 vim.api.nvim_set_keymap('v', '$2', '<esc>`>a]<esc>`<i[<esc>', opts)
 vim.api.nvim_set_keymap('v', '$3', '<esc>`>a}<esc>`<i{<esc>', opts)
-vim.api.nvim_set_keymap('v', '$q', '<esc>`>a\'<esc>`<i\'<esc>', opts)
-vim.api.nvim_set_keymap('v', '$Q', '<esc>`>a\"<esc>`<i\"<esc>', opts)
 
 vim.api.nvim_set_keymap('n', 'zj', 'o<esc>^Dk', opts)
 vim.api.nvim_set_keymap('n', 'zk', 'O<esc>^Dj', opts)
@@ -143,9 +137,6 @@ require('packer').startup(function()
   use {
     'tpope/vim-sleuth',
     -- commit = '1d25e8e5dc4062e38cab1a461934ee5e9d59e5a8', -- 05/17/2022
-  }
-  use {
-    'tpope/vim-fugitive',
   }
   use {
     'catppuccin/nvim',
@@ -261,8 +252,6 @@ vim.api.nvim_set_keymap('n', '<leader>/', '<cmd>Telescope current_buffer_fuzzy_f
 vim.api.nvim_set_keymap('n', '<leader>Gb', '<cmd>Telescope git_branches<CR>', opts)
 vim.api.nvim_set_keymap('n', '<leader>Gc', '<cmd>Telescope git_commits<CR>', opts)
 vim.api.nvim_set_keymap('n', '<leader>Gs', '<cmd>Telescope git_status<CR>', opts)
-
-vim.api.nvim_set_keymap('n', '<leader>ss', '<cmd>Telescope spell_suggest<CR>', opts)
 
 -- -------------------------------------------------------------------------------------
 -- Plugin: nvim-tree
