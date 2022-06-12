@@ -33,14 +33,10 @@ vim.o.ttimeoutlen = 100
 vim.o.signcolumn = 'yes'
 vim.o.mouse = 'a'
 vim.o.scrolloff = 8
-vim.o.showtabline = 2
 vim.o.cursorline = true
 vim.o.termguicolors = true
 vim.o.guicursor = 'i:block'
-
-vim.cmd([[
-au! BufWritePost $MYVIMRC source %
-]])
+vim.o.winbar = "%m %f"
 
 -- Remember last position
 vim.cmd([[
@@ -94,63 +90,63 @@ local use = require('packer').use
 require('packer').startup(function()
   use {
     'wbthomason/packer.nvim',
-    commit = '4dedd3b08f8c6e3f84afbce0c23b66320cd2a8f2',
+    -- commit = '4dedd3b08f8c6e3f84afbce0c23b66320cd2a8f2', -- 05/17/2022
   }
   use {
     'neovim/nvim-lspconfig',
-    commit = '9ff2a06cebd4c8c3af5259d713959ab310125bec',
+    -- commit = '629f45d7ea1b3407e7c9639a7c4c992b1cdfefee', -- 05/17/2022
   }
   use {
     'hrsh7th/nvim-cmp',
-    commit = '9a0c639ac2324e6e9ecc54dc22b1d32bb6c42ab9',
+    -- commit = 'cd694b8944eb1ae98f1d0e01cf837e66b15c2857', -- 05/17/2022
   }
   use {
     'hrsh7th/cmp-nvim-lsp',
-    commit = 'e6b5feb2e6560b61f31c756fb9231a0d7b10c73d',
+    -- commit = 'affe808a5c56b71630f17aa7c38e15c59fd648a8', -- 05/17/2022
   }
   use {
     'hrsh7th/cmp-vsnip',
-    commit = '0abfa1860f5e095a07c477da940cfcb0d273b700',
+    -- commit = '0abfa1860f5e095a07c477da940cfcb0d273b700', -- 05/17/2022
   }
   use {
     'nvim-lua/plenary.nvim',
-    commit = '0a907364b5cd6e3438e230df7add8b9bb5ef6fd3',
+    -- commit = 'bbd13b1f150910b721880bef8601dfd41784b60d', -- 05/17/2022
   }
   use {
     'nvim-telescope/telescope.nvim',
-    commit = '39b12d84e86f5054e2ed98829b367598ae53ab41',
+    -- commit = '01fc5a9274b553937bae3910e520732eb0a49bc6', --05/17/2022
   }
   use {
     'nvim-treesitter/nvim-treesitter',
-    commit = '446a0538d6da3b5191397d112df4db199e9831b2',
+    -- commit = 'c004155676180a683ad424fe57294923cdf702ee', -- 05/17/2022
   }
   use {
     'kyazdani42/nvim-tree.lua',
-    commit = '82ec79aac5557c05728d88195fb0d008cacbf565',
+    -- commit = '9563a11ce0c0f9f6534d241c1e3a89ae96226af1', -- 05/17/2022
   }
   use {
     'nvim-lualine/lualine.nvim',
-    commit = 'a4e4517ac32441dd92ba869944741f0b5f468531',
+    -- commit = 'a4e4517ac32441dd92ba869944741f0b5f468531', -- 05/17/2022
   }
   use {
     'kyazdani42/nvim-web-devicons',
-    commit = 'bdd43421437f2ef037e0dafeaaaa62b31d35ef2f',
+    -- commit = 'cde67b5d5427daeecfd7c77cf02ded23a26980bb', -- 05/17/2022
   }
   use {
     'lewis6991/gitsigns.nvim',
-    commit = 'ffd06e36f6067935d8cb9793905dd2e84e291310',
+    -- commit = 'ffd06e36f6067935d8cb9793905dd2e84e291310', -- 05/17/2022
   }
   use {
     'tpope/vim-commentary',
-    commit = '3654775824337f466109f00eaf6759760f65be34',
+    -- commit = '3654775824337f466109f00eaf6759760f65be34', -- 05/17/2022
   }
   use {
     'tpope/vim-sleuth',
-    commit = '1d25e8e5dc4062e38cab1a461934ee5e9d59e5a8',
+    -- commit = '1d25e8e5dc4062e38cab1a461934ee5e9d59e5a8', -- 05/17/2022
   }
   use {
     'catppuccin/nvim',
-    commit = '8a67df6da476cba68ecf26a519a5279686edbd2e',
+    -- commit = '8a67df6da476cba68ecf26a519a5279686edbd2e', -- 05/17/2022
   }
 end)
 
@@ -176,9 +172,10 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>Telescope lsp_definitions<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>Telescope lsp_references<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gh', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>R', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<f2>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', '<cmd>Telescope lsp_document_symbols<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'ge', '<cmd>Telescope diagnostics<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -241,71 +238,33 @@ cmp.setup {
 -- -------------------------------------------------------------------------------------
 -- Plugin: Telescope
 -- -------------------------------------------------------------------------------------
-local telescope_theme = 'ivy'
 require('telescope').setup {
   defaults = {
     history = false,
   },
-  pickers = {
-    find_files = {
-      theme = telescope_theme
-    },
-    live_grep = {
-      theme = telescope_theme
-    },
-    buffers = {
-      theme = telescope_theme
-    },
-    git_files = {
-      theme = telescope_theme
-    },
-    spell_suggest = {
-      theme = telescope_theme
-    },
-    search_history = {
-      theme = telescope_theme
-    },
-    lsp_definitions = {
-      theme = telescope_theme
-    },
-    lsp_references = {
-      theme = telescope_theme
-    },
-    lsp_document_symbols = {
-      theme = telescope_theme
-    },
-    diagnostics = {
-      theme = telescope_theme
-    },
-    current_buffer_fuzzy_find = {
-      theme = telescope_theme
-    }
-  }
 }
 
 local opts = { noremap=True, silent=True }
 vim.api.nvim_set_keymap('n', '<leader><leader>', '<cmd>Telescope resume<CR>', opts)
 
 vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>Telescope find_files<CR>', opts)
-vim.api.nvim_set_keymap('n', '<leader>fg', '<cmd>Telescope git_files<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>fg', '<cmd>Telescope live_grep<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>fb', '<cmd>Telescope buffers<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>fh', '<cmd>Telescope help_tags<CR>', opts)
 
-vim.api.nvim_set_keymap('n', '<leader>gg', '<cmd>Telescope live_grep<CR>', opts)
-vim.api.nvim_set_keymap('n', '<leader>gb', '<cmd>Telescope current_buffer_fuzzy_find<CR>', opts)
-
-vim.api.nvim_set_keymap('n', '<leader>bb', '<cmd>Telescope buffers<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>/', '<cmd>Telescope current_buffer_fuzzy_find<CR>', opts)
 
 vim.api.nvim_set_keymap('n', '<leader>Gb', '<cmd>Telescope git_branches<CR>', opts)
 vim.api.nvim_set_keymap('n', '<leader>Gc', '<cmd>Telescope git_commits<CR>', opts)
 vim.api.nvim_set_keymap('n', '<leader>Gs', '<cmd>Telescope git_status<CR>', opts)
 
 vim.api.nvim_set_keymap('n', '<leader>ss', '<cmd>Telescope spell_suggest<CR>', opts)
-vim.api.nvim_set_keymap('n', '<leader>sh', '<cmd>Telescope search_history<CR>', opts)
 
 -- -------------------------------------------------------------------------------------
 -- Plugin: nvim-tree
 -- -------------------------------------------------------------------------------------
 require('nvim-tree').setup {}
-vim.api.nvim_set_keymap('n', '<leader>fb', '<cmd>NvimTreeToggle<CR>', { noremap=True })
+vim.api.nvim_set_keymap('n', '<leader>B', '<cmd>NvimTreeToggle<CR>', { noremap=True })
 
 -- -------------------------------------------------------------------------------------
 -- Plugin: Treesitter
@@ -320,6 +279,8 @@ require('nvim-treesitter.configs').setup {
     'json',
     'c',
     'cpp',
+    'dockerfile',
+    'bash',
   },
   highlight = {
     enable = true,
@@ -335,7 +296,6 @@ require('gitsigns').setup {
   numhl = false,
   linehl = false,
   word_diff = false,
-  current_line_blame = true,
   on_attach = function(bufnr)
     local gs = package.loaded.gitsigns
 
