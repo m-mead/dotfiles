@@ -145,6 +145,9 @@ require('packer').startup(function()
     -- commit = '1d25e8e5dc4062e38cab1a461934ee5e9d59e5a8', -- 05/17/2022
   }
   use {
+    'tpope/vim-fugitive',
+  }
+  use {
     'catppuccin/nvim',
     -- commit = '8a67df6da476cba68ecf26a519a5279686edbd2e', -- 05/17/2022
   }
@@ -172,10 +175,11 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>Telescope lsp_definitions<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>Telescope lsp_references<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gh', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<f2>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', '<cmd>Telescope lsp_document_symbols<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'ge', '<cmd>Telescope diagnostics<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'ge', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gE', '<cmd>Telescope diagnostics<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<f2>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -332,3 +336,12 @@ require('gitsigns').setup {
     map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
   end
 }
+
+-- -------------------------------------------------------------------------------------
+-- Python
+-- -------------------------------------------------------------------------------------
+function python_venv_activate()
+  vim.env.PATH = vim.env.PATH .. ':venv/bin'
+end
+
+vim.api.nvim_create_user_command('PyVEnvActivate', python_venv_activate, {})
