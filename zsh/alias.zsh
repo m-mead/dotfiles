@@ -8,9 +8,12 @@ alias zsh-update-plugins="find "$ZSH_PLUGIN_DIR" -type d -exec test -e '{}/.git'
 
 alias grep="grep --color=auto"
 
-alias ls="ls --color=auto -A"
+alias l="ls --color=auto -A"
+alias ls="ls --color=auto"
 alias ll="ls --color=auto -lAh"
 
 alias actv=". venv/bin/activate"
 alias actvn="python3 -m venv venv && . venv/bin/activate && pip install -U pip && pip install pyright"
 alias actvN="rm -rf venv && python3 -m venv venv && . venv/bin/activate && pip install -U pip && pip install pyright"
+
+alias pyinit=eval "$(pyenv init --path)"
