@@ -1,4 +1,4 @@
-.PHONY: iterm2 neovim zsh tmux git
+.PHONY: iterm2 neovim zsh tmux git helix
 
 all: iterm2 neovim zsh tmux git
 	@echo "Done"
@@ -43,4 +43,12 @@ git:
 	fi
 	if [ ! -f $(HOME)/.gitconfig ]; then \
 		ln -s $(PWD)/git/.gitconfig $(HOME)/.gitconfig; \
+	fi
+
+helix:
+	if [ $(shell uname) = "Darwin" ]; then \
+		brew install helix;
+	fi
+	if [ ! -d $(HOME)/.config/helix ]; then \
+		ln -s $(PWD)/helix $(HOME)/.config/helix; \
 	fi

@@ -24,6 +24,7 @@ zsh_add_file "export.zsh"
 zsh_add_file "vim.zsh"
 zsh_add_file "alias.zsh"
 zsh_add_file "prompt.zsh"
+zsh_add_file "keybindings.zsh"
 
 zsh_add_plugin "zsh-users/zsh-autosuggestions"
 zsh_add_plugin "zsh-users/zsh-syntax-highlighting"

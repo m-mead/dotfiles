@@ -84,74 +84,104 @@ local use = require('packer').use
 require('packer').startup(function()
   use {
     'wbthomason/packer.nvim',
-    -- commit = '4dedd3b08f8c6e3f84afbce0c23b66320cd2a8f2', -- 05/17/2022
   }
   use {
     'neovim/nvim-lspconfig',
-    -- commit = '629f45d7ea1b3407e7c9639a7c4c992b1cdfefee', -- 05/17/2022
   }
   use {
     'hrsh7th/nvim-cmp',
-    -- commit = 'cd694b8944eb1ae98f1d0e01cf837e66b15c2857', -- 05/17/2022
   }
   use {
     'hrsh7th/cmp-nvim-lsp',
-    -- commit = 'affe808a5c56b71630f17aa7c38e15c59fd648a8', -- 05/17/2022
+  }
+  use {
+    'hrsh7th/cmp-nvim-lsp-signature-help'
   }
   use {
     'hrsh7th/cmp-vsnip',
-    -- commit = '0abfa1860f5e095a07c477da940cfcb0d273b700', -- 05/17/2022
+  }
+  use {
+    'L3MON4D3/LuaSnip'
   }
   use {
     'nvim-lua/plenary.nvim',
-    -- commit = 'bbd13b1f150910b721880bef8601dfd41784b60d', -- 05/17/2022
   }
   use {
     'nvim-telescope/telescope.nvim',
-    -- commit = '01fc5a9274b553937bae3910e520732eb0a49bc6', --05/17/2022
   }
   use {
     'nvim-treesitter/nvim-treesitter',
-    -- commit = 'c004155676180a683ad424fe57294923cdf702ee', -- 05/17/2022
   }
   use {
     'kyazdani42/nvim-tree.lua',
-    -- commit = '9563a11ce0c0f9f6534d241c1e3a89ae96226af1', -- 05/17/2022
   }
   use {
     'nvim-lualine/lualine.nvim',
-    -- commit = 'a4e4517ac32441dd92ba869944741f0b5f468531', -- 05/17/2022
   }
   use {
     'kyazdani42/nvim-web-devicons',
-    -- commit = 'cde67b5d5427daeecfd7c77cf02ded23a26980bb', -- 05/17/2022
   }
   use {
     'lewis6991/gitsigns.nvim',
-    -- commit = 'ffd06e36f6067935d8cb9793905dd2e84e291310', -- 05/17/2022
   }
   use {
     'tpope/vim-commentary',
-    -- commit = '3654775824337f466109f00eaf6759760f65be34', -- 05/17/2022
   }
   use {
     'tpope/vim-sleuth',
-    -- commit = '1d25e8e5dc4062e38cab1a461934ee5e9d59e5a8', -- 05/17/2022
   }
   use {
     'catppuccin/nvim',
-    -- commit = '8a67df6da476cba68ecf26a519a5279686edbd2e', -- 05/17/2022
+  }
+  use {
+    'folke/tokyonight.nvim'
+  }
+  use {
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
   }
 end)
 
 -- -------------------------------------------------------------------------------------
 -- Colorschemes
 -- -------------------------------------------------------------------------------------
-function enable_colorscheme_catppuccin()
-  vim.cmd([[colorscheme catppuccin]])
-end
+require("tokyonight").setup({
+  -- your configuration comes here
+  -- or leave it empty to use the default settings
+  style = "night", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
+  light_style = "day", -- The theme is used when the background is set to light
+  transparent = false, -- Enable this to disable setting the background color
+  terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
+  styles = {
+    -- Style to be applied to different syntax groups
+    -- Value is any valid attr-list value for `:help nvim_set_hl`
+    comments = { italic = true },
+    keywords = { italic = true },
+    functions = {},
+    variables = {},
+    -- Background styles. Can be "dark", "transparent" or "normal"
+    sidebars = "dark", -- style for sidebars, see below
+    floats = "dark", -- style for floating windows
+  },
+  sidebars = { "qf", "help" }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
+  day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
+  hide_inactive_statusline = false, -- Enabling this option, will hide inactive statuslines and replace them with a thin border instead. Should work with the standard **StatusLine** and **LuaLine**.
+  dim_inactive = false, -- dims inactive windows
+  lualine_bold = false, -- When `true`, section headers in the lualine theme will be bold
 
-enable_colorscheme_catppuccin()
+  --- You can override specific color groups to use other groups or a hex color
+  --- function will be called with a ColorScheme table
+  ---@param colors ColorScheme
+  on_colors = function(colors) end,
+
+  --- You can override specific highlights to use other groups or a hex color
+  --- function will be called with a Highlights and ColorScheme table
+  ---@param highlights Highlights
+  ---@param colors ColorScheme
+  on_highlights = function(highlights, colors) end,
+})
+
+vim.cmd([[colorscheme tokyonight-night]])
 
 -- -------------------------------------------------------------------------------------
 -- Plugin: lualine
@@ -163,6 +193,8 @@ require('lualine').setup {}
 -- -------------------------------------------------------------------------------------
 local opts = { noremap=true, silent=true }
 local on_attach = function(client, bufnr)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>Telescope lsp_definitions<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>Telescope lsp_references<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gh', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
@@ -170,11 +202,13 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'ge', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gE', '<cmd>Telescope diagnostics<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<f2>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<f3>', '<cmd>ClangdSwitchSourceHeader<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>cf', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 local lspconfig = require('lspconfig')
 
@@ -190,7 +224,8 @@ local cmp = require('cmp')
 cmp.setup {
   snippet = {
     expand = function(args)
-    vim.fn["vsnip#anonymous"](args.body)
+    --vim.fn["vsnip#anonymous"](args.body)
+    require('luasnip').lsp_expand(args.body)
     end,
   },
   mapping = {
@@ -227,6 +262,9 @@ cmp.setup {
     {
       name = 'vsnip'
     },
+    {
+      name = 'nvim_lsp_signature_help'
+    },
   },
 }
 
@@ -242,16 +280,12 @@ require('telescope').setup {
 local opts = { noremap=True, silent=True }
 vim.api.nvim_set_keymap('n', '<leader><leader>', '<cmd>Telescope resume<CR>', opts)
 
-vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>Telescope find_files<CR>', opts)
-vim.api.nvim_set_keymap('n', '<leader>fg', '<cmd>Telescope live_grep<CR>', opts)
-vim.api.nvim_set_keymap('n', '<leader>fb', '<cmd>Telescope buffers<CR>', opts)
-vim.api.nvim_set_keymap('n', '<leader>fh', '<cmd>Telescope help_tags<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>sf', '<cmd>Telescope git_files<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>sa', '<cmd>Telescope find_files<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>sg', '<cmd>Telescope live_grep<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>sb', '<cmd>Telescope buffers<CR>', opts)
 
 vim.api.nvim_set_keymap('n', '<leader>/', '<cmd>Telescope current_buffer_fuzzy_find<CR>', opts)
-
-vim.api.nvim_set_keymap('n', '<leader>Gb', '<cmd>Telescope git_branches<CR>', opts)
-vim.api.nvim_set_keymap('n', '<leader>Gc', '<cmd>Telescope git_commits<CR>', opts)
-vim.api.nvim_set_keymap('n', '<leader>Gs', '<cmd>Telescope git_status<CR>', opts)
 
 -- -------------------------------------------------------------------------------------
 -- Plugin: nvim-tree
@@ -334,3 +368,6 @@ function python_venv_activate()
 end
 
 vim.api.nvim_create_user_command('PyVEnvActivate', python_venv_activate, {})
+
+require("mason").setup()
+require("mason-lspconfig").setup()
