@@ -4,3 +4,4 @@
 .zsh_sessions/
 .vscode/
 venv/
+nvim/plugin/
