@@ -16,4 +16,4 @@ alias actv=". venv/bin/activate"
 alias actvn="python3 -m venv venv && . venv/bin/activate && pip install -U pip && pip install pyright"
 alias actvN="rm -rf venv && python3 -m venv venv && . venv/bin/activate && pip install -U pip && pip install pyright"
 
-alias pyinit=eval "$(pyenv init --path)"
+#alias pyinit=eval "$(pyenv init --path)"

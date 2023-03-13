@@ -2,3 +2,5 @@
 .zcoredump/
 .zcompdump
 .zsh_sessions/
+.vscode/
+venv/
