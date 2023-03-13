@@ -35,7 +35,7 @@ vim.o.scrolloff = 8
 vim.o.cursorline = true
 vim.o.termguicolors = true
 vim.o.guicursor = 'i:block'
-vim.o.winbar = "%m %f"
+-- vim.o.winbar = "%m %f"
 
 -- Remember last position
 vim.cmd([[
@@ -92,15 +92,11 @@ require('packer').startup(function()
   use 'hrsh7th/cmp-nvim-lsp'
   use 'hrsh7th/cmp-nvim-lsp-signature-help'
   use 'hrsh7th/nvim-cmp'
-  use 'kyazdani42/nvim-tree.lua'
-  use 'kyazdani42/nvim-web-devicons'
   use 'lewis6991/gitsigns.nvim'
   use 'neovim/nvim-lspconfig'
   use 'nvim-lua/plenary.nvim'
-  use 'nvim-lualine/lualine.nvim'
   use 'nvim-telescope/telescope.nvim'
   use 'nvim-treesitter/nvim-treesitter'
-  use 'nvim-treesitter/nvim-treesitter-context'
   use 'tpope/vim-commentary'
   use 'tpope/vim-sleuth'
   use 'williamboman/mason-lspconfig.nvim'
@@ -116,11 +112,6 @@ require("tokyonight").setup({
 })
 
 vim.cmd([[colorscheme tokyonight-night]])
-
--- -------------------------------------------------------------------------------------
--- Lualine
--- -------------------------------------------------------------------------------------
-require('lualine').setup {}
 
 -- -------------------------------------------------------------------------------------
 -- Mason
@@ -230,12 +221,6 @@ vim.api.nvim_set_keymap('n', '<leader>sb', '<cmd>Telescope buffers<CR>', opts)
 vim.api.nvim_set_keymap('n', '<leader>/', '<cmd>Telescope current_buffer_fuzzy_find<CR>', opts)
 
 -- -------------------------------------------------------------------------------------
--- File browser
--- -------------------------------------------------------------------------------------
-require('nvim-tree').setup {}
-vim.api.nvim_set_keymap('n', '<leader>B', '<cmd>NvimTreeToggle<CR>', { noremap=True })
-
--- -------------------------------------------------------------------------------------
 -- Treesitter
 -- -------------------------------------------------------------------------------------
 require('nvim-treesitter.configs').setup {
@@ -256,13 +241,6 @@ require('nvim-treesitter.configs').setup {
     additional_vim_regex_highlighting = false,
   },
 }
-
-require'treesitter-context'.setup{
-  enable = true,
-  separator = '_',
-}
-
-vim.api.nvim_set_keymap('n', '<leader>?', '<cmd>TSContextToggle<CR>', opts)
 
 -- -------------------------------------------------------------------------------------
 -- Git
