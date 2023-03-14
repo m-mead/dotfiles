@@ -114,6 +114,25 @@ require("tokyonight").setup({
 vim.cmd([[colorscheme tokyonight-night]])
 
 -- -------------------------------------------------------------------------------------
+-- Telescope
+-- -------------------------------------------------------------------------------------
+require('telescope').setup {
+  defaults = {
+    history = false,
+  },
+}
+
+vim.keymap.set('n', '<leader>/', require('telescope.builtin').current_buffer_fuzzy_find, { desc = '[/] Fuzzy search current buffer'})
+vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
+vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
+vim.keymap.set('n', '<leader>sa', require('telescope.builtin').find_files, {desc = '[S]earch [A]ll files' })
+vim.keymap.set('n', '<leader>sb', require('telescope.builtin').buffers, {desc = '[S]earch [B]uffers' })
+vim.keymap.set('n', '<leader>sf', require('telescope.builtin').git_files, { desc = '[S]earch [F]iles' }) 
+vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, {desc = '[S]earch using [G]rep' })
+vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
+vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
+
+-- -------------------------------------------------------------------------------------
 -- Mason
 -- -------------------------------------------------------------------------------------
 require("mason").setup()
@@ -124,16 +143,16 @@ require("mason-lspconfig").setup()
 -- -------------------------------------------------------------------------------------
 local opts = { noremap=true, silent=true }
 local on_attach = function(client, bufnr)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>Telescope lsp_definitions<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>Telescope lsp_references<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gh', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', '<cmd>Telescope lsp_document_symbols<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'ge', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gE', '<cmd>Telescope diagnostics<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>cf', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gE', '<cmd>Telescope diagnostics<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>Telescope lsp_definitions<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'ge', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gh', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>Telescope lsp_references<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', '<cmd>Telescope lsp_document_symbols<CR>', opts)
 
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<f2>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
 
@@ -202,39 +221,20 @@ cmp.setup {
 }
 
 -- -------------------------------------------------------------------------------------
--- Telescope
--- -------------------------------------------------------------------------------------
-require('telescope').setup {
-  defaults = {
-    history = false,
-  },
-}
-
-local opts = { noremap=True, silent=True }
-vim.api.nvim_set_keymap('n', '<leader><leader>', '<cmd>Telescope resume<CR>', opts)
-
-vim.api.nvim_set_keymap('n', '<leader>sf', '<cmd>Telescope git_files<CR>', opts)
-vim.api.nvim_set_keymap('n', '<leader>sa', '<cmd>Telescope find_files<CR>', opts)
-vim.api.nvim_set_keymap('n', '<leader>sg', '<cmd>Telescope live_grep<CR>', opts)
-vim.api.nvim_set_keymap('n', '<leader>sb', '<cmd>Telescope buffers<CR>', opts)
-
-vim.api.nvim_set_keymap('n', '<leader>/', '<cmd>Telescope current_buffer_fuzzy_find<CR>', opts)
-
--- -------------------------------------------------------------------------------------
 -- Treesitter
 -- -------------------------------------------------------------------------------------
 require('nvim-treesitter.configs').setup {
   ensure_installed = {
-    'python',
-    'go',
-    'lua',
-    'toml',
-    'yaml',
-    'json',
+    'bash',
     'c',
     'cpp',
     'dockerfile',
-    'bash',
+    'go',
+    'json',
+    'lua',
+    'python',
+    'toml',
+    'yaml',
   },
   highlight = {
     enable = true,
@@ -272,17 +272,17 @@ require('gitsigns').setup {
       return '<Ignore>'
     end, {expr=true})
 
-    map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
-    map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
-    map('n', '<leader>hS', gs.stage_buffer)
-    map('n', '<leader>hu', gs.undo_stage_hunk)
-    map('n', '<leader>hR', gs.reset_buffer)
-    map('n', '<leader>hp', gs.preview_hunk)
-    map('n', '<leader>hb', function() gs.blame_line{full=true} end)
-    map('n', '<leader>tb', gs.toggle_current_line_blame)
-    map('n', '<leader>hd', gs.diffthis)
     map('n', '<leader>hD', function() gs.diffthis('~') end)
+    map('n', '<leader>hR', gs.reset_buffer)
+    map('n', '<leader>hS', gs.stage_buffer)
+    map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+    map('n', '<leader>hd', gs.diffthis)
+    map('n', '<leader>hp', gs.preview_hunk)
+    map('n', '<leader>hu', gs.undo_stage_hunk)
+    map('n', '<leader>tb', gs.toggle_current_line_blame)
     map('n', '<leader>td', gs.toggle_deleted)
+    map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
+    map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
 
     map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
   end
