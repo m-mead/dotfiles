@@ -8,6 +8,9 @@
 vim.g.mapleader = " "
 vim.api.nvim_set_keymap('i', 'jk', '<esc>', { noremap=True, silent=True })
 
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 vim.o.filetype = "on"
 vim.o.wrap = false
 vim.o.number = true
@@ -96,6 +99,8 @@ require('packer').startup(function()
   use 'neovim/nvim-lspconfig'
   use 'nvim-lua/plenary.nvim'
   use 'nvim-telescope/telescope.nvim'
+  use 'nvim-tree/nvim-tree.lua'
+  use 'nvim-tree/nvim-web-devicons'
   use 'nvim-treesitter/nvim-treesitter'
   use 'tpope/vim-commentary'
   use 'tpope/vim-sleuth'
@@ -241,6 +246,13 @@ require('nvim-treesitter.configs').setup {
     additional_vim_regex_highlighting = false,
   },
 }
+
+-- -------------------------------------------------------------------------------------
+-- File browser
+-- -------------------------------------------------------------------------------------
+require("nvim-tree").setup()
+
+vim.keymap.set('n', '<leader>B', ':NvimTreeToggle<cr>', { desc = 'File [B]rowser' })
 
 -- -------------------------------------------------------------------------------------
 -- Git
