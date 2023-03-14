@@ -28,7 +28,7 @@ def local_config_subdir(name: str) -> Path:
     return Path.cwd() / name
 
 
-def maybe_symlink_xdb_home_config_subdir_to_local(name: str) -> bool:
+def maybe_symlink_xdg_home_config_subdir_to_local(name: str) -> bool:
     dest_config = xdg_home_config_subdir(name)
 
     if dest_config.exists():
@@ -93,7 +93,7 @@ class Fonts:
 class Neovim:
     def install(self, brew: Brew) -> None:
         brew.install("neovim")
-        _ = maybe_symlink_xdb_home_config_subdir_to_local("nvim")
+        _ = maybe_symlink_xdg_home_config_subdir_to_local("nvim")
 
     def description(self) -> str:
         return "neovim: a modern vim fork"
@@ -104,7 +104,7 @@ class Neovim:
 
 class Zsh:
     def install(self, brew: Brew) -> None:
-        _ = maybe_symlink_xdb_home_config_subdir_to_local("zsh")
+        _ = maybe_symlink_xdg_home_config_subdir_to_local("zsh")
 
     def description(self) -> str:
         return "zsh: a configurable shell"
@@ -119,7 +119,7 @@ class Zsh:
 
 class Tmux:
     def install(self, brew: Brew) -> None:
-        _ = maybe_symlink_xdb_home_config_subdir_to_local("tmux")
+        _ = maybe_symlink_xdg_home_config_subdir_to_local("tmux")
 
     def description(self) -> str:
         return "tmux: a terminal multiplexer"
@@ -143,7 +143,7 @@ class GitLFS:
 class Helix:
     def install(self, brew: Brew) -> None:
         brew.install("helix")
-        _ = maybe_symlink_xdb_home_config_subdir_to_local("helix")
+        _ = maybe_symlink_xdg_home_config_subdir_to_local("helix")
 
     def description(self) -> str:
         return "helix: a post-modern editor"
