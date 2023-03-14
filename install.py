@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
 import io
-import subprocess
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Protocol, Optional, List
+import subprocess
+from typing import Iterable, List, Optional, Protocol
 
 from rich import print
 from rich.console import Console
@@ -53,7 +52,6 @@ def run_subprocess_command(args: Iterable[str]) -> None:
         raise RuntimeError(f"Received exit code {proc.returncode} when running {args}")
 
 
-@dataclass
 class Brew:
     def install(self, name: str) -> None:
         run_subprocess_command(["brew", "install", name])
@@ -62,15 +60,31 @@ class Brew:
         run_subprocess_command(["brew", "tap", name])
 
 
+class PackageManagerProtocol(Protocol):
+    def install(self, name: str) -> None:
+        ...
+
+
 class Iterm2:
     def install(self, brew: Brew) -> None:
         brew.install("iterm2")
 
-        brew.tap("homebrew/cask-fonts")
-        brew.install("font-fira-mono-nerd-font")
-
     def description(self) -> str:
         return "iterm2: a third party macos terminal"
+
+    def post_install_instructions(self) -> Optional[str]:
+        return None
+
+
+class Fonts:
+    def install(self, brew: Brew) -> None:
+        brew.tap("homebrew/cask-fonts")
+
+        brew.install("font-fira-code-nerd-font")
+        brew.install("font-jetbrains-mono-nerd-font")
+
+    def description(self) -> str:
+        return "nerd fonts: patched fonts that are nice on the eyes for developers"
 
     def post_install_instructions(self) -> Optional[str]:
         return None
@@ -138,19 +152,27 @@ class Helix:
         return None
 
 
-class PackageProtocol(Protocol):
+class Pipx:
     def install(self, brew: Brew) -> None:
-        pass
+        brew.install("pipx")
+        run_subprocess_command(["pipx", "ensurepath"])
 
     def description(self) -> str:
-        pass
+        return "pipx: install and run python applications in isolated environments"
 
     def post_install_instructions(self) -> Optional[str]:
-        pass
+        return None
 
 
-def install_component(component: PackageProtocol, brew: Brew) -> None:
-    component.install(brew)
+class PackageProtocol(Protocol):
+    def install(self, brew: Brew) -> None:
+        ...
+
+    def description(self) -> str:
+        ...
+
+    def post_install_instructions(self) -> Optional[str]:
+        ...
 
 
 def main() -> None:
@@ -166,12 +188,14 @@ def main() -> None:
     ]
 
     components: List[PackageProtocol] = [
-        Iterm2(),
-        Neovim(),
-        Zsh(),
-        Tmux(),
+        Fonts(),
         GitLFS(),
         Helix(),
+        Iterm2(),
+        Neovim(),
+        Pipx(),
+        Tmux(),
+        Zsh(),
     ]
 
     post_install_instructions: List[str] = []
@@ -182,7 +206,7 @@ def main() -> None:
                 f"Installing {component.description()}", total=None
             )
 
-            install_component(component, brew)
+            component.install(brew)
 
             progress.update(
                 task,
