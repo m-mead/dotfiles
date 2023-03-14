@@ -38,6 +38,8 @@ vim.o.cursorline = true
 vim.o.termguicolors = true
 vim.o.guicursor = 'i:block'
 
+vim.o.laststatus = 3
+
 -- Put the filename in the winbar (top of screen).
 -- vim.o.winbar = "%m %f"
 
@@ -101,6 +103,7 @@ require('packer').startup(function()
   use 'lewis6991/gitsigns.nvim'
   use 'neovim/nvim-lspconfig'
   use 'nvim-lua/plenary.nvim'
+  use 'nvim-lualine/lualine.nvim'
   use 'nvim-telescope/telescope.nvim'
   use 'nvim-tree/nvim-tree.lua'
   use 'nvim-tree/nvim-web-devicons'
@@ -115,10 +118,14 @@ end)
 require("tokyonight").setup({ style = "night", light_style = "day" })
 vim.cmd([[colorscheme tokyonight-night]])
 
+-- Use lualine for the statusline
+require('lualine').setup({})
+
 -- Setup telescope fuzzy finder.
 require('telescope').setup {
   defaults = {
     history = false,
+    path_display={"shorten"},
   },
 }
 
@@ -138,6 +145,10 @@ require("mason-lspconfig").setup()
 
 -- Set LSP keybindings to be attached only when client is attached.
 local opts = { noremap=true, silent=true }
+
+-- Diagnostic keymappings
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
+
 local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>cf', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
@@ -149,7 +160,6 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>Telescope lsp_references<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', '<cmd>Telescope lsp_document_symbols<CR>', opts)
-
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<f2>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
 
   -- Off spec. keymaps
