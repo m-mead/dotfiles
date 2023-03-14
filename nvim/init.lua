@@ -1,13 +1,12 @@
--- -------------------------------------------------------------------------------------
 -- Author: Michael Mead
--- -------------------------------------------------------------------------------------
 
--- -------------------------------------------------------------------------------------
--- Core
--- -------------------------------------------------------------------------------------
+-- Use space as the leader key
 vim.g.mapleader = " "
+
+-- Use `jk` as a more ergonomic escape.
 vim.api.nvim_set_keymap('i', 'jk', '<esc>', { noremap=True, silent=True })
 
+-- Disable netrw at startup
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
@@ -38,55 +37,59 @@ vim.o.scrolloff = 8
 vim.o.cursorline = true
 vim.o.termguicolors = true
 vim.o.guicursor = 'i:block'
+
+-- Put the filename in the winbar (top of screen).
 -- vim.o.winbar = "%m %f"
 
--- Remember last position
+-- Remember the last position when reopening a file.
 vim.cmd([[
 if has("autocmd")
     au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 endif
 ]])
 
--- -------------------------------------------------------------------------------------
--- Basic keybindings
--- -------------------------------------------------------------------------------------
+-- Edit this file with a keystroke.
 local opts = { noremap = True, silent=True }
 vim.api.nvim_set_keymap('n', '<leader>ve', ':edit ~/.config/nvim/init.lua<cr>', opts)
 
+-- Keybindings for moving around tabs.
 vim.api.nvim_set_keymap('n', '<leader>to', ':tabnew<cr>', opts)
 vim.api.nvim_set_keymap('n', '<leader>tn', ':tabnext<cr>', opts)
 vim.api.nvim_set_keymap('n', '<leader>tp', ':tabprev<cr>', opts)
 
+-- Keybindings for moving around buffers.
 vim.api.nvim_set_keymap('n', '<leader>bn', ':bn<cr>', opts)
 vim.api.nvim_set_keymap('n', '<leader>bp', ':bp<cr>', opts)
 
+-- Keybindings for moving around windows.
 vim.api.nvim_set_keymap('n', '<C-J>', '<C-W>j', opts)
 vim.api.nvim_set_keymap('n', '<C-k>', '<C-W>k', opts)
 vim.api.nvim_set_keymap('n', '<C-h>', '<C-W>h', opts)
 vim.api.nvim_set_keymap('n', '<C-l>', '<C-W>l', opts)
 
+-- Insert brace like characters when in insert mode.
 vim.api.nvim_set_keymap('i', '$1', '()<esc>i', opts)
 vim.api.nvim_set_keymap('i', '$2', '[]<esc>i', opts)
 vim.api.nvim_set_keymap('i', '$3', '{}<esc>i', opts)
 vim.api.nvim_set_keymap('i', '$4', '{<esc>o}<esc>O', opts)
 
+-- Insert brace like characters when in visual mode.
 vim.api.nvim_set_keymap('v', '$1', '<esc>`>a)<esc>`<i(<esc>', opts)
 vim.api.nvim_set_keymap('v', '$2', '<esc>`>a]<esc>`<i[<esc>', opts)
 vim.api.nvim_set_keymap('v', '$3', '<esc>`>a}<esc>`<i{<esc>', opts)
 
+-- Insert brace like characters when in normal mode.
 vim.api.nvim_set_keymap('n', 'zj', 'o<esc>^Dk', opts)
 vim.api.nvim_set_keymap('n', 'zk', 'O<esc>^Dj', opts)
 vim.api.nvim_set_keymap('n', 'zh', 'i<space><esc>l', opts)
 vim.api.nvim_set_keymap('n', 'zl', 'a<space><esc>h', opts)
 
+-- Indent selection without leaving visual mode.
 vim.api.nvim_set_keymap('v', '<', '<gv', opts)
 vim.api.nvim_set_keymap('v', '>', '>gv', opts)
 
--- -------------------------------------------------------------------------------------
--- Plugin manager
--- -------------------------------------------------------------------------------------
+-- Install plugins using packer.nvim.
 local use = require('packer').use
-
 require('packer').startup(function()
   use 'wbthomason/packer.nvim'
 
@@ -108,19 +111,11 @@ require('packer').startup(function()
   use 'williamboman/mason.nvim'
 end)
 
--- -------------------------------------------------------------------------------------
--- Colorschemes
--- -------------------------------------------------------------------------------------
-require("tokyonight").setup({
-  style = "night",
-  light_style = "day",
-})
-
+-- Set the colortheme.
+require("tokyonight").setup({ style = "night", light_style = "day" })
 vim.cmd([[colorscheme tokyonight-night]])
 
--- -------------------------------------------------------------------------------------
--- Telescope
--- -------------------------------------------------------------------------------------
+-- Setup telescope fuzzy finder.
 require('telescope').setup {
   defaults = {
     history = false,
@@ -137,15 +132,11 @@ vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, {desc 
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 
--- -------------------------------------------------------------------------------------
--- Mason
--- -------------------------------------------------------------------------------------
+-- Setup mason package manager for LSP tools (servers, linters, etc).
 require("mason").setup()
 require("mason-lspconfig").setup()
 
--- -------------------------------------------------------------------------------------
--- LSP
--- -------------------------------------------------------------------------------------
+-- Set LSP keybindings to be attached only when client is attached.
 local opts = { noremap=true, silent=true }
 local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
@@ -170,6 +161,8 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 local lspconfig = require('lspconfig')
 
+-- Set the servers for typically used languages.
+-- For more, see: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 local servers = { 'pyright', 'gopls', 'clangd', 'rust_analyzer' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
@@ -178,6 +171,7 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+-- Setup autocompletion using nvim-cmp.
 local cmp = require('cmp')
 cmp.setup {
   snippet = {
@@ -225,9 +219,7 @@ cmp.setup {
   },
 }
 
--- -------------------------------------------------------------------------------------
--- Treesitter
--- -------------------------------------------------------------------------------------
+-- Setup treesitter syntax highlighting.
 require('nvim-treesitter.configs').setup {
   ensure_installed = {
     'bash',
@@ -247,16 +239,11 @@ require('nvim-treesitter.configs').setup {
   },
 }
 
--- -------------------------------------------------------------------------------------
--- File browser
--- -------------------------------------------------------------------------------------
+-- Setup nvim-tree file browser.
 require("nvim-tree").setup()
-
 vim.keymap.set('n', '<leader>B', ':NvimTreeToggle<cr>', { desc = 'File [B]rowser' })
 
--- -------------------------------------------------------------------------------------
--- Git
--- -------------------------------------------------------------------------------------
+-- Setup gitsigns for git integration in the editor.
 require('gitsigns').setup {
   signcolumn = true,
   numhl = false,
@@ -295,14 +282,11 @@ require('gitsigns').setup {
     map('n', '<leader>td', gs.toggle_deleted)
     map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
     map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
-
     map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
   end
 }
 
--- -------------------------------------------------------------------------------------
--- Misc.
--- -------------------------------------------------------------------------------------
+-- Activate a virtual environment by appending it to the path.
 function python_venv_activate()
   vim.env.PATH = vim.env.PATH .. ':venv/bin'
 end
