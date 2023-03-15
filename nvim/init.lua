@@ -1,4 +1,15 @@
--- Author: Michael Mead
+--[[
+
+Author: Michael Mead
+
+Installation
+------------
+This configuration is mostly self-contained and does not require manual steps
+beyond installing the plugin package manager and whatever language servers you'd like.
+  - Install packager.nvim: https://github.com/wbthomason/packer.nvim
+  - Install language servers via :MasonInstall
+
+--]]
 
 -- Use space as the leader key
 vim.g.mapleader = ' '
@@ -312,8 +323,7 @@ end
 
 vim.api.nvim_create_user_command('PyVEnvActivate', python_venv_activate, {})
 
--- Run cmake's configure step.
--- Default behavior is to create a compilation db.
+-- Run the configure step for cmake.
 function cmake_configure(args)
   if args then
     vim.cmd(':Dispatch mkdir -p build && cd build && cmake .. ' .. args)
@@ -322,8 +332,7 @@ function cmake_configure(args)
   end
 end
 
--- Run cmake's build step.
--- Default behavior is to build all targets with system default `-j` value.
+-- Run the build step for cmake.
 function cmake_build(args)
   if args then
     vim.cmd(':Dispatch cd build && cmake --build . ' .. args)
@@ -332,23 +341,20 @@ function cmake_build(args)
   end
 end
 
--- Vim command for running cmake's configure step.
--- Users can omit all arguments or pass a configure argument list.
+-- Omit all arguments or pass a configure argument list.
 -- For example `:CMakeConfigure -DCMAKE_BUILD_TYPE=Release` will expand to `cmake .. -DCMAKE_BUILD_TYPE=Release`.
 vim.api.nvim_create_user_command('CMakeConfigure', function(opts)
   cmake_configure(unpack(opts.fargs))
 end, { nargs = '?' })
 
--- Vim command for running cmake's clean build target.
-vim.api.nvim_create_user_command('CMakeClean', function()
-  cmake_build { fargs = { '--target clean' } }
-end, { nargs = 0 })
-
--- Vim command for running cmake's build target.
--- Users can either omit all arguments or pass a build argument list.
+-- Omit all arguments or pass a build argument list.
 -- For example, `:CMakeBuild --target foo` will expand to `cmake --build . --target foo`.
 vim.api.nvim_create_user_command('CMakeBuild', function(opts)
   cmake_build(unpack(opts.fargs))
 end, { nargs = '?' })
 
-vim.keymap.set('n', '<f7>', ':CMakeBuild<cr>', { desc = '' })
+vim.api.nvim_create_user_command('CMakeClean', function()
+  cmake_build '--target clean'
+end, { nargs = 0 })
+
+vim.keymap.set('n', '<f7>', ':CMakeBuild<cr>', { desc = 'Run CMake build asynchronously in a separate window' })
