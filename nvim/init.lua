@@ -50,11 +50,11 @@ vim.o.termguicolors = true
 vim.o.guicursor = 'i:block'
 
 -- Remember the last position when reopening a file.
-vim.cmd [[
+vim.cmd([[
 if has("autocmd")
     au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 endif
-]]
+]])
 
 -- Edit this file with a keystroke.
 local opts = { noremap = True, silent = True }
@@ -99,46 +99,46 @@ vim.api.nvim_set_keymap('v', '>', '>gv', opts)
 -- Install plugins using packer.nvim.
 local use = require('packer').use
 require('packer').startup(function()
-  use 'wbthomason/packer.nvim'
+  use('wbthomason/packer.nvim')
 
-  use 'L3MON4D3/LuaSnip'
-  use 'folke/tokyonight.nvim'
-  use 'hrsh7th/cmp-nvim-lsp'
-  use 'hrsh7th/cmp-nvim-lsp-signature-help'
-  use 'hrsh7th/nvim-cmp'
-  use 'lewis6991/gitsigns.nvim'
-  use 'neovim/nvim-lspconfig'
-  use 'nvim-lua/plenary.nvim'
-  use 'nvim-lualine/lualine.nvim'
-  use 'nvim-telescope/telescope.nvim'
-  use 'nvim-tree/nvim-tree.lua'
-  use 'nvim-tree/nvim-web-devicons'
-  use 'nvim-treesitter/nvim-treesitter'
-  use 'tpope/vim-commentary'
-  use 'tpope/vim-dispatch'
-  use 'tpope/vim-sleuth'
-  use 'williamboman/mason-lspconfig.nvim'
-  use 'williamboman/mason.nvim'
+  use('L3MON4D3/LuaSnip')
+  use('folke/tokyonight.nvim')
+  use('hrsh7th/cmp-nvim-lsp')
+  use('hrsh7th/cmp-nvim-lsp-signature-help')
+  use('hrsh7th/nvim-cmp')
+  use('lewis6991/gitsigns.nvim')
+  use('neovim/nvim-lspconfig')
+  use('nvim-lua/plenary.nvim')
+  use('nvim-lualine/lualine.nvim')
+  use('nvim-telescope/telescope.nvim')
+  use('nvim-tree/nvim-tree.lua')
+  use('nvim-tree/nvim-web-devicons')
+  use('nvim-treesitter/nvim-treesitter')
+  use('tpope/vim-commentary')
+  use('tpope/vim-dispatch')
+  use('tpope/vim-sleuth')
+  use('williamboman/mason-lspconfig.nvim')
+  use('williamboman/mason.nvim')
 end)
 
 -- Set the colortheme.
-require('tokyonight').setup { style = 'night', light_style = 'day' }
-vim.cmd [[colorscheme tokyonight-night]]
+require('tokyonight').setup({ style = 'night', light_style = 'day' })
+vim.cmd([[colorscheme tokyonight-night]])
 
 -- Use lualine for the statusline.
-require('lualine').setup {
+require('lualine').setup({
   options = {
     theme = 'tokyonight',
   },
-}
+})
 
 -- Setup telescope fuzzy finder.
-require('telescope').setup {
+require('telescope').setup({
   defaults = {
     history = false,
     path_display = { 'shorten' },
   },
-}
+})
 
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find buffer' })
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
@@ -177,21 +177,21 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-local lspconfig = require 'lspconfig'
+local lspconfig = require('lspconfig')
 
 -- Set the servers for typically used languages.
 -- For more, see: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 local servers = { 'pyright', 'gopls', 'clangd', 'rust_analyzer' }
 for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
+  lspconfig[lsp].setup({
     on_attach = on_attach,
     capabilities = capabilities,
-  }
+  })
 end
 
 -- Setup autocompletion using nvim-cmp.
-local cmp = require 'cmp'
-cmp.setup {
+local cmp = require('cmp')
+cmp.setup({
   snippet = {
     expand = function(args)
       require('luasnip').lsp_expand(args.body)
@@ -204,10 +204,10 @@ cmp.setup {
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm {
+    ['<CR>'] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
-    },
+    }),
     ['<Tab>'] = function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
@@ -235,10 +235,10 @@ cmp.setup {
       name = 'nvim_lsp_signature_help',
     },
   },
-}
+})
 
 -- Setup treesitter syntax highlighting.
-require('nvim-treesitter.configs').setup {
+require('nvim-treesitter.configs').setup({
   ensure_installed = {
     'bash',
     'c',
@@ -255,14 +255,14 @@ require('nvim-treesitter.configs').setup {
     enable = true,
     additional_vim_regex_highlighting = false,
   },
-}
+})
 
 -- Setup nvim-tree file browser.
 require('nvim-tree').setup()
 vim.keymap.set('n', '<leader>B', ':NvimTreeToggle<cr>', { desc = 'File [B]rowser' })
 
 -- Setup gitsigns for git integration in the editor.
-require('gitsigns').setup {
+require('gitsigns').setup({
   signcolumn = true,
   numhl = false,
   linehl = false,
@@ -298,12 +298,12 @@ require('gitsigns').setup {
     end, { expr = true })
 
     map('n', '<leader>hD', function()
-      gs.diffthis '~'
+      gs.diffthis('~')
     end)
     map('n', '<leader>hR', gs.reset_buffer)
     map('n', '<leader>hS', gs.stage_buffer)
     map('n', '<leader>hb', function()
-      gs.blame_line { full = true }
+      gs.blame_line({ full = true })
     end)
     map('n', '<leader>hd', gs.diffthis)
     map('n', '<leader>hp', gs.preview_hunk)
@@ -314,7 +314,7 @@ require('gitsigns').setup {
     map({ 'n', 'v' }, '<leader>hs', ':Gitsigns stage_hunk<CR>')
     map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
   end,
-}
+})
 
 -- Activate a virtual environment by appending it to the path.
 function python_venv_activate()
@@ -328,7 +328,7 @@ function cmake_configure(args)
   if args then
     vim.cmd(':Dispatch mkdir -p build && cd build && cmake .. ' .. args)
   else
-    vim.cmd ':Dispatch mkdir -p build && cd build && cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON '
+    vim.cmd(':Dispatch mkdir -p build && cd build && cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ')
   end
 end
 
@@ -337,7 +337,7 @@ function cmake_build(args)
   if args then
     vim.cmd(':Dispatch cd build && cmake --build . ' .. args)
   else
-    vim.cmd ':Dispatch cd build && cmake --build . --target all --parallel'
+    vim.cmd(':Dispatch cd build && cmake --build . --target all --parallel')
   end
 end
 
@@ -354,7 +354,7 @@ vim.api.nvim_create_user_command('CMakeBuild', function(opts)
 end, { nargs = '?' })
 
 vim.api.nvim_create_user_command('CMakeClean', function()
-  cmake_build '--target clean'
+  cmake_build('--target clean')
 end, { nargs = 0 })
 
 vim.keymap.set('n', '<f7>', ':CMakeBuild<cr>', { desc = 'Run CMake build asynchronously in a separate window' })
