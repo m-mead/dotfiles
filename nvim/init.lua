@@ -1,16 +1,16 @@
 -- Author: Michael Mead
 
 -- Use space as the leader key
-vim.g.mapleader = " "
+vim.g.mapleader = ' '
 
 -- Use `jk` as a more ergonomic escape.
-vim.api.nvim_set_keymap('i', 'jk', '<esc>', { noremap=True, silent=True })
+vim.api.nvim_set_keymap('i', 'jk', '<esc>', { noremap = True, silent = True })
 
 -- Disable netrw at startup
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
-vim.o.filetype = "on"
+vim.o.filetype = 'on'
 vim.o.wrap = false
 vim.o.number = true
 vim.o.relativenumber = true
@@ -38,20 +38,15 @@ vim.o.cursorline = true
 vim.o.termguicolors = true
 vim.o.guicursor = 'i:block'
 
-vim.o.laststatus = 3
-
--- Put the filename in the winbar (top of screen).
--- vim.o.winbar = "%m %f"
-
 -- Remember the last position when reopening a file.
-vim.cmd([[
+vim.cmd [[
 if has("autocmd")
     au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 endif
-]])
+]]
 
 -- Edit this file with a keystroke.
-local opts = { noremap = True, silent=True }
+local opts = { noremap = True, silent = True }
 vim.api.nvim_set_keymap('n', '<leader>ve', ':edit ~/.config/nvim/init.lua<cr>', opts)
 
 -- Keybindings for moving around tabs.
@@ -80,7 +75,7 @@ vim.api.nvim_set_keymap('v', '$1', '<esc>`>a)<esc>`<i(<esc>', opts)
 vim.api.nvim_set_keymap('v', '$2', '<esc>`>a]<esc>`<i[<esc>', opts)
 vim.api.nvim_set_keymap('v', '$3', '<esc>`>a}<esc>`<i{<esc>', opts)
 
--- Insert brace like characters when in normal mode.
+-- Insert blank characters without leaving insert mode.
 vim.api.nvim_set_keymap('n', 'zj', 'o<esc>^Dk', opts)
 vim.api.nvim_set_keymap('n', 'zk', 'O<esc>^Dj', opts)
 vim.api.nvim_set_keymap('n', 'zh', 'i<space><esc>l', opts)
@@ -109,42 +104,44 @@ require('packer').startup(function()
   use 'nvim-tree/nvim-web-devicons'
   use 'nvim-treesitter/nvim-treesitter'
   use 'tpope/vim-commentary'
+  use 'tpope/vim-dispatch'
   use 'tpope/vim-sleuth'
   use 'williamboman/mason-lspconfig.nvim'
   use 'williamboman/mason.nvim'
 end)
 
 -- Set the colortheme.
-require("tokyonight").setup({ style = "night", light_style = "day" })
-vim.cmd([[colorscheme tokyonight-night]])
+require('tokyonight').setup { style = 'night', light_style = 'day' }
+vim.cmd [[colorscheme tokyonight-night]]
 
--- Use lualine for the statusline
-require('lualine').setup({})
+-- Use lualine for the statusline.
+require('lualine').setup {
+  options = {
+    theme = 'tokyonight',
+  },
+}
 
 -- Setup telescope fuzzy finder.
 require('telescope').setup {
   defaults = {
     history = false,
-    path_display={"shorten"},
+    path_display = { 'shorten' },
   },
 }
 
-vim.keymap.set('n', '<leader>/', require('telescope.builtin').current_buffer_fuzzy_find, { desc = '[/] Fuzzy search current buffer'})
-vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
+vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find buffer' })
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
-vim.keymap.set('n', '<leader>sa', require('telescope.builtin').find_files, {desc = '[S]earch [A]ll files' })
-vim.keymap.set('n', '<leader>sb', require('telescope.builtin').buffers, {desc = '[S]earch [B]uffers' })
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').git_files, { desc = '[S]earch [F]iles' }) 
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, {desc = '[S]earch using [G]rep' })
+vim.keymap.set('n', '<leader>sa', require('telescope.builtin').find_files, { desc = '[S]earch [A]ll files' })
+vim.keymap.set('n', '<leader>sf', require('telescope.builtin').git_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch using [G]rep' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 
 -- Setup mason package manager for LSP tools (servers, linters, etc).
-require("mason").setup()
-require("mason-lspconfig").setup()
+require('mason').setup()
+require('mason-lspconfig').setup()
 
 -- Set LSP keybindings to be attached only when client is attached.
-local opts = { noremap=true, silent=true }
+local opts = { noremap = true, silent = true }
 
 -- Diagnostic keymappings
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
@@ -169,7 +166,7 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-local lspconfig = require('lspconfig')
+local lspconfig = require 'lspconfig'
 
 -- Set the servers for typically used languages.
 -- For more, see: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
@@ -182,7 +179,7 @@ for _, lsp in ipairs(servers) do
 end
 
 -- Setup autocompletion using nvim-cmp.
-local cmp = require('cmp')
+local cmp = require 'cmp'
 cmp.setup {
   snippet = {
     expand = function(args)
@@ -221,10 +218,10 @@ cmp.setup {
       keyword_length = 2,
     },
     {
-      name = 'vsnip'
+      name = 'vsnip',
     },
     {
-      name = 'nvim_lsp_signature_help'
+      name = 'nvim_lsp_signature_help',
     },
   },
 }
@@ -250,7 +247,7 @@ require('nvim-treesitter.configs').setup {
 }
 
 -- Setup nvim-tree file browser.
-require("nvim-tree").setup()
+require('nvim-tree').setup()
 vim.keymap.set('n', '<leader>B', ':NvimTreeToggle<cr>', { desc = 'File [B]rowser' })
 
 -- Setup gitsigns for git integration in the editor.
@@ -270,30 +267,42 @@ require('gitsigns').setup {
     end
 
     map('n', ']c', function()
-      if vim.wo.diff then return ']c' end
-      vim.schedule(function() gs.next_hunk() end)
+      if vim.wo.diff then
+        return ']c'
+      end
+      vim.schedule(function()
+        gs.next_hunk()
+      end)
       return '<Ignore>'
-    end, {expr=true})
+    end, { expr = true })
 
     map('n', '[c', function()
-      if vim.wo.diff then return '[c' end
-      vim.schedule(function() gs.prev_hunk() end)
+      if vim.wo.diff then
+        return '[c'
+      end
+      vim.schedule(function()
+        gs.prev_hunk()
+      end)
       return '<Ignore>'
-    end, {expr=true})
+    end, { expr = true })
 
-    map('n', '<leader>hD', function() gs.diffthis('~') end)
+    map('n', '<leader>hD', function()
+      gs.diffthis '~'
+    end)
     map('n', '<leader>hR', gs.reset_buffer)
     map('n', '<leader>hS', gs.stage_buffer)
-    map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+    map('n', '<leader>hb', function()
+      gs.blame_line { full = true }
+    end)
     map('n', '<leader>hd', gs.diffthis)
     map('n', '<leader>hp', gs.preview_hunk)
     map('n', '<leader>hu', gs.undo_stage_hunk)
     map('n', '<leader>tb', gs.toggle_current_line_blame)
     map('n', '<leader>td', gs.toggle_deleted)
-    map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
-    map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
-    map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
-  end
+    map({ 'n', 'v' }, '<leader>hr', ':Gitsigns reset_hunk<CR>')
+    map({ 'n', 'v' }, '<leader>hs', ':Gitsigns stage_hunk<CR>')
+    map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+  end,
 }
 
 -- Activate a virtual environment by appending it to the path.
@@ -302,3 +311,10 @@ function python_venv_activate()
 end
 
 vim.api.nvim_create_user_command('PyVEnvActivate', python_venv_activate, {})
+
+function cmake_configure() end
+
+function cmake_build() end
+
+vim.api.nvim_create_user_command('CMakeConfigure', cmake_configure, {})
+vim.api.nvim_create_user_command('CMakeBuild', cmake_build, {})
