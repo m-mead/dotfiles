@@ -229,9 +229,6 @@ cmp.setup({
       keyword_length = 2,
     },
     {
-      name = 'vsnip',
-    },
-    {
       name = 'nvim_lsp_signature_help',
     },
   },
