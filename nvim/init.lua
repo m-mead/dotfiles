@@ -312,9 +312,43 @@ end
 
 vim.api.nvim_create_user_command('PyVEnvActivate', python_venv_activate, {})
 
-function cmake_configure() end
+-- Run cmake's configure step.
+-- Default behavior is to create a compilation db.
+function cmake_configure(args)
+  if args then
+    vim.cmd(':Dispatch mkdir -p build && cd build && cmake .. ' .. args)
+  else
+    vim.cmd ':Dispatch mkdir -p build && cd build && cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON '
+  end
+end
 
-function cmake_build() end
+-- Run cmake's build step.
+-- Default behavior is to build all targets with system default `-j` value.
+function cmake_build(args)
+  if args then
+    vim.cmd(':Dispatch cd build && cmake --build . ' .. args)
+  else
+    vim.cmd ':Dispatch cd build && cmake --build . --target all --parallel'
+  end
+end
 
-vim.api.nvim_create_user_command('CMakeConfigure', cmake_configure, {})
-vim.api.nvim_create_user_command('CMakeBuild', cmake_build, {})
+-- Vim command for running cmake's configure step.
+-- Users can omit all arguments or pass a configure argument list.
+-- For example `:CMakeConfigure -DCMAKE_BUILD_TYPE=Release` will expand to `cmake .. -DCMAKE_BUILD_TYPE=Release`.
+vim.api.nvim_create_user_command('CMakeConfigure', function(opts)
+  cmake_configure(unpack(opts.fargs))
+end, { nargs = '?' })
+
+-- Vim command for running cmake's clean build target.
+vim.api.nvim_create_user_command('CMakeClean', function()
+  cmake_build { fargs = { '--target clean' } }
+end, { nargs = 0 })
+
+-- Vim command for running cmake's build target.
+-- Users can either omit all arguments or pass a build argument list.
+-- For example, `:CMakeBuild --target foo` will expand to `cmake --build . --target foo`.
+vim.api.nvim_create_user_command('CMakeBuild', function(opts)
+  cmake_build(unpack(opts.fargs))
+end, { nargs = '?' })
+
+vim.keymap.set('n', '<f7>', ':CMakeBuild<cr>', { desc = '' })
