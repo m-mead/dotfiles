@@ -130,13 +130,21 @@ require('lualine').setup({
   options = {
     theme = 'tokyonight',
   },
+  sections = {
+    lualine_c = {
+      {
+        'filename',
+        path = 1,  -- relative
+      }
+    }
+  }
 })
 
 -- Setup telescope fuzzy finder.
 require('telescope').setup({
   defaults = {
     history = false,
-    path_display = { 'shorten' },
+    -- path_display = { 'shorten' },
   },
 })
 
