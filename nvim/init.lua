@@ -143,6 +143,7 @@ require('telescope').setup({
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find buffer' })
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
 vim.keymap.set('n', '<leader>sa', require('telescope.builtin').find_files, { desc = '[S]earch [A]ll files' })
+vim.keymap.set('n', '<leader>sc', require('telescope.builtin').command_history, { desc = '[S]earch [C]ommand history' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').git_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch using [G]rep' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
@@ -320,21 +321,25 @@ end
 
 vim.api.nvim_create_user_command('PyVEnvActivate', python_venv_activate, {})
 
+function dispatch(args)
+  vim.cmd(':Dispatch ' .. args)
+end
+
 -- Run the configure step for cmake.
 function cmake_configure(args)
   if args then
-    vim.cmd(':Dispatch mkdir -p build && cd build && cmake .. ' .. args)
+    dispatch('mkdir -p build && cd build && cmake .. ' .. args)
   else
-    vim.cmd(':Dispatch mkdir -p build && cd build && cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ')
+    dispatch('mkdir -p build && cd build && cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ')
   end
 end
 
 -- Run the build step for cmake.
 function cmake_build(args)
   if args then
-    vim.cmd(':Dispatch cd build && cmake --build . ' .. args)
+    dispatch('cd build && cmake --build . ' .. args)
   else
-    vim.cmd(':Dispatch cd build && cmake --build . --target all --parallel')
+    dispatch('cd build && cmake --build . --target all --parallel')
   end
 end
 
