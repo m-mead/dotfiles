@@ -16,6 +16,7 @@ vim.g.mapleader = ' '
 
 -- Use `jk` as a more ergonomic escape.
 vim.api.nvim_set_keymap('i', 'jk', '<esc>', { noremap = True, silent = True })
+vim.api.nvim_set_keymap('t', 'jk', [[<C-\><C-n>]], { noremap = True, silent = True})
 
 -- Disable netrw at startup
 vim.g.loaded_netrw = 1
@@ -47,7 +48,7 @@ vim.o.mouse = 'a'
 vim.o.scrolloff = 8
 vim.o.cursorline = true
 vim.o.termguicolors = true
-vim.o.guicursor = 'i:block'
+-- vim.o.guicursor = 'i:block'
 
 -- Remember the last position when reopening a file.
 vim.cmd([[
@@ -101,11 +102,12 @@ local use = require('packer').use
 require('packer').startup(function()
   use('wbthomason/packer.nvim')
 
-  use('L3MON4D3/LuaSnip')
   use('folke/tokyonight.nvim')
   use('hrsh7th/cmp-nvim-lsp')
   use('hrsh7th/cmp-nvim-lsp-signature-help')
+  use('hrsh7th/cmp-vsnip')
   use('hrsh7th/nvim-cmp')
+  use('hrsh7th/vim-vsnip')
   use('lewis6991/gitsigns.nvim')
   use('neovim/nvim-lspconfig')
   use('nvim-lua/plenary.nvim')
@@ -203,7 +205,8 @@ local cmp = require('cmp')
 cmp.setup({
   snippet = {
     expand = function(args)
-      require('luasnip').lsp_expand(args.body)
+      -- require('luasnip').lsp_expand(args.body)
+      vim.fn["vsnip#anonymous"](args.body)
     end,
   },
   mapping = {
@@ -366,5 +369,9 @@ end, { nargs = '?' })
 vim.api.nvim_create_user_command('CMakeClean', function()
   cmake_build('--target clean')
 end, { nargs = 0 })
+
+vim.api.nvim_create_user_command('CTest', function()
+  dispatch('cd build && ctest')
+end, { nargs = 0})
 
 vim.keymap.set('n', '<f7>', ':CMakeBuild<cr>', { desc = 'Run CMake build asynchronously in a separate window' })
