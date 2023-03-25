@@ -10,13 +10,12 @@ beyond installing the plugin package manager and whatever language servers you'd
   - Install language servers via :MasonInstall
 
 --]]
-
 -- Use space as the leader key
 vim.g.mapleader = ' '
 
 -- Use `jk` as a more ergonomic escape.
-vim.api.nvim_set_keymap('i', 'jk', '<esc>', { noremap = True, silent = True })
-vim.api.nvim_set_keymap('t', 'jk', [[<C-\><C-n>]], { noremap = True, silent = True})
+vim.api.nvim_set_keymap('i', 'jk', '<esc>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('t', 'jk', [[<C-\><C-n>]], { noremap = true, silent = true })
 
 -- Disable netrw at startup
 vim.g.loaded_netrw = 1
@@ -136,19 +135,14 @@ require('lualine').setup({
     lualine_c = {
       {
         'filename',
-        path = 1,  -- relative
+        path = 1, -- relative
       }
     }
   }
 })
 
 -- Setup telescope fuzzy finder.
-require('telescope').setup({
-  defaults = {
-    history = false,
-    -- path_display = { 'shorten' },
-  },
-})
+require('telescope').setup()
 
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find buffer' })
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
@@ -190,9 +184,16 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 local lspconfig = require('lspconfig')
 
--- Set the servers for typically used languages.
--- For more, see: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-local servers = { 'pyright', 'gopls', 'clangd', 'rust_analyzer', 'lua_ls' }
+-- Server configurations:
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+local servers = {
+  'clangd',
+  'gopls',
+  'lua_ls',
+  'pyright',
+  'rust_analyzer',
+}
+
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup({
     on_attach = on_attach,
@@ -205,7 +206,6 @@ local cmp = require('cmp')
 cmp.setup({
   snippet = {
     expand = function(args)
-      -- require('luasnip').lsp_expand(args.body)
       vim.fn["vsnip#anonymous"](args.body)
     end,
   },
@@ -363,6 +363,6 @@ end, { nargs = 0 })
 
 vim.api.nvim_create_user_command('CTest', function()
   dispatch('cd build && ctest')
-end, { nargs = 0})
+end, { nargs = 0 })
 
 vim.keymap.set('n', '<f7>', ':CMakeBuild<cr>', { desc = 'Run CMake build asynchronously in a separate window' })
