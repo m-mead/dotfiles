@@ -192,7 +192,7 @@ local lspconfig = require('lspconfig')
 
 -- Set the servers for typically used languages.
 -- For more, see: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-local servers = { 'pyright', 'gopls', 'clangd', 'rust_analyzer' }
+local servers = { 'pyright', 'gopls', 'clangd', 'rust_analyzer', 'lua_ls' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup({
     on_attach = on_attach,
@@ -325,19 +325,11 @@ require('gitsigns').setup({
   end,
 })
 
--- Activate a virtual environment by appending it to the path.
-function python_venv_activate()
-  vim.env.PATH = vim.env.PATH .. ':venv/bin'
-end
-
-vim.api.nvim_create_user_command('PyVEnvActivate', python_venv_activate, {})
-
-function dispatch(args)
+local function dispatch(args)
   vim.cmd(':Dispatch ' .. args)
 end
 
--- Run the configure step for cmake.
-function cmake_configure(args)
+local function cmake_configure(args)
   if args then
     dispatch('mkdir -p build && cd build && cmake .. ' .. args)
   else
@@ -345,8 +337,7 @@ function cmake_configure(args)
   end
 end
 
--- Run the build step for cmake.
-function cmake_build(args)
+local function cmake_build(args)
   if args then
     dispatch('cd build && cmake --build . ' .. args)
   else
@@ -354,20 +345,20 @@ function cmake_build(args)
   end
 end
 
--- Omit all arguments or pass a configure argument list.
--- For example `:CMakeConfigure -DCMAKE_BUILD_TYPE=Release` will expand to `cmake .. -DCMAKE_BUILD_TYPE=Release`.
 vim.api.nvim_create_user_command('CMakeConfigure', function(opts)
   cmake_configure(unpack(opts.fargs))
 end, { nargs = '?' })
 
--- Omit all arguments or pass a build argument list.
--- For example, `:CMakeBuild --target foo` will expand to `cmake --build . --target foo`.
 vim.api.nvim_create_user_command('CMakeBuild', function(opts)
   cmake_build(unpack(opts.fargs))
 end, { nargs = '?' })
 
 vim.api.nvim_create_user_command('CMakeClean', function()
   cmake_build('--target clean')
+end, { nargs = 0 })
+
+vim.api.nvim_create_user_command('CMakeListTargets', function()
+  cmake_build('--target help')
 end, { nargs = 0 })
 
 vim.api.nvim_create_user_command('CTest', function()
