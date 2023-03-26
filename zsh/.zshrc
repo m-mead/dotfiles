@@ -32,5 +32,4 @@ zsh_add_plugin "hlissner/zsh-autopair"
 
 compinit
 
-# Created by `pipx` on 2023-03-14 04:15:27
-export PATH="$PATH:/Users/mmead/.local/bin"
+zsh_add_file "path.zsh"
