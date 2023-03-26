@@ -5,8 +5,7 @@ Help yourself to any configuration contained in the repository.
 
 ## Installation ⬇️
 
-> Installation is currently only supported on macOS.
-Support for Linux is not planned, but you're welcome to add it by generalizing the `PackageProtocol.install(...)` input package manager types (e.g. using the strategy pattern).
+Installation is currently only supported on macOS.
 
 Clone the repository
 
