@@ -233,7 +233,7 @@ cmp.setup({
   sources = {
     {
       name = 'nvim_lsp',
-      keyword_length = 2,
+      -- keyword_length = 2,
     },
     {
       name = 'nvim_lsp_signature_help',
