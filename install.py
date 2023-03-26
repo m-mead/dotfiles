@@ -2,6 +2,7 @@
 
 import io
 from pathlib import Path
+import shutil
 import subprocess
 from typing import Iterable, List, Optional, Protocol
 
@@ -53,6 +54,12 @@ def run_subprocess_command(args: Iterable[str]) -> None:
 
 
 class Brew:
+    def __init__(self) -> None:
+        if shutil.which("brew") is None:
+            raise FileNotFoundError(
+                "The brew executable was not found on the path. Please install homebrew before proceeding: https://brew.sh"
+            ) from None
+
     def install(self, name: str) -> None:
         run_subprocess_command(["brew", "install", name])
 
