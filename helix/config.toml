@@ -1,7 +1,0 @@
-theme = "tokyonight"
-
-[editor]
-true-color = true
-
-[keys.insert]
-j = { k = "normal_mode" } # Maps `jk` to exit insert mode
