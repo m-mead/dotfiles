@@ -1,17 +1,8 @@
---[[
+-- Author: Michael Mead
 
-Author: Michael Mead
-
-Installation
-------------
-This configuration is mostly self-contained and does not require manual steps
-beyond installing the plugin package manager and whatever language servers you'd like.
-  - Install packager.nvim: https://github.com/wbthomason/packer.nvim
-  - Install language servers via :MasonInstall
-
---]]
 -- Use space as the leader key
 vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
 -- Use `jk` as a more ergonomic escape.
 vim.api.nvim_set_keymap('i', 'jk', '<esc>', { noremap = true, silent = true })
@@ -47,7 +38,6 @@ vim.o.mouse = 'a'
 vim.o.scrolloff = 8
 vim.o.cursorline = true
 vim.o.termguicolors = true
--- vim.o.guicursor = 'i:block'
 
 -- Remember the last position when reopening a file.
 vim.cmd([[
@@ -57,70 +47,81 @@ endif
 ]])
 
 -- Edit this file with a keystroke.
-local opts = { noremap = True, silent = True }
-vim.api.nvim_set_keymap('n', '<leader>ve', ':edit ~/.config/nvim/init.lua<cr>', opts)
+vim.api.nvim_set_keymap('n', '<leader>ve', ':edit ~/.config/nvim/init.lua<cr>', { noremap = true, silent = true })
 
 -- Keybindings for moving around tabs.
-vim.api.nvim_set_keymap('n', '<leader>to', ':tabnew<cr>', opts)
-vim.api.nvim_set_keymap('n', '<leader>tn', ':tabnext<cr>', opts)
-vim.api.nvim_set_keymap('n', '<leader>tp', ':tabprev<cr>', opts)
+vim.api.nvim_set_keymap('n', '<leader>to', ':tabnew<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>tn', ':tabnext<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>tp', ':tabprev<cr>', { noremap = true, silent = true })
 
 -- Keybindings for moving around buffers.
-vim.api.nvim_set_keymap('n', '<leader>bn', ':bn<cr>', opts)
-vim.api.nvim_set_keymap('n', '<leader>bp', ':bp<cr>', opts)
+vim.api.nvim_set_keymap('n', '<leader>bn', ':bn<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>bp', ':bp<cr>', { noremap = true, silent = true })
 
 -- Keybindings for moving around windows.
-vim.api.nvim_set_keymap('n', '<C-J>', '<C-W>j', opts)
-vim.api.nvim_set_keymap('n', '<C-k>', '<C-W>k', opts)
-vim.api.nvim_set_keymap('n', '<C-h>', '<C-W>h', opts)
-vim.api.nvim_set_keymap('n', '<C-l>', '<C-W>l', opts)
+vim.api.nvim_set_keymap('n', '<C-J>', '<C-W>j', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-k>', '<C-W>k', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-h>', '<C-W>h', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-l>', '<C-W>l', { noremap = true, silent = true })
 
 -- Insert brace like characters when in insert mode.
-vim.api.nvim_set_keymap('i', '$1', '()<esc>i', opts)
-vim.api.nvim_set_keymap('i', '$2', '[]<esc>i', opts)
-vim.api.nvim_set_keymap('i', '$3', '{}<esc>i', opts)
-vim.api.nvim_set_keymap('i', '$4', '{<esc>o}<esc>O', opts)
+vim.api.nvim_set_keymap('i', '$1', '()<esc>i', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('i', '$2', '[]<esc>i', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('i', '$3', '{}<esc>i', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('i', '$4', '{<esc>o}<esc>O', { noremap = true, silent = true })
 
 -- Insert brace like characters when in visual mode.
-vim.api.nvim_set_keymap('v', '$1', '<esc>`>a)<esc>`<i(<esc>', opts)
-vim.api.nvim_set_keymap('v', '$2', '<esc>`>a]<esc>`<i[<esc>', opts)
-vim.api.nvim_set_keymap('v', '$3', '<esc>`>a}<esc>`<i{<esc>', opts)
+vim.api.nvim_set_keymap('v', '$1', '<esc>`>a)<esc>`<i(<esc>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', '$2', '<esc>`>a]<esc>`<i[<esc>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', '$3', '<esc>`>a}<esc>`<i{<esc>', { noremap = true, silent = true })
 
 -- Insert blank characters without leaving insert mode.
-vim.api.nvim_set_keymap('n', 'zj', 'o<esc>^Dk', opts)
-vim.api.nvim_set_keymap('n', 'zk', 'O<esc>^Dj', opts)
-vim.api.nvim_set_keymap('n', 'zh', 'i<space><esc>l', opts)
-vim.api.nvim_set_keymap('n', 'zl', 'a<space><esc>h', opts)
+vim.api.nvim_set_keymap('n', 'zj', 'o<esc>^Dk', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'zk', 'O<esc>^Dj', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'zh', 'i<space><esc>l', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'zl', 'a<space><esc>h', { noremap = true, silent = true })
 
 -- Indent selection without leaving visual mode.
-vim.api.nvim_set_keymap('v', '<', '<gv', opts)
-vim.api.nvim_set_keymap('v', '>', '>gv', opts)
+vim.api.nvim_set_keymap('v', '<', '<gv', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', '>', '>gv', { noremap = true, silent = true })
 
--- Install plugins using packer.nvim.
-local use = require('packer').use
-require('packer').startup(function()
-  use('wbthomason/packer.nvim')
+-- Bootstrap lazy
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
+end
 
-  use('folke/tokyonight.nvim')
-  use('hrsh7th/cmp-nvim-lsp')
-  use('hrsh7th/cmp-nvim-lsp-signature-help')
-  use('hrsh7th/cmp-vsnip')
-  use('hrsh7th/nvim-cmp')
-  use('hrsh7th/vim-vsnip')
-  use('lewis6991/gitsigns.nvim')
-  use('neovim/nvim-lspconfig')
-  use('nvim-lua/plenary.nvim')
-  use('nvim-lualine/lualine.nvim')
-  use('nvim-telescope/telescope.nvim')
-  use('nvim-tree/nvim-tree.lua')
-  use('nvim-tree/nvim-web-devicons')
-  use('nvim-treesitter/nvim-treesitter')
-  use('tpope/vim-commentary')
-  use('tpope/vim-dispatch')
-  use('tpope/vim-sleuth')
-  use('williamboman/mason-lspconfig.nvim')
-  use('williamboman/mason.nvim')
-end)
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup({
+  'folke/neodev.nvim',
+  'folke/tokyonight.nvim',
+  'hrsh7th/cmp-nvim-lsp',
+  'hrsh7th/cmp-nvim-lsp-signature-help',
+  'hrsh7th/cmp-vsnip',
+  'hrsh7th/nvim-cmp',
+  'hrsh7th/vim-vsnip',
+  'lewis6991/gitsigns.nvim',
+  'neovim/nvim-lspconfig',
+  'nvim-lua/plenary.nvim',
+  'nvim-lualine/lualine.nvim',
+  'nvim-telescope/telescope.nvim',
+  'nvim-tree/nvim-tree.lua',
+  'nvim-tree/nvim-web-devicons',
+  'nvim-treesitter/nvim-treesitter',
+  'tpope/vim-commentary',
+  'tpope/vim-dispatch',
+  'tpope/vim-sleuth',
+  'williamboman/mason-lspconfig.nvim',
+  'williamboman/mason.nvim',
+})
 
 -- Set the colortheme.
 require('tokyonight').setup({ style = 'night', light_style = 'day' })
@@ -128,21 +129,11 @@ vim.cmd([[colorscheme tokyonight-night]])
 
 -- Use lualine for the statusline.
 require('lualine').setup({
-  options = {
-    theme = 'tokyonight',
-  },
-  sections = {
-    lualine_c = {
-      {
-        'filename',
-        path = 1, -- relative
-      }
-    }
-  }
+  options = { theme = 'tokyonight' }
 })
 
 -- Setup telescope fuzzy finder.
-require('telescope').setup()
+require('telescope').setup({})
 
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find buffer' })
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
@@ -156,13 +147,15 @@ vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc
 require('mason').setup()
 require('mason-lspconfig').setup()
 
--- Set LSP keybindings to be attached only when client is attached.
-local opts = { noremap = true, silent = true }
+-- Automcplete for nvim APIs -- must be setup before lspconfig.
+require("neodev").setup({})
 
 -- Diagnostic keymappings
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap = true, silent = true })
 
+-- Set LSP keybindings to be attached only when client is attached.
 local on_attach = function(client, bufnr)
+  local opts = { noremap = true, silent = true }
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>cf', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
@@ -192,6 +185,7 @@ local servers = {
   'lua_ls',
   'pyright',
   'rust_analyzer',
+  'solargraph',
 }
 
 for _, lsp in ipairs(servers) do
@@ -203,6 +197,7 @@ end
 
 -- Setup autocompletion using nvim-cmp.
 local cmp = require('cmp')
+
 cmp.setup({
   snippet = {
     expand = function(args)
@@ -276,7 +271,7 @@ require('gitsigns').setup({
   numhl = false,
   linehl = false,
   word_diff = false,
-  blame = false,
+  current_line_blame = false,
   on_attach = function(bufnr)
     local gs = package.loaded.gitsigns
 
