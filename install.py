@@ -147,18 +147,6 @@ class GitLFS:
         return None
 
 
-class Helix:
-    def install(self, brew: Brew) -> None:
-        brew.install("helix")
-        _ = maybe_symlink_xdg_home_config_subdir_to_local("helix")
-
-    def description(self) -> str:
-        return "helix: a post-modern editor"
-
-    def post_install_instructions(self) -> Optional[str]:
-        return None
-
-
 class Pipx:
     def install(self, brew: Brew) -> None:
         brew.install("pipx")
@@ -197,7 +185,6 @@ def main() -> None:
     components: List[PackageProtocol] = [
         Fonts(),
         GitLFS(),
-        Helix(),
         Iterm2(),
         Neovim(),
         Pipx(),
