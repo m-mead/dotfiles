@@ -116,6 +116,7 @@ require("lazy").setup({
   'nvim-tree/nvim-tree.lua',
   'nvim-tree/nvim-web-devicons',
   'nvim-treesitter/nvim-treesitter',
+  'rebelot/kanagawa.nvim',
   'tpope/vim-commentary',
   'tpope/vim-dispatch',
   'tpope/vim-sleuth',
@@ -123,14 +124,20 @@ require("lazy").setup({
   'williamboman/mason.nvim',
 })
 
--- Set the colortheme.
-require('tokyonight').setup({ style = 'night', light_style = 'day' })
-vim.cmd([[colorscheme tokyonight-night]])
+local function load_colorscheme(plugin_name, theme, opts)
+  opts = opts or {}
+  require(plugin_name).setup(opts)
 
--- Use lualine for the statusline.
-require('lualine').setup({
-  options = { theme = 'tokyonight' }
-})
+  colorscheme_cmd = 'colorscheme ' .. theme
+  vim.cmd(colorscheme_cmd)
+
+  require('lualine').setup({
+    options = { theme = 'kanagawa' }
+  })
+end
+
+load_colorscheme('kanagawa', 'kanagawa', {})
+-- load_colorscheme('tokyonight', 'tokyonight-night', { style = 'night', light_style = 'day' })
 
 -- Setup telescope fuzzy finder.
 require('telescope').setup({})
