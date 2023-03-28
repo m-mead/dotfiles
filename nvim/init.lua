@@ -38,6 +38,7 @@ vim.o.mouse = 'a'
 vim.o.scrolloff = 8
 vim.o.cursorline = true
 vim.o.termguicolors = true
+vim.o.guicursor = 'i:block'
 
 -- Remember the last position when reopening a file.
 vim.cmd([[
@@ -116,6 +117,7 @@ require("lazy").setup({
   'nvim-tree/nvim-tree.lua',
   'nvim-tree/nvim-web-devicons',
   'nvim-treesitter/nvim-treesitter',
+  'rose-pine/neovim',
   'tpope/vim-commentary',
   'tpope/vim-dispatch',
   'tpope/vim-sleuth',
@@ -124,12 +126,14 @@ require("lazy").setup({
 })
 
 -- Set the colortheme.
-require('tokyonight').setup({ style = 'night', light_style = 'day' })
-vim.cmd([[colorscheme tokyonight-night]])
+-- require('tokyonight').setup({ style = 'night', light_style = 'day' })
+-- vim.cmd([[colorscheme tokyonight-night]])
+vim.cmd([[colorscheme rose-pine]])
 
 -- Use lualine for the statusline.
 require('lualine').setup({
-  options = { theme = 'tokyonight' }
+  -- options = { theme = 'tokyonight' }
+  options = { theme = 'rose-pine' }
 })
 
 -- Setup telescope fuzzy finder.
@@ -156,17 +160,17 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap = true, si
 -- Set LSP keybindings to be attached only when client is attached.
 local on_attach = function(client, bufnr)
   local opts = { noremap = true, silent = true }
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<f2>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>cf', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'E', '<cmd>Telescope diagnostics<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gE', '<cmd>Telescope diagnostics<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>Telescope lsp_definitions<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'ge', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gh', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>Telescope lsp_references<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', '<cmd>Telescope lsp_document_symbols<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<f2>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
 
   -- Off spec. keymaps
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<f3>', '<cmd>ClangdSwitchSourceHeader<CR>', opts)
