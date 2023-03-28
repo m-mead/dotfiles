@@ -38,7 +38,6 @@ vim.o.mouse = 'a'
 vim.o.scrolloff = 8
 vim.o.cursorline = true
 vim.o.termguicolors = true
-vim.o.guicursor = 'i:block'
 
 -- Remember the last position when reopening a file.
 vim.cmd([[
@@ -117,7 +116,6 @@ require("lazy").setup({
   'nvim-tree/nvim-tree.lua',
   'nvim-tree/nvim-web-devicons',
   'nvim-treesitter/nvim-treesitter',
-  'rose-pine/neovim',
   'tpope/vim-commentary',
   'tpope/vim-dispatch',
   'tpope/vim-sleuth',
@@ -126,14 +124,12 @@ require("lazy").setup({
 })
 
 -- Set the colortheme.
--- require('tokyonight').setup({ style = 'night', light_style = 'day' })
--- vim.cmd([[colorscheme tokyonight-night]])
-vim.cmd([[colorscheme rose-pine]])
+require('tokyonight').setup({ style = 'night', light_style = 'day' })
+vim.cmd([[colorscheme tokyonight-night]])
 
 -- Use lualine for the statusline.
 require('lualine').setup({
-  -- options = { theme = 'tokyonight' }
-  options = { theme = 'rose-pine' }
+  options = { theme = 'tokyonight' }
 })
 
 -- Setup telescope fuzzy finder.
