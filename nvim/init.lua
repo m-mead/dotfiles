@@ -103,6 +103,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   'folke/neodev.nvim',
   'folke/tokyonight.nvim',
+  'github/copilot.vim',
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-nvim-lsp-signature-help',
   'hrsh7th/cmp-vsnip',
@@ -212,19 +213,18 @@ cmp.setup({
     end,
   },
   mapping = {
-    ['<Up>'] = cmp.mapping.select_prev_item(),
-    ['<Down>'] = cmp.mapping.select_next_item(),
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    }),
     ['<Tab>'] = function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
+      elseif vim.b._copilot_suggestion ~= nil then
+        vim.fn.feedkeys(vim.api.nvim_replace_termcodes(vim.fn['copilot#Accept'](), true, true, true), '')
       else
         fallback()
       end
@@ -240,13 +240,16 @@ cmp.setup({
   sources = {
     {
       name = 'nvim_lsp',
-      -- keyword_length = 2,
     },
     {
       name = 'nvim_lsp_signature_help',
     },
   },
 })
+
+-- Copilot
+vim.g.copilot_assume_mapped = true
+vim.keymap.set('i', '<C-y>', vim.fn['copilot#Accept'], { silent = true, expr = true })
 
 -- Setup treesitter syntax highlighting.
 require('nvim-treesitter.configs').setup({
@@ -369,3 +372,4 @@ vim.api.nvim_create_user_command('CTest', function()
 end, { nargs = 0 })
 
 vim.keymap.set('n', '<f7>', ':CMakeBuild<cr>', { desc = 'Run CMake build asynchronously in a separate window' })
+
