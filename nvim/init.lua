@@ -38,6 +38,7 @@ vim.o.mouse = 'a'
 vim.o.scrolloff = 8
 vim.o.cursorline = true
 vim.o.termguicolors = true
+vim.o.guicursor = 'i:block'
 vim.opt.formatoptions:remove {'c', 'r', 'o'}
 
 -- Remember the last position when reopening a file.
