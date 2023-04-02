@@ -4,7 +4,7 @@ if [ -d "$HOME/.local/bin" ]; then
 fi
 
 # Go
-if [ -f "$HOME/go/bin" ]; then
+if [ -d "$HOME/go/bin" ]; then
     export PATH="$PATH:$HOME/go/bin"
 fi
 
