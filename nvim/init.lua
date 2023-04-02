@@ -133,7 +133,7 @@ local function load_colorscheme(plugin_name, theme, opts)
   opts = opts or {}
   require(plugin_name).setup(opts)
 
-  colorscheme_cmd = 'colorscheme ' .. theme
+  local colorscheme_cmd = 'colorscheme ' .. theme
   vim.cmd(colorscheme_cmd)
 
   require('lualine').setup({
