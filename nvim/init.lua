@@ -137,7 +137,12 @@ local function load_colorscheme(plugin_name, theme, opts)
   vim.cmd(colorscheme_cmd)
 
   require('lualine').setup({
-    options = { theme = theme }
+    options = { theme = theme },
+    sections = {
+      lualine_c = {
+        { 'filename', path = 1 }
+      }
+    }
   })
 end
 
