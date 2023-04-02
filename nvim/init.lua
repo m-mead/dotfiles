@@ -39,6 +39,8 @@ vim.o.scrolloff = 8
 vim.o.cursorline = true
 vim.o.termguicolors = true
 vim.o.guicursor = 'i:block'
+
+-- Stop inserting comments on new lines when previous line is commented.
 vim.opt.formatoptions:remove {'c', 'r', 'o'}
 
 -- Remember the last position when reopening a file.
@@ -135,7 +137,7 @@ local function load_colorscheme(plugin_name, theme, opts)
   vim.cmd(colorscheme_cmd)
 
   require('lualine').setup({
-    options = { theme = 'kanagawa' }
+    options = { theme = theme }
   })
 end
 
@@ -145,6 +147,7 @@ load_colorscheme('kanagawa', 'kanagawa', {})
 -- Setup telescope fuzzy finder.
 require('telescope').setup({})
 
+vim.keymap.set('n', '<leader>!', require('telescope.builtin').resume, { desc = '[!] Resume previous search' })
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find buffer' })
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
 vim.keymap.set('n', '<leader>sa', require('telescope.builtin').find_files, { desc = '[S]earch [A]ll files' })
@@ -205,6 +208,12 @@ for _, lsp in ipairs(servers) do
   })
 end
 
+-- Copilot
+vim.cmd([[
+  imap <silent><script><expr> <C-y> copilot#Accept("\<CR>")
+  let g:copilot_no_tab_map = v:true
+]])
+
 -- Setup autocompletion using nvim-cmp.
 local cmp = require('cmp')
 
@@ -215,14 +224,14 @@ cmp.setup({
     end,
   },
   mapping = {
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-n>'] = cmp.mapping.select_next_item(),
+    -- ['<C-p>'] = cmp.mapping.select_prev_item(),
+    -- ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<C-y>'] = cmp.mapping.confirm({ select = true }),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
-    ['<Tab>'] = function(fallback)
+    ['<C-n>'] = function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
       elseif vim.b._copilot_suggestion ~= nil then
@@ -231,7 +240,8 @@ cmp.setup({
         fallback()
       end
     end,
-    ['<S-Tab>'] = function(fallback)
+    -- ['<S-Tab>'] = function(fallback)
+    ['<C-p>'] = function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
       else
@@ -248,10 +258,6 @@ cmp.setup({
     },
   },
 })
-
--- Copilot
-vim.g.copilot_assume_mapped = true
-vim.keymap.set('i', '<C-y>', vim.fn['copilot#Accept'], { silent = true, expr = true })
 
 -- Setup treesitter syntax highlighting.
 require('nvim-treesitter.configs').setup({
