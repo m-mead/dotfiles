@@ -41,7 +41,7 @@ vim.o.termguicolors = true
 vim.o.guicursor = 'i:block'
 
 -- Stop inserting comments on new lines when previous line is commented.
-vim.opt.formatoptions:remove {'c', 'r', 'o'}
+vim.opt.formatoptions:remove { 'c', 'r', 'o' }
 
 -- Remember the last position when reopening a file.
 vim.cmd([[
@@ -385,4 +385,3 @@ vim.api.nvim_create_user_command('CTest', function()
 end, { nargs = 0 })
 
 vim.keymap.set('n', '<f7>', ':CMakeBuild<cr>', { desc = 'Run CMake build asynchronously in a separate window' })
-
