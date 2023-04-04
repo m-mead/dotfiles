@@ -12,5 +12,10 @@ alias l="ls --color=auto -A"
 alias ls="ls --color=auto"
 alias ll="ls --color=auto -lAh"
 
+if [ "$(uname)" = "Darwin" ]; then
+    alias brew-install-head="brew install --head $1"
+    alias brew-upgrade-head="brew upgrade $1 --fetch-HEAD"
+fi
+
 alias actv=". venv/bin/activate"
 alias actvn="python3 -m venv venv && . venv/bin/activate && pip install -U pip"
