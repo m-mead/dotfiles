@@ -270,6 +270,7 @@ require('nvim-treesitter.configs').setup({
   ensure_installed = {
     'bash',
     'c',
+    'cmake',
     'cpp',
     'dockerfile',
     'go',
@@ -277,6 +278,7 @@ require('nvim-treesitter.configs').setup({
     'lua',
     'python',
     'ruby',
+    'rust',
     'toml',
     'yaml',
   },
