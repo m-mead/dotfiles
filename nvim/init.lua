@@ -137,7 +137,11 @@ local function load_colorscheme(plugin_name, theme, opts)
   vim.cmd(colorscheme_cmd)
 
   require('lualine').setup({
-    options = { theme = theme },
+    options = {
+      theme = theme,
+      section_separators = '',
+      component_separators = ''
+    },
     sections = {
       lualine_c = {
         { 'filename', path = 1 }
@@ -289,7 +293,9 @@ require('nvim-treesitter.configs').setup({
 })
 
 -- Setup nvim-tree file browser.
-require('nvim-tree').setup()
+require('nvim-tree').setup({
+  view = { side = 'right' }
+})
 vim.keymap.set('n', '<leader>B', ':NvimTreeToggle<cr>', { desc = 'File [B]rowser' })
 
 -- Setup gitsigns for git integration in the editor.
