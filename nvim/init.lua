@@ -155,7 +155,6 @@ load_colorscheme('kanagawa', 'kanagawa', {})
 
 -- Setup telescope fuzzy finder.
 require('telescope').setup({})
-
 vim.keymap.set('n', '<leader>!', require('telescope.builtin').resume, { desc = '[!] Resume previous search' })
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find buffer' })
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
@@ -227,54 +226,33 @@ vim.cmd([[
 local cmp = require('cmp')
 
 cmp.setup({
+  mapping = {
+    ["<C-n>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
+    ["<C-p>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+    ['<C-Space>'] = cmp.mapping.complete(),
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'nvim_lsp_signature_help' },
+  },
   snippet = {
     expand = function(args)
       vim.fn["vsnip#anonymous"](args.body)
     end,
-  },
-  mapping = {
-    -- ['<C-p>'] = cmp.mapping.select_prev_item(),
-    -- ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<C-n>'] = function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif vim.b._copilot_suggestion ~= nil then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes(vim.fn['copilot#Accept'](), true, true, true), '')
-      else
-        fallback()
-      end
-    end,
-    -- ['<S-Tab>'] = function(fallback)
-    ['<C-p>'] = function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      else
-        fallback()
-      end
-    end,
-  },
-  sources = {
-    {
-      name = 'nvim_lsp',
-    },
-    {
-      name = 'nvim_lsp_signature_help',
-    },
   },
   experimental = {
     native_menu = false,
   },
   formatting = {
     format = function(entry, vim_item)
-      -- Truncate menu so it does not overflow.
-      local fixed_preview_width = 40
-      if vim_item.abbr:len() >= fixed_preview_width then
-        vim_item.abbr = string.sub(vim_item.abbr, 1, fixed_preview_width) .. '...'
+      local truncated_trailer = '...'
+      local max_item_length = 43 - truncated_trailer:len()
+      if vim_item.abbr:len() >= max_item_length then
+        vim_item.abbr = string.sub(vim_item.abbr, 1, max_item_length) .. truncated_trailer
       end
       return vim_item
     end
@@ -305,9 +283,7 @@ require('nvim-treesitter.configs').setup({
 })
 
 -- Setup nvim-tree file browser.
-require('nvim-tree').setup({
-  view = { side = 'right' }
-})
+require('nvim-tree').setup({})
 vim.keymap.set('n', '<leader>B', ':NvimTreeToggle<cr>', { desc = 'File [B]rowser' })
 
 -- Setup gitsigns for git integration in the editor.
