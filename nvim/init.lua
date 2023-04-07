@@ -266,6 +266,21 @@ cmp.setup({
       name = 'nvim_lsp_signature_help',
     },
   },
+  experimental = {
+    native_menu = false,
+  },
+  formatting = {
+    format = function(entry, vim_item)
+      -- Truncate menu so it does not overflow.
+      local fixed_preview_width = 40
+      if vim_item.abbr:len() >= fixed_preview_width then
+        vim_item.abbr = vim_item.abbr .. '...'
+      else
+        vim_item.abbr = string.sub(vim_item.abbr, 1, fixed_preview_width)
+      end
+      return vim_item
+    end
+  }
 })
 
 -- Setup treesitter syntax highlighting.
