@@ -159,8 +159,11 @@ local telescope_builtin = require('telescope.builtin')
 
 vim.keymap.set('n', '<leader>!', telescope_builtin.resume, { desc = '[!] Resume previous search' })
 vim.keymap.set('n', '<leader><space>', telescope_builtin.buffers, { desc = '[ ] Find buffer' })
-vim.keymap.set('n', '<leader>?', function() telescope_builtin.oldfiles({ only_cwd = true, cwd = vim.fn.getcwd() }) end,
-  { desc = '[?] Find recently opened files' })
+
+vim.keymap.set('n', '<leader>?', function()
+  telescope_builtin.oldfiles({ only_cwd = true, cwd = vim.fn.getcwd() })
+end, { desc = '[?] Find recently opened files' })
+
 vim.keymap.set('n', '<leader>sa', telescope_builtin.find_files, { desc = '[S]earch [A]ll files' })
 vim.keymap.set('n', '<leader>sc', telescope_builtin.command_history, { desc = '[S]earch [C]ommand history' })
 vim.keymap.set('n', '<leader>sf', telescope_builtin.git_files, { desc = '[S]earch [F]iles' })
@@ -179,12 +182,13 @@ require("neodev").setup({})
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap = true, silent = true })
 
 -- Set LSP keybindings to be attached only when client is attached.
-local on_attach = function(client, bufnr)
+local on_attach = function(_, bufnr)
   local opts = { noremap = true, silent = true }
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<f2>', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>cf', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'E', '<cmd>lua require("telescope.builtin").diagnostics({ bufnr = 0})<CR>', opts)
+  vim.api.nvim_buf_set_keymap(
+    bufnr, 'n', 'E', '<cmd>lua require("telescope.builtin").diagnostics({ bufnr = 0})<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>Telescope lsp_definitions<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'ge', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
@@ -252,7 +256,7 @@ cmp.setup({
     native_menu = false,
   },
   formatting = {
-    format = function(entry, vim_item)
+    format = function(_, vim_item)
       local truncated_trailer = '...'
       local max_item_length = 43 - truncated_trailer:len()
       if vim_item.abbr:len() >= max_item_length then
