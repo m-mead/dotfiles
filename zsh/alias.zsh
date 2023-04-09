@@ -12,9 +12,13 @@ alias l="ls --color=auto -A"
 alias ls="ls --color=auto"
 alias ll="ls --color=auto -lAh"
 
-if [ "$(uname)" = "Darwin" ]; then
+if command -v brew &> /dev/null; then
     alias brew-install-head="brew install --head $2"
     alias brew-upgrade-head="brew upgrade $2 --fetch-HEAD"
+fi
+
+if command -v lazygit &> /dev/null; then
+    alias lg="lazygit"
 fi
 
 alias actv=". venv/bin/activate"

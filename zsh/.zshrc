@@ -20,6 +20,7 @@ autoload -Uz colors && colors
 
 source "$ZDOTDIR/func.zsh"
 
+zsh_add_file "path.zsh"
 zsh_add_file "export.zsh"
 zsh_add_file "alias.zsh"
 zsh_add_file "prompt.zsh"
@@ -30,5 +31,3 @@ zsh_add_plugin "zsh-users/zsh-syntax-highlighting"
 zsh_add_plugin "hlissner/zsh-autopair"
 
 compinit
-
-zsh_add_file "path.zsh"
