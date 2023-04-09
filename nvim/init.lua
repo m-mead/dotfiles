@@ -141,7 +141,7 @@ local function load_colorscheme(plugin_name, theme, opts)
 
   require('lualine').setup({
     options = {
-      theme = theme,
+      theme = plugin_name,
       section_separators = '',
       component_separators = ''
     },
