@@ -109,6 +109,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   'folke/neodev.nvim',
   'folke/tokyonight.nvim',
+  'folke/zen-mode.nvim',
   'github/copilot.vim',
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-nvim-lsp-signature-help',
@@ -352,6 +353,10 @@ require('gitsigns').setup({
   end,
 })
 
+-- Zen mode
+vim.keymap.set('n', '<leader>Z', function() require('zen-mode').toggle() end, { desc = '[S]earch [H]elp' })
+
+-- Async commands
 local function dispatch(args)
   vim.cmd(':Dispatch ' .. args)
 end
