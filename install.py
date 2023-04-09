@@ -124,6 +124,17 @@ class Zsh:
         )
 
 
+class LazyGit:
+    def install(self, brew: Brew) -> None:
+        _ = maybe_symlink_xdg_home_config_subdir_to_local("lazygit")
+
+    def description(self) -> str:
+        return "lazygit: a terminal UI for git commands"
+
+    def post_install_instructions(self) -> Optional[str]:
+        return None
+
+
 class Tmux:
     def install(self, brew: Brew) -> None:
         _ = maybe_symlink_xdg_home_config_subdir_to_local("tmux")
@@ -186,6 +197,7 @@ def main() -> None:
         Fonts(),
         GitLFS(),
         Iterm2(),
+        LazyGit(),
         Neovim(),
         Pipx(),
         Tmux(),
