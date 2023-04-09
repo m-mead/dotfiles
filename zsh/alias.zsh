@@ -13,8 +13,8 @@ alias ls="ls --color=auto"
 alias ll="ls --color=auto -lAh"
 
 if [ "$(uname)" = "Darwin" ]; then
-    alias brew-install-head="brew install --head $1"
-    alias brew-upgrade-head="brew upgrade $1 --fetch-HEAD"
+    alias brew-install-head="brew install --head $2"
+    alias brew-upgrade-head="brew upgrade $2 --fetch-HEAD"
 fi
 
 alias actv=". venv/bin/activate"
