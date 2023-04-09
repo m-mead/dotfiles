@@ -12,6 +12,7 @@ vim.api.nvim_set_keymap('t', 'jk', [[<C-\><C-n>]], { noremap = true, silent = tr
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- Basic settings
 vim.o.filetype = 'on'
 vim.o.wrap = false
 vim.o.number = true
@@ -104,6 +105,7 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
+-- Lazy load plugins
 require("lazy").setup({
   'folke/neodev.nvim',
   'folke/tokyonight.nvim',
@@ -129,6 +131,7 @@ require("lazy").setup({
   'williamboman/mason.nvim',
 })
 
+-- Colorschemes
 local function load_colorscheme(plugin_name, theme, opts)
   opts = opts or {}
   require(plugin_name).setup(opts)
@@ -353,11 +356,13 @@ local function dispatch(args)
   vim.cmd(':Dispatch ' .. args)
 end
 
+-- CMake commands
+-- TODO: Use autocommands to only populate these commands when the filetype is right.
 local function cmake_configure(args)
   if args then
     dispatch('mkdir -p build && cd build && cmake .. ' .. args)
   else
-    dispatch('mkdir -p build && cd build && cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ')
+    dispatch('mkdir -p build && cd build && cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON')
   end
 end
 
