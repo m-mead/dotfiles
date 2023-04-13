@@ -128,6 +128,7 @@ require("lazy").setup({
   'rebelot/kanagawa.nvim',
   'tpope/vim-commentary',
   'tpope/vim-dispatch',
+  'tpope/vim-sleuth',
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
 })
