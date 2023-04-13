@@ -178,10 +178,14 @@ vim.keymap.set('n', '<leader>sj', telescope_builtin.jumplist, { desc = '[S]earch
 -- Setup mason package manager for LSP tools (servers, linters, etc).
 require('mason').setup()
 
+local mason_language_servers = {}
+
+if vim.fn.executable('clangd') == 0 then
+  vim.list_extend(mason_language_servers, { 'clangd' })
+end
+
 require('mason-lspconfig').setup({
-  ensure_installed = {
-    'clangd',
-  }
+  ensure_installed = mason_language_servers,
 })
 
 -- Automcplete for nvim APIs -- must be setup before lspconfig.
