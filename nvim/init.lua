@@ -126,6 +126,7 @@ require("lazy").setup({
   'nvim-tree/nvim-web-devicons',
   'nvim-treesitter/nvim-treesitter',
   'rebelot/kanagawa.nvim',
+  'rose-pine/neovim',
   'tpope/vim-commentary',
   'tpope/vim-dispatch',
   'tpope/vim-sleuth',
@@ -155,7 +156,11 @@ local function load_colorscheme(plugin_name, theme, opts)
   })
 end
 
-load_colorscheme('kanagawa', 'kanagawa', {})
+-- Light themes
+load_colorscheme('rose-pine', 'rose-pine-dawn', {})
+
+-- Dark themes
+-- load_colorscheme('kanagawa', 'kanagawa', {})
 -- load_colorscheme('tokyonight', 'tokyonight-night', { style = 'night', light_style = 'day' })
 
 -- Setup telescope fuzzy finder.
