@@ -157,10 +157,10 @@ local function load_colorscheme(plugin_name, theme, opts)
 end
 
 -- Light themes
-load_colorscheme('rose-pine', 'rose-pine-dawn', {})
+-- load_colorscheme('rose-pine', 'rose-pine-dawn', {})
 
 -- Dark themes
--- load_colorscheme('kanagawa', 'kanagawa', {})
+load_colorscheme('kanagawa', 'kanagawa', {})
 -- load_colorscheme('tokyonight', 'tokyonight-night', { style = 'night', light_style = 'day' })
 
 -- Setup telescope fuzzy finder.
@@ -193,6 +193,14 @@ end
 require('mason-lspconfig').setup({
   ensure_installed = mason_language_servers,
 })
+
+local mason_debug_adapters = { cpptools = 'OpenDebugAD7' }
+
+for adapter, adapter_executable in pairs(mason_debug_adapters) do
+  if vim.fn.executable(adapter_executable) == 0 then
+    vim.cmd('MasonInstall ' .. adapter)
+  end
+end
 
 -- Automcplete for nvim APIs -- must be setup before lspconfig.
 require("neodev").setup({})
