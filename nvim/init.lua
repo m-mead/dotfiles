@@ -8,9 +8,11 @@ vim.g.maplocalleader = ' '
 vim.api.nvim_set_keymap('i', 'jk', '<esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('t', 'jk', [[<C-\><C-n>]], { noremap = true, silent = true })
 
--- Disable netrw at startup
+-- Globals
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+vim.g.copilot_no_tab_map = true
+vim.g.copilot_assume_mapped = true
 
 -- Basic settings
 vim.o.filetype = 'on'
@@ -40,7 +42,6 @@ vim.o.scrolloff = 8
 vim.o.cursorline = true
 vim.o.termguicolors = true
 vim.o.pumheight = 8
--- vim.o.guicursor = 'i:block,a:blinkon1'
 
 -- Stop inserting comments on new lines when previous line is commented.
 vim.opt.formatoptions:remove { 'c', 'r', 'o' }
@@ -249,10 +250,7 @@ for _, lsp in ipairs(servers) do
 end
 
 -- Copilot
-vim.cmd([[
-  imap <silent><script><expr> <C-y> copilot#Accept("\<CR>")
-  let g:copilot_no_tab_map = v:true
-]])
+vim.api.nvim_set_keymap("i", "<C-y>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
 
 -- Setup autocompletion using nvim-cmp.
 local cmp = require('cmp')
