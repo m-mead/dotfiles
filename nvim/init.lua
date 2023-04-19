@@ -11,8 +11,18 @@ vim.api.nvim_set_keymap('t', 'jk', [[<C-\><C-n>]], { noremap = true, silent = tr
 -- Globals
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
+
 vim.g.copilot_no_tab_map = true
 vim.g.copilot_assume_mapped = true
+vim.g.copilot_filetypes = {
+  ["*"] = false,
+  ["c"] = true,
+  ["c++"] = true,
+  ["go"] = true,
+  ["lua"] = true,
+  ["python"] = true,
+  ["rust"] = true,
+}
 
 -- Basic settings
 vim.o.filetype = 'on'
