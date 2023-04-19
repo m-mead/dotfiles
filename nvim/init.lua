@@ -39,6 +39,7 @@ vim.o.mouse = 'a'
 vim.o.scrolloff = 8
 vim.o.cursorline = true
 vim.o.termguicolors = true
+vim.o.pumheight = 8
 -- vim.o.guicursor = 'i:block,a:blinkon1'
 
 -- Stop inserting comments on new lines when previous line is commented.
