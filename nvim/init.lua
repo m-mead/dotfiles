@@ -523,3 +523,46 @@ vim.api.nvim_create_user_command('CTest', function()
 end, { nargs = 0 })
 
 vim.keymap.set('n', '<f7>', ':CMakeBuild<cr>', { desc = 'Run CMake build asynchronously in a separate window' })
+
+local function cmake_list_targets(build_dir)
+  build_dir = build_dir or vim.fn.getcwd() .. '/build'
+
+  local Job = require 'plenary.job'
+
+  local stdout = {}
+  local is_okay = false
+
+  Job:new({
+    command = 'cmake',
+    args = { '--build', '.', '--target', 'help' },
+    cwd = build_dir,
+    on_exit = function(_, return_val)
+      is_okay = (return_val == 0)
+    end,
+    on_stdout = function(_, data)
+      vim.list_extend(stdout, { data })
+    end,
+  }):sync()
+
+  if not is_okay then
+    return {}
+  end
+
+  local targets = {}
+  for _, v in ipairs(stdout) do
+    if vim.startswith(v, '...') then
+      vim.list_extend(targets, { vim.split(v, ' ')[2] })
+    end
+  end
+
+
+  return targets
+end
+
+vim.api.nvim_create_user_command('CMakeListTargets', function(opts)
+  local targets = cmake_list_targets(unpack(opts.fargs))
+
+  for _, v in ipairs(targets) do
+    print(v)
+  end
+end, { nargs = '?' })
