@@ -257,14 +257,43 @@ vim.cmd([[
 -- Setup autocompletion using nvim-cmp.
 local cmp = require('cmp')
 
+local cmp_kind_icons = {
+  Text = "",
+  Method = "",
+  Function = "",
+  Constructor = "",
+  Field = "",
+  Variable = "",
+  Class = "ﴯ",
+  Interface = "",
+  Module = "",
+  Property = "ﰠ",
+  Unit = "",
+  Value = "",
+  Enum = "",
+  Keyword = "",
+  Snippet = "",
+  Color = "",
+  File = "",
+  Reference = "",
+  Folder = "",
+  EnumMember = "",
+  Constant = "",
+  Struct = "",
+  Event = "",
+  Operator = "",
+  TypeParameter = ""
+}
+
 cmp.setup({
   mapping = {
     ["<C-n>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
     ["<C-p>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-e>'] = cmp.mapping.abort(),
     ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
     ['<C-Space>'] = cmp.mapping.complete(),
   },
   sources = {
@@ -276,19 +305,22 @@ cmp.setup({
       vim.fn["vsnip#anonymous"](args.body)
     end,
   },
-  experimental = {
-    native_menu = false,
-  },
   formatting = {
-    format = function(_, vim_item)
+    format = function(entry, vim_item)
+      -- Truncate menu items
       local truncated_trailer = '...'
       local max_item_length = 43 - truncated_trailer:len()
       if vim_item.abbr:len() >= max_item_length then
         vim_item.abbr = string.sub(vim_item.abbr, 1, max_item_length) .. truncated_trailer
       end
+
+      -- Add icons to completion items
+      vim_item.kind = string.format('%s %s', cmp_kind_icons[vim_item.kind], vim_item.kind)
+      vim_item.menu = ({ nvim_lsp = "[LSP]" })[entry.source.name]
+
       return vim_item
     end
-  }
+  },
 })
 
 -- Setup treesitter syntax highlighting.
