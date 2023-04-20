@@ -123,7 +123,6 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   'folke/neodev.nvim',
   'folke/tokyonight.nvim',
-  'folke/zen-mode.nvim',
   'github/copilot.vim',
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-nvim-lsp-signature-help',
@@ -140,12 +139,12 @@ require("lazy").setup({
   'nvim-tree/nvim-web-devicons',
   'nvim-treesitter/nvim-treesitter',
   'rebelot/kanagawa.nvim',
-  { 'rose-pine/neovim', name = 'rose-pine' },
   'tpope/vim-commentary',
   'tpope/vim-dispatch',
   'tpope/vim-sleuth',
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
+  { 'rose-pine/neovim', name = 'rose-pine' },
 })
 
 -- Colorschemes
@@ -473,9 +472,6 @@ require('gitsigns').setup({
   end,
 })
 
--- Zen mode
-vim.keymap.set('n', '<leader>Z', function() require('zen-mode').toggle() end, { desc = '[S]earch [H]elp' })
-
 -- Debug adapter
 local dap = require('dap')
 
@@ -608,7 +604,6 @@ local function cmake_list_targets(build_dir)
       vim.list_extend(targets, { vim.split(v, ' ')[2] })
     end
   end
-
 
   return targets
 end
