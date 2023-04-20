@@ -72,8 +72,10 @@ vim.api.nvim_set_keymap('n', '<leader>tn', ':tabnext<cr>', { noremap = true, sil
 vim.api.nvim_set_keymap('n', '<leader>tp', ':tabprev<cr>', { noremap = true, silent = true })
 
 -- Keybindings for moving around buffers.
-vim.api.nvim_set_keymap('n', '<leader>bn', ':bn<cr>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>bp', ':bp<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>[b', ':bprev<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>]b', ':bnext<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<S-h>', ':bprev<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<S-l>', ':bnext<cr>', { noremap = true, silent = true })
 
 -- Keybindings for moving around windows.
 vim.api.nvim_set_keymap('n', '<C-J>', '<C-W>j', { noremap = true, silent = true })
@@ -138,6 +140,7 @@ require("lazy").setup({
   'nvim-tree/nvim-web-devicons',
   'nvim-treesitter/nvim-treesitter',
   'rebelot/kanagawa.nvim',
+  { 'rose-pine/neovim', name = 'rose-pine' },
   'tpope/vim-commentary',
   'tpope/vim-dispatch',
   'tpope/vim-sleuth',
@@ -156,8 +159,6 @@ local function load_colorscheme(plugin_name, theme, opts)
   require('lualine').setup({
     options = {
       theme = plugin_name,
-      section_separators = '',
-      component_separators = ''
     },
     sections = {
       lualine_c = {
@@ -168,26 +169,47 @@ local function load_colorscheme(plugin_name, theme, opts)
 end
 
 -- Dark themes
-load_colorscheme('kanagawa', 'kanagawa', {})
+load_colorscheme('rose-pine', 'rose-pine', {})
+-- load_colorscheme('kanagawa', 'kanagawa', {})
 -- load_colorscheme('tokyonight', 'tokyonight-night', { style = 'night', light_style = 'day' })
 
 -- Setup telescope fuzzy finder.
 require('telescope').setup({})
+
 local telescope_builtin = require('telescope.builtin')
+local telescope_themes = require('telescope.themes')
 
 vim.keymap.set('n', '<leader>!', telescope_builtin.resume, { desc = '[!] Resume previous search' })
-vim.keymap.set('n', '<leader><space>', telescope_builtin.buffers, { desc = '[ ] Find buffer' })
 
+-- Buffers
+vim.keymap.set('n', '<leader><space>', function()
+  telescope_builtin.buffers(telescope_themes.get_dropdown({ previewer = false }))
+end, { desc = '[ ] Find buffer' })
+
+-- Old files
 vim.keymap.set('n', '<leader>?', function()
-  telescope_builtin.oldfiles({ only_cwd = true, cwd = vim.fn.getcwd() })
+  telescope_builtin.oldfiles(telescope_themes.get_dropdown({ previewer = false, only_cwd = true, cwd = vim.fn.getcwd() }))
 end, { desc = '[?] Find recently opened files' })
 
-vim.keymap.set('n', '<leader>sa', telescope_builtin.find_files, { desc = '[S]earch [A]ll files' })
-vim.keymap.set('n', '<leader>sc', telescope_builtin.command_history, { desc = '[S]earch [C]ommand history' })
-vim.keymap.set('n', '<leader>sf', telescope_builtin.git_files, { desc = '[S]earch [F]iles' })
+-- All files
+vim.keymap.set('n', '<leader>sa', function()
+  telescope_builtin.find_files(telescope_themes.get_dropdown({ previewer = false }))
+end, { desc = '[S]earch [A]ll files' })
+
+-- Git files
+vim.keymap.set('n', '<leader>sf', function()
+  telescope_builtin.git_files(telescope_themes.get_dropdown({ previewer = false }))
+end, { desc = '[S]earch [F]iles' })
+
+-- Commands
+vim.keymap.set('n', '<leader>sc', function()
+  telescope_builtin.command_history(telescope_themes.get_dropdown({ previewer = false }))
+end, { desc = '[S]earch [C]ommand history' })
+
 vim.keymap.set('n', '<leader>sg', telescope_builtin.live_grep, { desc = '[S]earch using [G]rep' })
 vim.keymap.set('n', '<leader>sh', telescope_builtin.help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sj', telescope_builtin.jumplist, { desc = '[S]earch [J]ump list' })
+vim.keymap.set('n', '<leader>sw', telescope_builtin.grep_string, { desc = '[S]earch [W]ord' })
 
 -- Setup mason package manager for LSP tools (servers, linters, etc).
 require('mason').setup()
@@ -202,13 +224,15 @@ require('mason-lspconfig').setup({
   ensure_installed = mason_language_servers,
 })
 
-local mason_debug_adapters = { cpptools = 'OpenDebugAD7' }
+vim.api.nvim_create_user_command('InstallDebugAdapaters', function(_)
+  local mason_debug_adapters = { cpptools = 'OpenDebugAD7' }
 
-for adapter, adapter_executable in pairs(mason_debug_adapters) do
-  if vim.fn.executable(adapter_executable) == 0 then
-    vim.cmd('MasonInstall ' .. adapter)
+  for adapter, adapter_executable in pairs(mason_debug_adapters) do
+    if vim.fn.executable(adapter_executable) == 0 then
+      vim.cmd('MasonInstall ' .. adapter)
+    end
   end
-end
+end, { nargs = 0 })
 
 -- Automcplete for nvim APIs -- must be setup before lspconfig.
 require("neodev").setup({})
@@ -295,6 +319,16 @@ local cmp_kind_icons = {
   TypeParameter = ""
 }
 
+local has_words_before = function()
+  unpack = unpack or table.unpack
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
+local feedkey = function(key, mode)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
+end
+
 cmp.setup({
   mapping = {
     ["<C-n>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
@@ -305,6 +339,24 @@ cmp.setup({
     ['<C-y>'] = cmp.mapping.confirm({ select = true }),
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
     ['<C-Space>'] = cmp.mapping.complete(),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif vim.fn["vsnip#available"](1) == 1 then
+        feedkey("<Plug>(vsnip-expand-or-jump)", "")
+      elseif has_words_before() then
+        cmp.complete()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ["<S-Tab>"] = cmp.mapping(function()
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+        feedkey("<Plug>(vsnip-jump-prev)", "")
+      end
+    end, { "i", "s" }),
   },
   sources = {
     { name = 'nvim_lsp' },
