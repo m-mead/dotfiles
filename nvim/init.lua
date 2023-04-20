@@ -552,28 +552,6 @@ local function cmake_build(args)
   end
 end
 
-vim.api.nvim_create_user_command('CMakeConfigure', function(opts)
-  cmake_configure(unpack(opts.fargs))
-end, { nargs = '?' })
-
-vim.api.nvim_create_user_command('CMakeBuild', function(opts)
-  cmake_build(unpack(opts.fargs))
-end, { nargs = '?' })
-
-vim.api.nvim_create_user_command('CMakeClean', function()
-  cmake_build('--target clean')
-end, { nargs = 0 })
-
-vim.api.nvim_create_user_command('CMakeListTargets', function()
-  cmake_build('--target help')
-end, { nargs = 0 })
-
-vim.api.nvim_create_user_command('CTest', function()
-  dispatch('cd build && ctest')
-end, { nargs = 0 })
-
-vim.keymap.set('n', '<f7>', ':CMakeBuild<cr>', { desc = 'Run CMake build asynchronously in a separate window' })
-
 local function cmake_list_targets(build_dir)
   build_dir = build_dir or vim.fn.getcwd() .. '/build'
 
@@ -607,6 +585,26 @@ local function cmake_list_targets(build_dir)
 
   return targets
 end
+
+vim.api.nvim_create_user_command('CMakeConfigure', function(opts)
+  cmake_configure(unpack(opts.fargs))
+end, { nargs = '?' })
+
+vim.api.nvim_create_user_command('CMakeBuild', function(opts)
+  cmake_build(unpack(opts.fargs))
+end, { nargs = '?', complete = function() return cmake_list_targets() end })
+
+vim.api.nvim_create_user_command('CMakeClean', function()
+  cmake_build('--target clean')
+end, { nargs = 0 })
+
+vim.api.nvim_create_user_command('CMakeListTargets', function()
+  cmake_build('--target help')
+end, { nargs = 0 })
+
+vim.api.nvim_create_user_command('CTest', function()
+  dispatch('cd build && ctest')
+end, { nargs = 0 })
 
 vim.api.nvim_create_user_command('CMakeListTargets', function(opts)
   local targets = cmake_list_targets(unpack(opts.fargs))
