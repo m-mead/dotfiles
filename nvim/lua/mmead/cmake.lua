@@ -1,4 +1,3 @@
--- @class CMakeOptions
 local M = {
   target = 'all',
   build_dir = 'build',
@@ -6,7 +5,6 @@ local M = {
   num_jobs = nil,
 }
 
--- @param opts? CMakeOptions
 function M.setup(args)
   if args.target then
     M.target = args.target
