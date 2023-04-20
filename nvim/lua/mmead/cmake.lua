@@ -105,20 +105,42 @@ vim.api.nvim_create_user_command('CMakeListTargets', function(opts)
   end
 end, { nargs = '?' })
 
+-- TODO: Consolidate setters and getters into two functions.
+-- Example usages:
+--  CMakeSet target=all num_jobs=16
+--
+--  CMakeGet target num_jobs
+--  >> target=all, num_jobs=16
 vim.api.nvim_create_user_command('CMakeSetTarget', function(opts)
   M.target = opts.fargs[1]
 end, { nargs = 1, complete = function() return M.cmake_list_targets() end })
+
+vim.api.nvim_create_user_command('CMakeGetTarget', function(_)
+  print(M.target)
+end, { nargs = 0 })
 
 vim.api.nvim_create_user_command('CMakeSetBuildDir', function(opts)
   M.build_dir = opts.fargs[1]
 end, { nargs = 1 })
 
+vim.api.nvim_create_user_command('CMakeGetBuildDir', function(_)
+  print(M.build_dir)
+end, { nargs = 0 })
+
 vim.api.nvim_create_user_command('CMakeSetConfigureFlags', function(opts)
   M.configure_flags = opts.fargs[1]
 end, { nargs = 1 })
 
+vim.api.nvim_create_user_command('CMakeGetConfigureFlags', function(_)
+  print(M.configure_flags)
+end, { nargs = 0 })
+
 vim.api.nvim_create_user_command('CMakeSetNumJobs', function(opts)
   M.num_jobs = opts.fargs[1]
 end, { nargs = 1 })
+
+vim.api.nvim_create_user_command('CMakeGetNumJobs', function(_)
+  print(M.num_jobs)
+end, { nargs = 0 })
 
 return M
