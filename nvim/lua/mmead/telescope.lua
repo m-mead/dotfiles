@@ -25,6 +25,11 @@ vim.keymap.set('n', '<leader>sf', function()
   telescope_builtin.git_files(telescope_themes.get_dropdown({ previewer = false }))
 end, { desc = '[S]earch [F]iles' })
 
+-- Config files
+vim.keymap.set('n', '<leader>sve', function()
+  telescope_builtin.find_files(telescope_themes.get_dropdown({ previewer = false, cwd = vim.fn.stdpath('config') }))
+end, { desc = '[S]earch [F]iles' })
+
 -- Commands
 vim.keymap.set('n', '<leader>sc', function()
   telescope_builtin.command_history(telescope_themes.get_dropdown({ previewer = false }))
