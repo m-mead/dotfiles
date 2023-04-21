@@ -27,6 +27,7 @@ fi
 
 # Git
 alias gs="git status"
+alias gd="git diff"
 
 # Python
 alias actv=". venv/bin/activate"
