@@ -122,8 +122,16 @@ cmp.setup({
     end, { "i", "s" }),
   },
   sources = {
-    { name = 'nvim_lsp' },
-    { name = 'nvim_lsp_signature_help' },
+    {
+      name = 'nvim_lsp'
+    },
+    {
+      name = 'nvim_lsp_signature_help'
+    },
+    {
+      name = 'buffer',
+      keyword_length = 5
+    },
   },
   snippet = {
     expand = function(args)
@@ -141,10 +149,9 @@ cmp.setup({
 
       -- Add icons to completion items
       vim_item.kind = string.format('%s %s', cmp_kind_icons[vim_item.kind], vim_item.kind)
-      vim_item.menu = ({ nvim_lsp = "[LSP]" })[entry.source.name]
+      vim_item.menu = ({ nvim_lsp = "[LSP]", buffer = "[Buf]" })[entry.source.name]
 
       return vim_item
     end
   },
 })
-
