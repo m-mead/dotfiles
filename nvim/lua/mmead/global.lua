@@ -2,7 +2,7 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- Use `jk` as a more ergonomic escape.
+-- qwerty - more ergonomic escape sequences.
 vim.api.nvim_set_keymap('i', 'jk', '<esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('t', 'jk', [[<C-\><C-n>]], { noremap = true, silent = true })
 
