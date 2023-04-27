@@ -67,9 +67,6 @@ if has("autocmd")
 endif
 ]])
 
--- Edit this file with a keystroke.
-vim.api.nvim_set_keymap('n', '<leader>ve', ':edit ~/.config/nvim/init.lua<cr>', { noremap = true, silent = true })
-
 -- Keybindings for moving around tabs.
 vim.api.nvim_set_keymap('n', '<leader>to', ':tabnew<cr>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>tn', ':tabnext<cr>', { noremap = true, silent = true })
