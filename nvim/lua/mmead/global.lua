@@ -2,9 +2,9 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- qwerty - more ergonomic escape sequences.
-vim.api.nvim_set_keymap('i', 'jk', '<esc>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('t', 'jk', [[<C-\><C-n>]], { noremap = true, silent = true })
+-- Disabling these for now because I'm experimenting with remapping capslock to escape.
+-- vim.api.nvim_set_keymap('i', 'jk', '<esc>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('t', 'jk', [[<C-\><C-n>]], { noremap = true, silent = true })
 
 -- Globals
 vim.g.loaded_netrw = 1
@@ -107,4 +107,3 @@ vim.api.nvim_set_keymap('n', 'zl', 'a<space><esc>h', { noremap = true, silent = 
 -- Indent selection without leaving visual mode.
 vim.api.nvim_set_keymap('v', '<', '<gv', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('v', '>', '>gv', { noremap = true, silent = true })
-
