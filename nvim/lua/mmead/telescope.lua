@@ -30,10 +30,17 @@ vim.keymap.set('n', '<leader>sc', function()
   telescope_builtin.command_history(telescope_themes.get_dropdown({ previewer = false }))
 end, { desc = '[S]earch [C]ommand history' })
 
-vim.keymap.set('n', '<leader>sg', telescope_builtin.live_grep, { desc = '[S]earch using [G]rep' })
+-- Grep
+vim.keymap.set('n', '<leader>sg', function()
+  telescope_builtin.live_grep({ previewer = false })
+end, { desc = '[S]earch using [G]rep' })
+
+vim.keymap.set('n', '<leader>sw', function()
+  telescope_builtin.grep_string({ previewer = false })
+end, { desc = '[S]earch [W]ord' })
+
 vim.keymap.set('n', '<leader>sh', telescope_builtin.help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sj', telescope_builtin.jumplist, { desc = '[S]earch [J]ump list' })
-vim.keymap.set('n', '<leader>sw', telescope_builtin.grep_string, { desc = '[S]earch [W]ord' })
 
 -- Config files
 vim.keymap.set('n', '<leader>ve', function()
