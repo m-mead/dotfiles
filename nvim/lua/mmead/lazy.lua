@@ -40,4 +40,5 @@ require("lazy").setup({
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
   { 'rose-pine/neovim', name = 'rose-pine' },
+  { 'catppuccin/nvim', name = ' catppuccin' },
 })

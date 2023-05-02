@@ -32,19 +32,19 @@ end, { desc = '[S]earch [C]ommand history' })
 
 -- Grep
 vim.keymap.set('n', '<leader>sg', function()
-  telescope_builtin.live_grep(telescope_themes.get_ivy({}))
+  telescope_builtin.live_grep()
 end, { desc = '[S]earch using [G]rep' })
 
 vim.keymap.set('n', '<leader>sw', function()
-  telescope_builtin.grep_string(telescope_themes.get_ivy({}))
+  telescope_builtin.grep_string()
 end, { desc = '[S]earch [W]ord' })
 
 vim.keymap.set('n', '<leader>sh', function()
-  telescope_builtin.help_tags(telescope_themes.get_ivy({}))
+  telescope_builtin.help_tags()
 end, { desc = '[S]earch [H]elp' })
 
 vim.keymap.set('n', '<leader>sj', function()
-  telescope_builtin.jumplist(telescope_themes.get_ivy({}))
+  telescope_builtin.jumplist()
 end, { desc = '[S]earch [J]ump list' })
 
 -- Config files

@@ -50,6 +50,7 @@ vim.o.scrolloff = 8
 vim.o.cursorline = true
 vim.o.termguicolors = true
 vim.o.pumheight = 8
+vim.o.laststatus = 3
 
 -- Stop inserting comments on new lines when previous line is commented.
 -- This is the default vim behavior.
