@@ -52,34 +52,6 @@ end
 -- Setup autocompletion using nvim-cmp.
 local cmp = require('cmp')
 
-local cmp_kind_icons = {
-  Text = "",
-  Method = "",
-  Function = "",
-  Constructor = "",
-  Field = "",
-  Variable = "",
-  Class = "ﴯ",
-  Interface = "",
-  Module = "",
-  Property = "ﰠ",
-  Unit = "",
-  Value = "",
-  Enum = "",
-  Keyword = "",
-  Snippet = "",
-  Color = "",
-  File = "",
-  Reference = "",
-  Folder = "",
-  EnumMember = "",
-  Constant = "",
-  Struct = "",
-  Event = "",
-  Operator = "",
-  TypeParameter = ""
-}
-
 local has_words_before = function()
   unpack = unpack or table.unpack
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -147,8 +119,6 @@ cmp.setup({
         vim_item.abbr = string.sub(vim_item.abbr, 1, max_item_length) .. truncated_trailer
       end
 
-      -- Add icons to completion items
-      vim_item.kind = string.format('%s %s', cmp_kind_icons[vim_item.kind], vim_item.kind)
       vim_item.menu = ({ nvim_lsp = "[LSP]", buffer = "[Buf]" })[entry.source.name]
 
       return vim_item
