@@ -39,5 +39,4 @@ require("lazy").setup({
   'tpope/vim-sleuth',
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
-  { "catppuccin/nvim", name = "catppuccin"},
 })
