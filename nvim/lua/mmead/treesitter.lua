@@ -8,6 +8,7 @@ local treesitter_grammars = {
   'go',
   'json',
   'lua',
+  'markdown',
   'python',
   'ruby',
   'toml',
@@ -26,4 +27,3 @@ require('nvim-treesitter.configs').setup({
     additional_vim_regex_highlighting = false,
   },
 })
-
