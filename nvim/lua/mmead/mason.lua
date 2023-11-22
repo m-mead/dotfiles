@@ -2,8 +2,10 @@ require('mason').setup()
 
 local mason_language_servers = {}
 
-if vim.fn.executable('clangd') == 0 then
-  vim.list_extend(mason_language_servers, { 'clangd' })
+for _, server in pairs({'clangd', 'lua-language-server'}) do
+  if vim.fn.executable(server) == 0 then
+    vim.list_extend(mason_language_servers, { server })
+  end
 end
 
 require('mason-lspconfig').setup({
