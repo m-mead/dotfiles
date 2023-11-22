@@ -18,5 +18,5 @@ local function load_colorscheme(plugin_name, theme, opts)
 end
 
 -- Dark themes
--- load_colorscheme('kanagawa', 'kanagawa', {})
-load_colorscheme('tokyonight', 'tokyonight-night', { style = 'night', light_style = 'day' })
+load_colorscheme('kanagawa', 'kanagawa-dragon', {})
+-- load_colorscheme('tokyonight', 'tokyonight-night', { style = 'night', light_style = 'day' })
