@@ -16,8 +16,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Lazy load plugins
 require("lazy").setup({
   'folke/neodev.nvim',
-  'folke/tokyonight.nvim',
-  'github/copilot.vim',
+  -- 'github/copilot.vim',
   'hrsh7th/cmp-buffer',
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-nvim-lsp-signature-help',
@@ -39,4 +38,5 @@ require("lazy").setup({
   'tpope/vim-sleuth',
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
+  { 'catppuccin/nvim', name = 'catppuccin' },
 })

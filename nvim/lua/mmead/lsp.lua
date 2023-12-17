@@ -24,30 +24,58 @@ local on_attach = function(_, bufnr)
 
   -- Off spec. keymaps
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<f3>', '<cmd>ClangdSwitchSourceHeader<CR>', opts)
+
+  if vim.lsp.inlay_hint then
+    vim.keymap.set("n", "<leader>uh", function() vim.lsp.inlay_hint.enable(0, nil) end, { desc = "Toggle inlay hints" })
+  end
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-local lspconfig = require('lspconfig')
-
 -- Server configurations:
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 local servers = {
-  'clangd',
-  'gopls',
-  'lua_ls',
-  'pyright',
-  'rust_analyzer',
-  'solargraph',
+  clangd = {},
+  gopls = {},
+  lua_ls = {
+    Lua = {
+      workspace = { checkThirdParty = false },
+      telemetry = { enable = false },
+      hint = { enable = true },
+    },
+  },
+  pyright = {},
+  rust_analyzer = {},
+  solargraph = {},
 }
 
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
-  })
+require('mason').setup()
+
+local mason_language_servers = {}
+
+for _, server in pairs({ 'clangd', 'lua-language-server' }) do
+  if vim.fn.executable(server) == 0 then
+    vim.list_extend(mason_language_servers, { server })
+  end
 end
+
+local mason_lspconfig = require 'mason-lspconfig'
+
+mason_lspconfig.setup({
+  ensure_installed = mason_language_servers,
+})
+
+mason_lspconfig.setup_handlers {
+  function(server_name)
+    require('lspconfig')[server_name].setup {
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = servers[server_name],
+      filetypes = (servers[server_name] or {}).filetypes,
+    }
+  end,
+}
 
 -- Setup autocompletion using nvim-cmp.
 local cmp = require('cmp')
@@ -125,3 +153,13 @@ cmp.setup({
     end
   },
 })
+
+vim.api.nvim_create_user_command('InstallDebugAdapaters', function(_)
+  local mason_debug_adapters = { cpptools = 'OpenDebugAD7' }
+
+  for adapter, adapter_executable in pairs(mason_debug_adapters) do
+    if vim.fn.executable(adapter_executable) == 0 then
+      vim.cmd('MasonInstall ' .. adapter)
+    end
+  end
+end, { nargs = 0 })
