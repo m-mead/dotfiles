@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+PATTERN_TO_IGNORE=$1
+
+if [ -z "$PATTERN_TO_IGNORE" ]; then
+    echo -e "usage: git-add-unversioned-ignore [pattern]"
+    exit 1
+fi
+
+if [ ! -d ".git" ]; then
+    echo -e "directory is not a git repository"
+    exit 1
+fi
+
+echo $PATTERN_TO_IGNORE >> .git/info/exclude
