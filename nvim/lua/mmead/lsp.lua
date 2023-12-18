@@ -1,6 +1,9 @@
 -- Automcplete for nvim APIs -- must be setup before lspconfig.
 require("neodev").setup({})
 
+require('mason').setup()
+require('mason-lspconfig').setup()
+
 -- Diagnostic keymappings
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap = true, silent = true })
 
@@ -52,21 +55,12 @@ local servers = {
   solargraph = {},
 }
 
-require('mason').setup()
-
-local mason_language_servers = {}
-
-for _, server in pairs({ 'clangd', 'lua-language-server' }) do
-  if vim.fn.executable(server) == 0 then
-    vim.list_extend(mason_language_servers, { server })
-  end
-end
-
 local mason_lspconfig = require 'mason-lspconfig'
+mason_lspconfig.setup {}
 
-mason_lspconfig.setup({
-  ensure_installed = mason_language_servers,
-})
+for server, server_config in pairs(servers) do
+  require('lspconfig')[server].setup { server_config }
+end
 
 mason_lspconfig.setup_handlers {
   function(server_name)
