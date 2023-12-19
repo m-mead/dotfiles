@@ -58,20 +58,9 @@ local servers = {
 local mason_lspconfig = require 'mason-lspconfig'
 mason_lspconfig.setup {}
 
-for server, server_config in pairs(servers) do
-  require('lspconfig')[server].setup { server_config }
+for server, _ in pairs(servers) do
+  require('lspconfig')[server].setup { on_attach = on_attach, capabilities = capabilities }
 end
-
-mason_lspconfig.setup_handlers {
-  function(server_name)
-    require('lspconfig')[server_name].setup {
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = servers[server_name],
-      filetypes = (servers[server_name] or {}).filetypes,
-    }
-  end,
-}
 
 -- Setup autocompletion using nvim-cmp.
 local cmp = require('cmp')
