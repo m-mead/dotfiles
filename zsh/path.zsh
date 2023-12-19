@@ -30,3 +30,8 @@ fi
 if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
     PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
 fi
+
+# Homebrew sbin
+if [[ ! "$PATH" == */usr/local/sbin* ]]; then
+    export PATH="/usr/local/sbin:$PATH"
+fi
