@@ -15,8 +15,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Lazy load plugins
 require("lazy").setup({
-  'folke/neodev.nvim',
-  -- 'github/copilot.vim',
+  { 'folke/neodev.nvim',     event = 'VeryLazy' },
   'hrsh7th/cmp-buffer',
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-nvim-lsp-signature-help',
@@ -24,19 +23,39 @@ require("lazy").setup({
   'hrsh7th/nvim-cmp',
   'hrsh7th/vim-vsnip',
   'lewis6991/gitsigns.nvim',
-  'mfussenegger/nvim-dap',
+  { 'mfussenegger/nvim-dap', event = 'VeryLazy' },
   'neovim/nvim-lspconfig',
+  {
+    "NeogitOrg/neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim", -- required
+      -- "sindrets/diffview.nvim", -- optional - Diff integration
+      -- Only one of these is needed, not both.
+      "nvim-telescope/telescope.nvim", -- optional
+      -- "ibhagwan/fzf-lua",            -- optional
+    },
+    config = true
+  },
   'nvim-lua/plenary.nvim',
   'nvim-lualine/lualine.nvim',
-  'nvim-telescope/telescope.nvim',
+  { 'nvim-telescope/telescope.nvim', event = 'VeryLazy' },
   'nvim-tree/nvim-tree.lua',
   'nvim-tree/nvim-web-devicons',
   'nvim-treesitter/nvim-treesitter',
   'rebelot/kanagawa.nvim',
-  'tpope/vim-commentary',
-  'tpope/vim-dispatch',
+  { 'tpope/vim-commentary',          event = 'VeryLazy' },
+  { 'tpope/vim-dispatch',            event = 'VeryLazy' },
   'tpope/vim-sleuth',
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
   { 'catppuccin/nvim', name = 'catppuccin' },
+  {
+    'folke/which-key.nvim',
+    event = 'VeryLazy',
+    init = function()
+      -- vim.o.timeout = true
+      -- vim.o.timeoutlen = 300
+    end,
+    opts = {}
+  },
 })
