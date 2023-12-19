@@ -12,6 +12,7 @@ local treesitter_grammars = {
   'python',
   'ruby',
   'toml',
+  'vimdoc',
   'yaml',
 }
 
