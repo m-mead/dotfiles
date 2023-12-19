@@ -29,7 +29,7 @@ local on_attach = function(_, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<f3>', '<cmd>ClangdSwitchSourceHeader<CR>', opts)
 
   if vim.lsp.inlay_hint then
-    vim.keymap.set("n", "<leader>uh", function()
+    vim.keymap.set("n", "<leader>hh", function()
       vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled(0))
     end, { desc = "Toggle inlay hints" })
   end
