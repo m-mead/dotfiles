@@ -25,17 +25,6 @@ require("lazy").setup({
   'lewis6991/gitsigns.nvim',
   { 'mfussenegger/nvim-dap', event = 'VeryLazy' },
   'neovim/nvim-lspconfig',
-  {
-    "NeogitOrg/neogit",
-    dependencies = {
-      "nvim-lua/plenary.nvim", -- required
-      -- "sindrets/diffview.nvim", -- optional - Diff integration
-      -- Only one of these is needed, not both.
-      "nvim-telescope/telescope.nvim", -- optional
-      -- "ibhagwan/fzf-lua",            -- optional
-    },
-    config = true
-  },
   'nvim-lua/plenary.nvim',
   'nvim-lualine/lualine.nvim',
   { 'nvim-telescope/telescope.nvim', event = 'VeryLazy' },
@@ -45,6 +34,7 @@ require("lazy").setup({
   'rebelot/kanagawa.nvim',
   { 'tpope/vim-commentary',          event = 'VeryLazy' },
   { 'tpope/vim-dispatch',            event = 'VeryLazy' },
+  { 'tpope/vim-fugitive',            event = 'VeryLazy' },
   'tpope/vim-sleuth',
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
