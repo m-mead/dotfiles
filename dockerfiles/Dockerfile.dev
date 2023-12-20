@@ -1,0 +1,27 @@
+FROM ubuntu:22.04
+
+RUN DEBIAN_FRONTEND="noninteractive" apt update && \
+    apt install -y -qq \
+        build-essential \
+        cmake \
+        cmake \
+        curl \
+        gettext \
+        git \
+        libboost-all-dev \
+        ninja-build \
+        sudo \
+        unzip
+
+WORKDIR /tmp
+
+RUN git clone https://github.com/neovim/neovim.git && \
+    cd neovim && \
+    make CMAKE_BUILD_TYPE=RelWithDebInfo && \
+    sudo make install && \
+    rm -rf neovim
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y && \
+    echo '. $HOME/.cargo/env' >> $HOME/.bashrc && \
+    . $HOME/.bashrc && \
+    cargo install ripgrep
