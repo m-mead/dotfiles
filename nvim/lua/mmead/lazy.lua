@@ -15,7 +15,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Lazy load plugins
 require("lazy").setup({
-  { 'folke/neodev.nvim',     event = 'VeryLazy' },
+  'folke/neodev.nvim',
   'hrsh7th/cmp-buffer',
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-nvim-lsp-signature-help',
@@ -23,25 +23,26 @@ require("lazy").setup({
   'hrsh7th/nvim-cmp',
   'hrsh7th/vim-vsnip',
   'lewis6991/gitsigns.nvim',
-  { 'mfussenegger/nvim-dap', event = 'VeryLazy' },
+  'mfussenegger/nvim-dap',
   'neovim/nvim-lspconfig',
   'nvim-lua/plenary.nvim',
   'nvim-lualine/lualine.nvim',
-  { 'nvim-telescope/telescope.nvim', event = 'VeryLazy' },
+  'nvim-telescope/telescope.nvim',
   'nvim-tree/nvim-tree.lua',
   'nvim-tree/nvim-web-devicons',
   'nvim-treesitter/nvim-treesitter',
   'rebelot/kanagawa.nvim',
-  { 'tpope/vim-commentary',          event = 'VeryLazy' },
-  { 'tpope/vim-dispatch',            event = 'VeryLazy' },
-  { 'tpope/vim-fugitive',            event = 'VeryLazy' },
+  'tpope/vim-commentary',
+  'tpope/vim-dispatch',
+  'tpope/vim-fugitive',
   'tpope/vim-sleuth',
+  'tpope/vim-surround',
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
-  { 'catppuccin/nvim', name = 'catppuccin' },
+  { 'catppuccin/nvim',    name = 'catppuccin' },
   {
     'folke/which-key.nvim',
-    event = 'VeryLazy',
+    -- event = 'VeryLazy',
     init = function()
       -- vim.o.timeout = true
       -- vim.o.timeoutlen = 300

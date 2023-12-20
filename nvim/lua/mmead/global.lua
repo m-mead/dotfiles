@@ -67,42 +67,31 @@ endif
 ]])
 
 -- Keybindings for moving around tabs.
-vim.api.nvim_set_keymap('n', '<leader>to', ':tabnew<cr>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>tn', ':tabnext<cr>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>tp', ':tabprev<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>to', ':tabnew<cr>', { noremap = true, silent = true, desc = 'tab open' })
+vim.api.nvim_set_keymap('n', '<leader>tn', ':tabnext<cr>', { noremap = true, silent = true, desc = 'tab next' })
+vim.api.nvim_set_keymap('n', '<leader>tp', ':tabprev<cr>', { noremap = true, silent = true, desc = 'tab previous' })
 
 -- Keybindings for moving around buffers.
-vim.api.nvim_set_keymap('n', '<leader>[b', ':bprev<cr>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>]b', ':bnext<cr>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<S-h>', ':bprev<cr>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<S-l>', ':bnext<cr>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<S-h>', ':bprev<cr>', { noremap = true, silent = true, desc = 'buffer previous' })
+vim.api.nvim_set_keymap('n', '<S-l>', ':bnext<cr>', { noremap = true, silent = true, desc = 'buffer next' })
 
 -- Keybindings for moving around windows.
-vim.api.nvim_set_keymap('n', '<C-J>', '<C-W>j', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-k>', '<C-W>k', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-h>', '<C-W>h', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-l>', '<C-W>l', { noremap = true, silent = true })
-
--- Insert brace like characters when in insert mode.
-vim.api.nvim_set_keymap('i', '$1', '()<esc>i', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('i', '$2', '[]<esc>i', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('i', '$3', '{}<esc>i', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('i', '$4', '{<esc>o}<esc>O', { noremap = true, silent = true })
-
--- Insert brace like characters when in visual mode.
-vim.api.nvim_set_keymap('v', '$1', '<esc>`>a)<esc>`<i(<esc>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('v', '$2', '<esc>`>a]<esc>`<i[<esc>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('v', '$3', '<esc>`>a}<esc>`<i{<esc>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-J>', '<C-W>j', { noremap = true, silent = true, desc = 'window down' })
+vim.api.nvim_set_keymap('n', '<C-k>', '<C-W>k', { noremap = true, silent = true, desc = 'window up' })
+vim.api.nvim_set_keymap('n', '<C-h>', '<C-W>h', { noremap = true, silent = true, desc = 'window left' })
+vim.api.nvim_set_keymap('n', '<C-l>', '<C-W>l', { noremap = true, silent = true, desc = 'window right' })
 
 -- Insert blank characters without leaving insert mode.
-vim.api.nvim_set_keymap('n', 'zj', 'o<esc>^Dk', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', 'zk', 'O<esc>^Dj', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', 'zh', 'i<space><esc>l', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', 'zl', 'a<space><esc>h', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'zj', 'o<esc>^Dk', { noremap = true, silent = true, desc = 'insert blank link below' })
+vim.api.nvim_set_keymap('n', 'zk', 'O<esc>^Dj', { noremap = true, silent = true, desc = 'insert blank line above' })
+vim.api.nvim_set_keymap('n', 'zh', 'i<space><esc>l',
+  { noremap = true, silent = true, desc = 'insert blank character right' })
+vim.api.nvim_set_keymap('n', 'zl', 'a<space><esc>h',
+  { noremap = true, silent = true, desc = 'insert blank character left' })
 
 -- Indent selection without leaving visual mode.
-vim.api.nvim_set_keymap('v', '<', '<gv', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('v', '>', '>gv', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', '<', '<gv', { noremap = true, silent = true, desc = 'shift selection left and hold on' })
+vim.api.nvim_set_keymap('v', '>', '>gv', { noremap = true, silent = true, desc = 'shift select right and hold on' })
 
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
