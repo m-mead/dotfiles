@@ -16,8 +16,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Lazy load plugins
 require("lazy").setup({
   'folke/neodev.nvim',
-  'folke/which-key.nvim',
-  'hrsh7th/cmp-buffer',
+  { 'folke/which-key.nvim', event = 'VeryLazy', init = function() end, opts = {} },
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-nvim-lsp-signature-help',
   'hrsh7th/cmp-vsnip',
@@ -40,5 +39,5 @@ require("lazy").setup({
   'tpope/vim-surround',
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
-  { 'catppuccin/nvim', name = 'catppuccin' },
+  { 'catppuccin/nvim',      name = 'catppuccin' },
 })
