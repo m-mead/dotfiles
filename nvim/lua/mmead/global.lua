@@ -6,17 +6,17 @@ vim.g.maplocalleader = ' '
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
-vim.g.copilot_no_tab_map = true
-vim.g.copilot_assume_mapped = true
-vim.g.copilot_filetypes = {
-  ["*"] = false,
-  -- ["c"] = true,
-  -- ["c++"] = true,
-  -- ["go"] = true,
-  -- ["lua"] = true,
-  -- ["python"] = true,
-  -- ["rust"] = true,
-}
+-- vim.g.copilot_no_tab_map = true
+-- vim.g.copilot_assume_mapped = true
+-- vim.g.copilot_filetypes = {
+--   ["*"] = false,
+--   -- ["c"] = true,
+--   -- ["c++"] = true,
+--   -- ["go"] = true,
+--   -- ["lua"] = true,
+--   -- ["python"] = true,
+--   -- ["rust"] = true,
+-- }
 
 -- Basic settings
 vim.o.filetype = 'on'
@@ -47,6 +47,8 @@ vim.o.cursorline = true
 vim.o.termguicolors = true
 vim.o.pumheight = 8
 vim.o.laststatus = 3
+vim.o.spelllang = "en_us"
+vim.o.spell = true
 
 -- Stop inserting comments on new lines when previous line is commented.
 -- This is the default vim behavior.
