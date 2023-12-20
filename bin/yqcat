@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+INPUT_FILE=$1
+
+if [ -z "$INPUT_FILE" ]; then
+    echo -e "usage: yqcat [input_file]"
+    exit 1
+fi
+
+cat $INPUT_FILE | yq
