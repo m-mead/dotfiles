@@ -26,12 +26,14 @@ if [ -d "$HOME/src/dotfiles/bin" ]; then
     export PATH="$PATH:$HOME/src/dotfiles/bin"
 fi
 
-# fzf on macos
-if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
-    PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
-fi
+if [[ "$(uname)" == darwin* ]]; then
+    # fzf
+    if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
+        PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
+    fi
 
-# Homebrew sbin
-if [[ ! "$PATH" == */usr/local/sbin* ]]; then
-    export PATH="/usr/local/sbin:$PATH"
+    # Homebrew sbin
+    if [[ ! "$PATH" == */usr/local/sbin* ]]; then
+        export PATH="/usr/local/sbin:$PATH"
+    fi
 fi
