@@ -31,6 +31,11 @@ vim.keymap.set('n', '<leader>sc', function()
   telescope_builtin.command_history(telescope_themes.get_dropdown({ previewer = false, layout_config = { width = 0.8 } }))
 end, { desc = 'search command history' })
 
+-- Commands
+vim.keymap.set('n', '<leader>sk', function()
+  telescope_builtin.keymaps(telescope_themes.get_dropdown({ previewer = false, layout_config = { width = 0.8 } }))
+end, { desc = 'search keymaps' })
+
 -- Grep
 vim.keymap.set('n', '<leader>sg', function()
   telescope_builtin.live_grep()

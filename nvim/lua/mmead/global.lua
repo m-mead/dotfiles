@@ -2,21 +2,21 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- Globals
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+-- TODO: Why did I have this?
+-- vim.g.loaded_netrw = 1
+-- vim.g.loaded_netrwPlugin = 1
 
 -- vim.g.copilot_no_tab_map = true
 -- vim.g.copilot_assume_mapped = true
--- vim.g.copilot_filetypes = {
---   ["*"] = false,
---   -- ["c"] = true,
---   -- ["c++"] = true,
---   -- ["go"] = true,
---   -- ["lua"] = true,
---   -- ["python"] = true,
---   -- ["rust"] = true,
--- }
+vim.g.copilot_filetypes = {
+  ["*"] = false,
+  ["c"] = true,
+  ["c++"] = true,
+  ["go"] = true,
+  ["lua"] = true,
+  ["python"] = true,
+  ["rust"] = true,
+}
 
 -- Basic settings
 vim.o.filetype = 'on'
@@ -68,8 +68,8 @@ endif
 
 -- Keybindings for moving around tabs.
 vim.api.nvim_set_keymap('n', '<leader>to', ':tabnew<cr>', { noremap = true, silent = true, desc = 'tab open' })
-vim.api.nvim_set_keymap('n', '<leader>tn', ':tabnext<cr>', { noremap = true, silent = true, desc = 'tab next' })
-vim.api.nvim_set_keymap('n', '<leader>tp', ':tabprev<cr>', { noremap = true, silent = true, desc = 'tab previous' })
+vim.api.nvim_set_keymap('n', '<leader>]t', ':tabnext<cr>', { noremap = true, silent = true, desc = 'tab next' })
+vim.api.nvim_set_keymap('n', '<leader>[t', ':tabprev<cr>', { noremap = true, silent = true, desc = 'tab previous' })
 
 -- Keybindings for moving around buffers.
 vim.api.nvim_set_keymap('n', '<S-h>', ':bprev<cr>', { noremap = true, silent = true, desc = 'buffer previous' })
