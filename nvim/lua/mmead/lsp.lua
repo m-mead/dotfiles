@@ -50,6 +50,7 @@ local servers = {
       hint = { enable = true },
     },
   },
+  marksman = {},
   pyright = {},
   rust_analyzer = {},
   solargraph = {},
