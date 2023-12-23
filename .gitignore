@@ -6,3 +6,15 @@
 venv/
 nvim/plugin/
 nvim/spell/
+
+# emacs
+emacs/straight
+emacs/auto-save-list
+emacs/eln-cache
+emacs/straight
+emacs/*.el~
+emacs/eshell/
+emacs/places
+emacs/projectile-bookmarks.eld
+emacs/recentf
+emacs/transient/
