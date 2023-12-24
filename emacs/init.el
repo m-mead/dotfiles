@@ -68,6 +68,10 @@
 ;; ------------------------------------------------------------------------------
 ;; tramp
 ;; ------------------------------------------------------------------------------
+(add-to-list 'tramp-connection-properties
+             (list (regexp-quote "/docker:user@host")
+                   "remote-shell" "/bin/bash"))
+
 (with-eval-after-load "tramp"
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
