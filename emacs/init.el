@@ -66,10 +66,48 @@
 (use-package magit)
 
 ;; ------------------------------------------------------------------------------
-;; programming
+;; tramp
 ;; ------------------------------------------------------------------------------
-;; company
+(with-eval-after-load "tramp"
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+
+;; ------------------------------------------------------------------------------
+;; treesitter
+;; ------------------------------------------------------------------------------
+(use-package go-mode)
+
+(setq treesit-language-source-alist
+      '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+	(cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+	(c "https://github.com/tree-sitter/tree-sitter-c")
+	(go "https://github.com/tree-sitter/tree-sitter-go")
+	(gomod "https://github.com/camdencheek/tree-sitter-go-mod")
+	(json "https://github.com/tree-sitter/tree-sitter-json")
+	(python "https://github.com/tree-sitter/tree-sitter-python")
+	(rust "https://github.com/tree-sitter/tree-sitter-rust")
+	(toml "https://github.com/tree-sitter/tree-sitter-toml")
+	(typescript "https://github.com/tree-sitter/tree-sitter-typecsript")
+	(yaml "https://github.com/tree-sitter/tree-sitter-yml")))
+
+(add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+(add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+(add-to-list 'major-mode-remap-alist '(c-or-c++-mode . c-or-c++-ts-mode))
+(add-to-list 'major-mode-remap-alist '(go-mode . go-ts-mode))
+(add-to-list 'major-mode-remap-alist '(go-mod-mode . go-mod-ts-mode))
+(add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+
+;; ------------------------------------------------------------------------------
+;; lsp
+;; ------------------------------------------------------------------------------
+(add-hook 'prog-mode-hook '(lambda ()
+			     (setq truncate-lines t
+				   word-wrap nil)))
+
 (use-package company
   :after eglot
   :hook (eglot-managed-mode . company-mode))
 
+(add-hook 'c-ts-mode-hook 'eglot)
+(add-hook 'c++-ts-mode-hook 'eglot)
+(add-hook 'go-ts-mode-hook 'eglot-ensure)
+(add-hook 'python-ts-mode-hook 'eglot-ensure)
