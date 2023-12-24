@@ -72,9 +72,17 @@
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 ;; ------------------------------------------------------------------------------
+;; programming
+;; ------------------------------------------------------------------------------
+(add-hook 'prog-mode-hook '(lambda ()
+			     (setq truncate-lines t
+				   word-wrap nil)))
+
+(use-package go-mode)
+
+;; ------------------------------------------------------------------------------
 ;; treesitter
 ;; ------------------------------------------------------------------------------
-(use-package go-mode)
 
 (setq treesit-language-source-alist
       '((bash "https://github.com/tree-sitter/tree-sitter-bash")
@@ -99,15 +107,11 @@
 ;; ------------------------------------------------------------------------------
 ;; lsp
 ;; ------------------------------------------------------------------------------
-(add-hook 'prog-mode-hook '(lambda ()
-			     (setq truncate-lines t
-				   word-wrap nil)))
-
 (use-package company
   :after eglot
   :hook (eglot-managed-mode . company-mode))
 
-(add-hook 'c-ts-mode-hook 'eglot)
-(add-hook 'c++-ts-mode-hook 'eglot)
+(add-hook 'c-ts-mode-hook 'eglot-ensure)
+(add-hook 'c++-ts-mode-hook 'eglot-ensure)
 (add-hook 'go-ts-mode-hook 'eglot-ensure)
 (add-hook 'python-ts-mode-hook 'eglot-ensure)
