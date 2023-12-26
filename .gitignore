@@ -19,4 +19,5 @@ emacs/projectile-bookmarks.eld
 emacs/recentf
 emacs/transient/
 emacs/tramp
-emacs/tree-sitter
+emacs/tree-sitter/
+emacs/projects

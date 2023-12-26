@@ -58,10 +58,8 @@
 ;; ------------------------------------------------------------------------------
 ;; projects
 ;; ------------------------------------------------------------------------------
-(use-package projectile
-  :config
-  (projectile-mode +1)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+(use-package project
+  :bind-keymap ("C-c p" . project-prefix-map))
 
 (use-package magit)
 
@@ -87,7 +85,6 @@
 ;; ------------------------------------------------------------------------------
 ;; treesitter
 ;; ------------------------------------------------------------------------------
-
 (setq treesit-language-source-alist
       '((bash "https://github.com/tree-sitter/tree-sitter-bash")
 	(cpp "https://github.com/tree-sitter/tree-sitter-cpp")
