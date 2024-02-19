@@ -12,7 +12,7 @@
   (global-display-line-numbers-mode))
 (setq column-number-mode t)
 
-(set-frame-font "JetBrainsMono Nerd Font 13" nil t)
+(set-frame-font "JetBrainsMono Nerd Font 11" nil t)
 
 (recentf-mode 1)
 (save-place-mode 1)
@@ -66,12 +66,31 @@
 ;; ------------------------------------------------------------------------------
 ;; tramp
 ;; ------------------------------------------------------------------------------
-(add-to-list 'tramp-connection-properties
-             (list (regexp-quote "/docker:user@host")
-                   "remote-shell" "/bin/bash"))
-
 (with-eval-after-load "tramp"
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+
+(with-eval-after-load "tramp"
+  (add-to-list 'tramp-connection-properties
+             (list (regexp-quote "/docker:user@host")
+                   "remote-shell" "/bin/bash")))
+
+;; ------------------------------------------------------------------------------
+;; evil
+;; ------------------------------------------------------------------------------
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  :config
+  (evil-mode 1))
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 
 ;; ------------------------------------------------------------------------------
 ;; programming
