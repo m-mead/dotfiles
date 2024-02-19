@@ -32,3 +32,6 @@ alias gd="git diff"
 # Python
 alias actv=". venv/bin/activate"
 alias actvn="python3 -m venv venv && . venv/bin/activate && pip install -U pip"
+
+# Editors
+alias v="nvim"

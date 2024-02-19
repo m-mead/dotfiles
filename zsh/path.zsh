@@ -37,3 +37,7 @@ if [[ "$(uname)" == darwin* ]]; then
         export PATH="/usr/local/sbin:$PATH"
     fi
 fi
+
+if [ -f "/usr/share/doc/fzf/examples/key-bindings.zsh" ]; then
+    source /usr/share/doc/fzf/examples/key-bindings.zsh
+fi
