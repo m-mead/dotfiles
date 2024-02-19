@@ -15,6 +15,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Lazy load plugins
 require("lazy").setup({
+  'ellisonleao/gruvbox.nvim',
   'folke/neodev.nvim',
   'github/copilot.vim',
   'hrsh7th/cmp-buffer',
