@@ -24,5 +24,7 @@ load_colorscheme('gruvbox', 'gruvbox', {})
 -- load_colorscheme('kanagawa', 'kanagawa-dragon', {})
 -- load_colorscheme('tokyonight', 'tokyonight-night', { style = 'night', light_style = 'day' })
 
+-- load_colorscheme('catppuccin', 'catppuccin-mocha', {})
+
 -- Light themes
 -- load_colorscheme('catppuccin', 'catppuccin-latte', {})
