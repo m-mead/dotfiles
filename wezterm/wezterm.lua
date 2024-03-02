@@ -13,8 +13,9 @@ end
 
 config.color_scheme = scheme_for_appearance(wezterm.gui.get_appearance())
 config.font = wezterm.font('JetBrainsMono Nerd Font')
-config.font_size = 13.0
+config.font_size = 13.5
 
 config.default_cursor_style = 'SteadyBlock'
+config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
 
 return config
