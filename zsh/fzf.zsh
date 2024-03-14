@@ -4,7 +4,6 @@ if [[ "$(uname)" == "Darwin" ]]; then
             export FZF_DEFAULT_COMMAND='fd --type file --hidden --no-ignore'
         fi
 
-        source "/usr/local/opt/fzf/shell/completion.zsh"
-        source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+        source ~/.fzf.zsh
     fi
 fi
