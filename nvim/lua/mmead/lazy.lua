@@ -17,6 +17,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   'ellisonleao/gruvbox.nvim',
   'folke/neodev.nvim',
+  'folke/tokyonight.nvim',
   'github/copilot.vim',
   'hrsh7th/cmp-buffer',
   'hrsh7th/cmp-nvim-lsp',
@@ -40,5 +41,6 @@ require("lazy").setup({
   'tpope/vim-surround',
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
-  { 'catppuccin/nvim',      name = 'catppuccin' },
+  { 'nordtheme/vim',   name = 'nord' },
+  { 'catppuccin/nvim', name = 'catppuccin' },
 })
