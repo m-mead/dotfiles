@@ -15,13 +15,12 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Lazy load plugins
 require("lazy").setup({
-  'ellisonleao/gruvbox.nvim',
   'folke/neodev.nvim',
-  'folke/tokyonight.nvim',
   'github/copilot.vim',
   'hrsh7th/cmp-buffer',
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-nvim-lsp-signature-help',
+  'hrsh7th/cmp-path',
   'hrsh7th/cmp-vsnip',
   'hrsh7th/nvim-cmp',
   'hrsh7th/vim-vsnip',
@@ -34,13 +33,11 @@ require("lazy").setup({
   'nvim-tree/nvim-web-devicons',
   'nvim-treesitter/nvim-treesitter',
   'nvim-treesitter/nvim-treesitter-context',
-  'rebelot/kanagawa.nvim',
+  'shaunsingh/nord.nvim',
   'tpope/vim-commentary',
   'tpope/vim-dispatch',
   'tpope/vim-sleuth',
   'tpope/vim-surround',
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
-  { 'nordtheme/vim',   name = 'nord' },
-  { 'catppuccin/nvim', name = 'catppuccin' },
 })

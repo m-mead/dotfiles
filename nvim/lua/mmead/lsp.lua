@@ -118,6 +118,9 @@ cmp.setup({
       name = 'buffer',
       keyword_length = 5
     },
+    {
+      name = 'path',
+    },
   },
   snippet = {
     expand = function(args)
