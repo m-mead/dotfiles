@@ -5,6 +5,7 @@ local treesitter_grammars = {
   'cmake',
   'cpp',
   'dockerfile',
+  'doxygen',
   'go',
   'json',
   'lua',
