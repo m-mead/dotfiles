@@ -16,7 +16,6 @@ vim.opt.rtp:prepend(lazypath)
 -- Lazy load plugins
 require("lazy").setup({
   'folke/neodev.nvim',
-  'github/copilot.vim',
   'hrsh7th/cmp-buffer',
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-nvim-lsp-signature-help',
@@ -34,7 +33,6 @@ require("lazy").setup({
   'nvim-treesitter/nvim-treesitter',
   'nvim-treesitter/nvim-treesitter-context',
   'shaunsingh/nord.nvim',
-  'tpope/vim-commentary',
   'tpope/vim-dispatch',
   'tpope/vim-sleuth',
   'tpope/vim-surround',
