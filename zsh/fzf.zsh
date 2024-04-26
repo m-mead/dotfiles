@@ -6,4 +6,8 @@ if [[ "$(uname)" == "Darwin" ]]; then
 
         source ~/.fzf.zsh
     fi
+elif [[ "$(uname)" == "Linux" ]]; then
+    if [ -x "$(command -v fzf)" ]; then
+        eval "$(fzf --zsh)"
+    fi
 fi
