@@ -32,12 +32,10 @@ require("lazy").setup({
   'nvim-tree/nvim-web-devicons',
   'nvim-treesitter/nvim-treesitter',
   'nvim-treesitter/nvim-treesitter-context',
-  'shaunsingh/nord.nvim',
   'tpope/vim-dispatch',
   'tpope/vim-sleuth',
   'tpope/vim-surround',
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
-  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
   { "ellisonleao/gruvbox.nvim", priority = 1000 , config = true},
 })
