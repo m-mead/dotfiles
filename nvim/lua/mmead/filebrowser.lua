@@ -1,1 +1,1 @@
-vim.keymap.set('n', '<leader>e', ':Lexplore<cr>', { desc = 'explore files (toggle netrw)' })
+-- vim.keymap.set('n', '<leader>e', ':Lexplore<cr>', { desc = 'explore files (toggle netrw)' })
