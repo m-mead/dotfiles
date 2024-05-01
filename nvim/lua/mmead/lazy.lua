@@ -32,6 +32,7 @@ require("lazy").setup({
   'nvim-tree/nvim-web-devicons',
   'nvim-treesitter/nvim-treesitter',
   'nvim-treesitter/nvim-treesitter-context',
+  'stevearc/oil.nvim',
   'tpope/vim-dispatch',
   'tpope/vim-sleuth',
   'tpope/vim-surround',
