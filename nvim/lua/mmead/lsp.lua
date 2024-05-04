@@ -67,7 +67,7 @@ local servers = {
 }
 
 local mason_lspconfig = require 'mason-lspconfig'
-mason_lspconfig.setup {}
+mason_lspconfig.setup { ensure_installed = { 'clangd', 'lua_ls', 'gopls', 'marksman' }}
 
 for server, _ in pairs(servers) do
   require('lspconfig')[server].setup { on_attach = on_attach, capabilities = capabilities }
