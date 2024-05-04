@@ -38,10 +38,14 @@ function install_macos() {
     brew install font-jetbrains-mono-nerd-font
 
     install_rust
+
+    install_dotfiles
 }
 
 function install_linux() {
     install_rust
+
+    install_dotfiles
 }
 
 function install_rust() {
