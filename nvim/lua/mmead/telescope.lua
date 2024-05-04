@@ -58,3 +58,6 @@ vim.keymap.set('n', '<leader>s0', function()
   telescope_builtin.find_files(telescope_themes.get_dropdown({ previewer = false, cwd = vim.fn.stdpath('config'),
     layout_config = { width = 0.8 } }))
 end, { desc = 'search dotfiles' })
+
+-- Extensions
+require('telescope').load_extension('fzf')
