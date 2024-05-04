@@ -18,14 +18,8 @@ Clone the repository
 git clone https://github.com/m-mead/dotfiles.git
 ```
 
-Install the pre-requisites
-
-```shell
-pip install rich
-```
-
 Run the installer
 
 ```shell
-python install.py
+./setup_dev_env --macos
 ```
