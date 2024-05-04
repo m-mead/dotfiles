@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+COMMAND=$1
+
+if [[ "${COMMAND:-commit}" == "commit" ]]; then
+        git log --oneline | fzf | cut -d " " -f 1
+fi
+
+if [[ "${COMMAND}" = "branch" ]]; then
+        git branch -la | fzf
+fi
