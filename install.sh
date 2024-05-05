@@ -15,20 +15,16 @@ function symlink_file_if_not_present() {
 }
 
 function install_macos() {
-    if [ -x "$(command -v brew)" ]; then
+    if [ ! -x "$(command -v brew)" ]; then
         echo -e "homebrew not found, cannot continue with installation"
         exit 1
     fi
 
-    brew install lazygit
-    brew install tmux
-    brew install bat
-    brew install fd
-    brew install fzf
+    brew install coreutils
     brew install git-lfs
     brew install go
-    brew install nvm
     brew install pipx
+    brew install tmux
 
     brew install --cask wezterm
     brew install --head neovim
@@ -39,18 +35,56 @@ function install_macos() {
 
     install_rust
 
+    install_go
+
     install_dotfiles
 }
 
 function install_linux() {
     install_rust
 
+    install_go
+
     install_dotfiles
 }
 
 function install_rust() {
-    if [ ! -x "$(command -v cargo)" ]; then
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    if [ ! -x "$(command -v rustup)" ]; then
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
+    fi
+
+    rustup update
+
+    source ${HOME}/.cargo/env
+    cargo install fd-find
+    cargo install bat
+    cargo install ripgrep
+}
+
+function install_go() {
+    if [ ! -x "$(command -v go)" ]; then
+        wget https://go.dev/dl/go1.22.2.linux-amd64.tar.gz
+        rm -rf /usr/local/go
+        tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz
+        rm go1.22.2.linux-amd64.tar.gz
+    fi
+
+    PATH=${PATH}:/usr/local/go/bin
+    go install github.com/junegunn/fzf@latest
+    go install github.com/jesseduffield/lazygit@latest
+}
+
+function install_neovim() {
+    if [ ! -x "$(command -v nvim)" ]; then
+        mkdir -p deps
+        pushd deps
+
+        git clone https://github.com/neovim/neovim.git
+        cd neovim
+        make CMAKE_BUILD_TYPE=RelWithDebInfo
+        sudo make install
+
+        popd
     fi
 }
 
@@ -71,11 +105,10 @@ function install_dotfiles() {
 
 function usage() {
     echo "Usage:"
-    echo "  setup_dev_env [--macos] [--linux]"
+    echo "  setup_dev_env [--macos] [--linux] [--dotfiles]"
     echo "Options:"
     echo "  --macos     Install macos packages"
     echo "  --linux     Install linux packages"
-    echo "  --rust      Install rust"
     echo "  --dotfiles  Install dotfiles"
 }
 
@@ -92,10 +125,6 @@ for arg in "$@"; do
             ;;
         --linux)
             install_linux
-            shift
-            ;;
-        --rust)
-            install_rust
             shift
             ;;
         --dotfiles)
