@@ -56,8 +56,11 @@ function install_rust() {
     rustup update
 
     source ${HOME}/.cargo/env
-    cargo install fd-find
+
     cargo install bat
+    cargo install btop
+    cargo install du-dust
+    cargo install fd-find
     cargo install ripgrep
 }
 
@@ -70,8 +73,10 @@ function install_go() {
     fi
 
     PATH=${PATH}:/usr/local/go/bin
+
     go install github.com/junegunn/fzf@latest
     go install github.com/jesseduffield/lazygit@latest
+    go install github.com/jesseduffield/lazydocker@latest
 }
 
 function install_neovim() {

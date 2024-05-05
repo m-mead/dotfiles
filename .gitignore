@@ -21,3 +21,5 @@ emacs/transient/
 emacs/tramp
 emacs/tree-sitter/
 emacs/projects
+
+deps/
