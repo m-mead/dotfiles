@@ -12,13 +12,13 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap = true, si
 --
 -- Normal mode
 --  crn -> vim.lsp.buf.rename()
---  crr -> vim.lsp.buf.code_actions()
+--  crr -> vim.lsp.buf.code_action()
 --  gr  -> vim.lsp.buf.references()
 --  ]d  -> vim.diagnostic.goto_next()
 --  [d  -> vim.diagnostic.goto_prev()
 --
 -- Visual mode
---  CTRL-R CTRL-R -> vim.lsp.buf.code_actions()
+--  CTRL-R CTRL-R -> vim.lsp.buf.code_action()
 --  CTRL-R r      -> vim.slp.buf.code_actions()
 --
 -- Insert mode
@@ -36,7 +36,7 @@ local on_attach = function(_, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', '<cmd>Telescope lsp_document_symbols<CR>', opts)
 
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>Telescope lsp_references<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd> lua vim.lsp.buf.code_actions()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd> lua vim.lsp.buf.code_action()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd> lua vim.lsp.buf.rename()<CR>', opts)
 
   -- Off spec. keymaps
