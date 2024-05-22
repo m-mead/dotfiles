@@ -23,5 +23,5 @@ local function load_colorscheme(plugin_name, theme, opts)
   })
 end
 
--- load_colorscheme('tokyonight', 'tokyonight-night', {})
-load_colorscheme('tokyonight', 'tokyonight-day', {})
+load_colorscheme('tokyonight', 'tokyonight-night', {})
+-- load_colorscheme('tokyonight', 'tokyonight-day', {})
