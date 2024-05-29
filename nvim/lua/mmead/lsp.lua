@@ -11,11 +11,12 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap = true, si
 -- Default mappings in nvim >= 0.10:
 --
 -- Normal mode
---  crn -> vim.lsp.buf.rename()
---  crr -> vim.lsp.buf.code_action()
---  gr  -> vim.lsp.buf.references()
---  ]d  -> vim.diagnostic.goto_next()
---  [d  -> vim.diagnostic.goto_prev()
+--  crn    -> vim.lsp.buf.rename()
+--  crr    -> vim.lsp.buf.code_action()
+--  gr     -> vim.lsp.buf.references()
+--  ]d     -> vim.diagnostic.goto_next()
+--  [d     -> vim.diagnostic.goto_prev()
+-- <C-w>d  -> vim.diagnostic.open_float()
 --
 -- Visual mode
 --  CTRL-R CTRL-R -> vim.lsp.buf.code_action()
@@ -32,7 +33,6 @@ local on_attach = function(_, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gS', '<cmd>Telescope lsp_workspace_symbols<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>Telescope lsp_definitions<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gl', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', '<cmd>Telescope lsp_document_symbols<CR>', opts)
 
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>Telescope lsp_references<CR>', opts)
@@ -130,7 +130,7 @@ cmp.setup({
     },
     {
       name = 'buffer',
-      keyword_length = 5
+      keyword_length = 3
     },
     {
       name = 'path',
@@ -152,7 +152,7 @@ cmp.setup({
         vim_item.abbr = string.sub(vim_item.abbr, 1, max_item_length) .. truncated_trailer
       end
 
-      vim_item.menu = ({ nvim_lsp = "[LSP]", buffer = "[Buf]" })[entry.source.name]
+      vim_item.menu = ({ nvim_lsp = "[LSP]", buffer = "[Buf]", path = "[Path]" })[entry.source.name]
 
       return vim_item
     end
