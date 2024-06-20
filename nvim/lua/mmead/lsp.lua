@@ -70,8 +70,14 @@ local servers = {
   solargraph = {},
 }
 
+local lsp_servers = { 'clangd', 'lua_ls', 'gopls', 'marksman' }
+
+if vim.fn.executable("npm") == 1 then
+  table.insert(lsp_servers, 'pyright')
+end
+
 local mason_lspconfig = require 'mason-lspconfig'
-mason_lspconfig.setup { ensure_installed = { 'clangd', 'lua_ls', 'gopls', 'marksman' }}
+mason_lspconfig.setup { ensure_installed = lsp_servers }
 
 for server, _ in pairs(servers) do
   require('lspconfig')[server].setup { on_attach = on_attach, capabilities = capabilities }

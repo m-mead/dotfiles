@@ -40,6 +40,12 @@ require("lazy").setup({
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
   {
+    'ellisonleao/gruvbox.nvim',
+    priority = 1000,
+    config = true,
+    opts = {}
+  },
+  {
     'folke/tokyonight.nvim',
     lazy = false,
     priority = 1000,
