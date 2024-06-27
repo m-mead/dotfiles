@@ -5,10 +5,9 @@ local config = wezterm.config_builder()
 
 function scheme_for_appearance(appearance)
   if appearance:find "Dark" then
-    -- return "tokyonight"
     return "GruvboxDark"
   else
-    return "tokyonight-day"
+    return "catppuccin-latte"
   end
 end
 
