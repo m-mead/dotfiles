@@ -23,5 +23,5 @@ local function load_colorscheme(plugin_name, theme, opts)
   })
 end
 
-load_colorscheme('gruvbox', 'gruvbox', {})
+load_colorscheme('catppuccin', 'catppuccin-latte', {})
 -- load_colorscheme('tokyonight', 'tokyonight-night', {})
