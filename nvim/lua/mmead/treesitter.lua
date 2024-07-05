@@ -12,6 +12,7 @@ local treesitter_grammars = {
   'lua',
   'markdown',
   'python',
+  'query',
   'ruby',
   'toml',
   'typescript',
