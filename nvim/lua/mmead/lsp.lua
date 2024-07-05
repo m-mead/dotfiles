@@ -11,43 +11,71 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap = true, si
 -- Default mappings in nvim >= 0.10:
 --
 -- Normal mode
---  crn    -> vim.lsp.buf.rename()
---  crr    -> vim.lsp.buf.code_action()
 --  gr     -> vim.lsp.buf.references()
 --  ]d     -> vim.diagnostic.goto_next()
 --  [d     -> vim.diagnostic.goto_prev()
 -- <C-w>d  -> vim.diagnostic.open_float()
 --
--- Visual mode
---  CTRL-R CTRL-R -> vim.lsp.buf.code_action()
---  CTRL-R r      -> vim.slp.buf.code_actions()
---
 -- Insert mode
 --  CTRL-S -> vim.lsp.buf.signature_help()
-local on_attach = function(_, bufnr)
-  local opts = { noremap = true, silent = true }
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>cf', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'E', '<cmd>Telescope diagnostics bufnr=0<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gS', '<cmd>Telescope lsp_workspace_symbols<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>Telescope lsp_definitions<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gs', '<cmd>Telescope lsp_document_symbols<CR>', opts)
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
+  callback = function(event)
+    local map = function(keys, func, desc)
+      vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+    end
 
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>Telescope lsp_references<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd> lua vim.lsp.buf.code_action()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd> lua vim.lsp.buf.rename()<CR>', opts)
+    map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+    map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+    map('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
+    map('<leader>gS', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+    map('<leader>gs', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+    map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+    map('E', function() require('telescope.builtin').diagnostics({ bufnr = 0 }) end, '[E]rrors')
+    map('K', vim.lsp.buf.hover, 'Hover Documentation')
+    map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+    map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+    map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
 
-  -- Off spec. keymaps
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<f3>', '<cmd>ClangdSwitchSourceHeader<CR>', opts)
+    -- Highlight LSP references on CursorHold
+    local client = vim.lsp.get_client_by_id(event.data.client_id)
+    if client and client.server_capabilities.documentHighlightProvider then
+      local highlight_augroup = vim.api.nvim_create_augroup('lsp-highlight', { clear = false })
+      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+        buffer = event.buf,
+        group = highlight_augroup,
+        callback = vim.lsp.buf.document_highlight,
+      })
 
-  if vim.lsp.inlay_hint then
-    vim.keymap.set("n", "<leader>hh", function()
-      vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled(0))
-    end, { desc = "Toggle inlay hints" })
-  end
-end
+      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+        buffer = event.buf,
+        group = highlight_augroup,
+        callback = vim.lsp.buf.clear_references,
+      })
+
+      vim.api.nvim_create_autocmd('LspDetach', {
+        group = vim.api.nvim_create_augroup('lsp-detach', { clear = true }),
+        callback = function(event2)
+          vim.lsp.buf.clear_references()
+          vim.api.nvim_clear_autocmds { group = 'lsp-highlight', buffer = event2.buf }
+        end,
+      })
+    end
+
+    -- Inlay hints
+    if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+      map('<leader>hh', function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+      end, '[T]oggle Inlay [H]ints')
+    end
+
+    -- Off-spec capabilities
+    if client and client.name == 'clangd' then
+      map('<f3>', function() vim.cmd('ClangdSwitchSourceHeader') end, 'Switch header and source (C/C++)')
+    end
+  end,
+
+})
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
@@ -77,21 +105,29 @@ if vim.fn.executable("npm") == 1 then
   table.insert(lsp_servers, 'tsserver')
 end
 
-local mason_lspconfig = require 'mason-lspconfig'
-mason_lspconfig.setup { ensure_installed = lsp_servers }
-
-for server, _ in pairs(servers) do
-  require('lspconfig')[server].setup { on_attach = on_attach, capabilities = capabilities }
-end
+-- local mason_lspconfig = require 'mason-lspconfig'
+-- mason_lspconfig.setup { ensure_installed = lsp_servers }
+--
+-- for server, _ in pairs(servers) do
+--   server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+--   require('lspconfig')[server].setup(server)
+-- end
+require('mason-lspconfig').setup {
+  ensure_installed = lsp_servers,
+  handlers = {
+    function(server_name)
+      local server = servers[server_name] or {}
+      -- This handles overriding only values explicitly passed
+      -- by the server configuration above. Useful when disabling
+      -- certain features of an LSP (for example, turning off formatting for tsserver)
+      server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+      require('lspconfig')[server_name].setup(server)
+    end,
+  },
+}
 
 -- Setup autocompletion using nvim-cmp.
 local cmp = require('cmp')
-
-local has_words_before = function()
-  unpack = unpack or table.unpack
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-end
 
 local feedkey = function(key, mode)
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
@@ -99,34 +135,27 @@ end
 
 cmp.setup({
   mapping = {
-    -- ["<C-n>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
-    ["<Down>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
-    -- ["<C-p>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
-    ["<Up>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ["<Down>"] = cmp.mapping.select_next_item(),
+    ["<Up>"] = cmp.mapping.select_prev_item(),
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-e>'] = cmp.mapping.abort(),
     ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
     ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-n>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif vim.fn["vsnip#available"](1) == 1 then
+    -- Move right in snippet
+    ['<C-l>'] = cmp.mapping(function()
+      if vim.fn["vsnip#available"](1) == 1 then
         feedkey("<Plug>(vsnip-expand-or-jump)", "")
-      elseif has_words_before() then
-        cmp.complete()
-      else
-        fallback()
       end
     end, { 'i', 's' }),
-    ["<C-p>"] = cmp.mapping(function()
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+    -- Move left in snippet
+    ['<C-h>'] = cmp.mapping(function()
+      if vim.fn["vsnip#jumpable"](-1) == 1 then
         feedkey("<Plug>(vsnip-jump-prev)", "")
       end
-    end, { "i", "s" }),
+    end, { 'i', 's' }),
   },
   sources = {
     {
