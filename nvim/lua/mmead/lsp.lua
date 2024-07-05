@@ -7,17 +7,15 @@ require('mason-lspconfig').setup()
 -- Diagnostic keymappings
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap = true, silent = true })
 
--- Set LSP keybindings to be attached only when client is attached.
--- Default mappings in nvim >= 0.10:
+-- Keybindings (see :h lsp-defaults)
 --
--- Normal mode
---  gr     -> vim.lsp.buf.references()
---  ]d     -> vim.diagnostic.goto_next()
---  [d     -> vim.diagnostic.goto_prev()
--- <C-w>d  -> vim.diagnostic.open_float()
---
--- Insert mode
---  CTRL-S -> vim.lsp.buf.signature_help()
+-- Conditional mappings
+-- - |K| is mapped to |vim.lsp.buf.hover()| unless |'keywordprg'| is customized or a custom keymap for `K` exists.
+-- Unconditional mappings
+-- - "grn" is mapped in Normal mode to |vim.lsp.buf.rename()|
+-- - "gra" is mapped in Normal and Visual mode to |vim.lsp.buf.code_action()|
+-- - "grr" is mapped in Normal mode to |vim.lsp.buf.references()|
+-- - CTRL-S is mapped in Insert mode to |vim.lsp.buf.signature_help()|
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
   callback = function(event)
@@ -26,13 +24,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-    map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
     map('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
     map('<leader>gS', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
     map('<leader>gs', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-    map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
     map('E', function() require('telescope.builtin').diagnostics({ bufnr = 0 }) end, '[E]rrors')
-    map('K', vim.lsp.buf.hover, 'Hover Documentation')
     map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
     map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
     map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
