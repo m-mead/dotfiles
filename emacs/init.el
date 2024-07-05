@@ -1,9 +1,5 @@
 ;; ------------------------------------------------------------------------------
 ;; Welcome to my Emacs configuration!
-;;
-;; I am new to Emacs and am dipping my toes in the water.
-;; As such, much of this configuration may be less than optimal.
-;; Use at your own risk. ;)
 ;; ------------------------------------------------------------------------------
 
 ;; ------------------------------------------------------------------------------
@@ -20,7 +16,7 @@
   (global-display-line-numbers-mode))
 (setq column-number-mode t)
 
-(set-frame-font "JetBrainsMono Nerd Font 12" nil t)
+(set-frame-font "JetBrainsMono Nerd Font 13" nil t)
 
 (recentf-mode 1)
 (save-place-mode 1)
@@ -31,6 +27,8 @@
 
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
 (load custom-file 'noerror 'nomessage)
+
+(add-to-list 'mode-line-misc-info '("@" system-name) t)
 
 ;; ------------------------------------------------------------------------------
 ;; package management
@@ -46,7 +44,14 @@
         (or (bound-and-true-p straight-base-dir)
             user-emacs-directory)))
       (bootstrap-version 7))
-    (load bootstrap-file nil 'nomessage))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
 (use-package straight
   :custom
@@ -444,6 +449,17 @@
 				   word-wrap nil)))
 
 (use-package go-mode)
+(use-package rust-mode)
+
+;; ------------------------------------------------------------------------------
+;; editorconfig
+;;
+;; See https://github.com/editorconfig/editorconfig-emacs
+;; ------------------------------------------------------------------------------
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
 
 ;; ------------------------------------------------------------------------------
 ;; treesitter
@@ -468,15 +484,21 @@
 ;;
 ;; See https://github.com/renzmann/treesit-auto
 (use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
   :config
-  (treesit-auto-add-to-auto-mode-alist 'all))
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
 
 ;; ------------------------------------------------------------------------------
 ;; eglot
 ;;
 ;; The built-in (since >= 29) LSP client for Emacs.
 ;; ------------------------------------------------------------------------------
-(add-hook 'c-ts-mode-hook 'eglot-ensure)
-(add-hook 'c++-ts-mode-hook 'eglot-ensure)
+(add-hook 'c-mode-common-hook 'eglot-ensure)
 (add-hook 'go-ts-mode-hook 'eglot-ensure)
 (add-hook 'python-ts-mode-hook 'eglot-ensure)
+(add-hook 'rust-ts-mode-hook 'eglot-ensure)
+
+;; Disable inlay hints by default
+(setq eglot-ignored-server-capabilities '(:inlayHintProvider))
