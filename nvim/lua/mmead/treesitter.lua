@@ -87,7 +87,7 @@ require('nvim-treesitter.configs').setup({
   },
 })
 
-require 'treesitter-context'.setup { enable = false }
+require 'treesitter-context'.setup { enable = true }
 
 vim.keymap.set('n', '<leader>tt', '<cmd>TSContextToggle<cr>',
   { noremap = true, silent = true, desc = 'Toggle treesitter context' })
