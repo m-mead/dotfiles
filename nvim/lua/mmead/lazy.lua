@@ -44,8 +44,7 @@ require("lazy").setup({
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
   {
-    "catppuccin/nvim",
-    name = "catppuccin",
+    "rebelot/kanagawa.nvim",
     priority = 1000
-  },
+  }
 })
