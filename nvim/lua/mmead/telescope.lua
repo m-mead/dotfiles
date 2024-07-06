@@ -12,8 +12,12 @@ end, { desc = 'find buffer' })
 
 -- Old files
 vim.keymap.set('n', '<leader>?', function()
-  telescope_builtin.oldfiles(telescope_themes.get_dropdown({ previewer = false, only_cwd = true, cwd = vim.fn.getcwd(),
-    layout_config = { width = 0.8 } }))
+  telescope_builtin.oldfiles(telescope_themes.get_dropdown({
+    previewer = false,
+    only_cwd = true,
+    cwd = vim.fn.getcwd(),
+    layout_config = { width = 0.8 }
+  }))
 end, { desc = 'recent files' })
 
 -- All files
@@ -55,8 +59,11 @@ end, { desc = 'search ump list' })
 
 -- Config files
 vim.keymap.set('n', '<leader>s0', function()
-  telescope_builtin.find_files(telescope_themes.get_dropdown({ previewer = false, cwd = vim.fn.stdpath('config'),
-    layout_config = { width = 0.8 } }))
+  telescope_builtin.find_files(telescope_themes.get_dropdown({
+    previewer = false,
+    cwd = vim.fn.stdpath('config'),
+    layout_config = { width = 0.8 }
+  }))
 end, { desc = 'search dotfiles' })
 
 -- Extensions

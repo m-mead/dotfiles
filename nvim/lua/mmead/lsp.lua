@@ -23,14 +23,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
     end
 
-    map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+    map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'LSP type [D]efinition')
     map('<leader>cf', vim.lsp.buf.format, '[C]ode [F]ormat')
-    map('<leader>gS', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-    map('<leader>gs', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-    map('E', function() require('telescope.builtin').diagnostics({ bufnr = 0 }) end, '[E]rrors')
-    map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-    map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-    map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+    map('<leader>gS', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'LSP workspace symbols')
+    map('<leader>gs', require('telescope.builtin').lsp_document_symbols, 'LSP document symbols')
+    map('E', function() require('telescope.builtin').diagnostics({ bufnr = 0 }) end, 'LSP [E]rrors')
+    map('gD', vim.lsp.buf.declaration, 'LSP [G]oto [D]eclaration')
+    map('gI', require('telescope.builtin').lsp_implementations, 'LSP [G]oto [I]mplementation')
+    map('gd', require('telescope.builtin').lsp_definitions, 'LSP [G]oto [D]efinition')
 
     -- Highlight LSP references on CursorHold
     local client = vim.lsp.get_client_by_id(event.data.client_id)
@@ -61,7 +61,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
       map('<leader>hh', function()
         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-      end, '[T]oggle Inlay [H]ints')
+      end, 'LSP toggle inlay [H]ints')
     end
 
     -- Off-spec capabilities
@@ -152,6 +152,7 @@ cmp.setup({
       end
     end, { 'i', 's' }),
   },
+  -- Completion sources -- order matters
   sources = {
     {
       name = 'nvim_lsp'

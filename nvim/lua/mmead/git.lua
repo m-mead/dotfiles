@@ -2,7 +2,7 @@ require('gitsigns').setup({
   signcolumn = true,
   numhl      = false, -- Toggle with `:Gitsigns toggle_numhl`
   linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
-  on_attach = function(bufnr)
+  on_attach  = function(bufnr)
     local gs = package.loaded.gitsigns
 
     local function map(mode, l, r, opts)

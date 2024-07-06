@@ -23,6 +23,4 @@ local function load_colorscheme(plugin_name, theme, opts)
   })
 end
 
--- load_colorscheme('catppuccin', 'catppuccin-mocha', {})
 load_colorscheme("kanagawa", 'kanagawa', {})
--- load_colorscheme('tokyonight', 'tokyonight-night', {})
