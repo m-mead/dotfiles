@@ -68,3 +68,6 @@ end, { desc = 'search dotfiles' })
 
 -- Extensions
 require('telescope').load_extension('fzf')
+
+local cmake = require('telescope').load_extension('cmake')
+vim.keymap.set('n', '<leader>sC', function() cmake.show_cmake_targets() end, { desc = 'search cmake targets' })
