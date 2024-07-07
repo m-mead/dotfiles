@@ -14,9 +14,8 @@ local function get_build_dir(dir)
   return dir .. '/build'
 end
 
-local function check_is_cmake_root(dir)
+local function check_is_cmake_project(dir, build_dir)
   local cmakelists = dir .. '/CMakeLists.txt'
-  local build_dir = get_build_dir(dir)
 
   if vim.fn.filereadable(cmakelists) == 0 then
     print('current working directory must container a CMakeLists.txt')
@@ -31,7 +30,7 @@ local function check_is_cmake_root(dir)
   return true
 end
 
-local function create_new_finder(build_dir)
+local function create_cmake_target_finder(build_dir)
   return finders.new_async_job({
     cwd = build_dir,
     command_generator = function()
@@ -50,66 +49,103 @@ local function create_new_finder(build_dir)
   })
 end
 
-local function create_new_previewer()
-  return previewers.new_buffer_previewer({
-    title = 'CMake Targets',
-    define_preview = function(self, entry)
-      vim.api.nvim_buf_set_lines(
-        self.state.bufnr,
-        0,
-        0,
-        true,
-        vim.iter({ 'cmake', '--build', '.', vim.split(vim.inspect(entry.value), '\n'), }):flatten():totable()
-      )
-      utils.highlighter(self.state.bufnr, 'markdown')
-    end
-  })
-end
-
-local function create_new_sorter(opts)
+local function create_sorter(opts)
   return config.generic_sorter(opts)
 end
 
-local function select_cmake_target(prompt_bufnr)
-  local selection = action_state.get_selected_entry()
+local function run_aysnc_job_and_stream_output(opts)
+  local output_buffer = -1
+
+  local function send_output_to_buffer(err, data)
+    if err then
+      error(err)
+    end
+
+    vim.schedule(function()
+      if output_buffer == -1 then
+        vim.cmd("botright split")
+
+        local window = vim.api.nvim_get_current_win()
+        output_buffer = vim.api.nvim_create_buf(true, true)
+
+        vim.api.nvim_win_set_buf(window, output_buffer)
+      end
+
+      if data then
+        local line_count = vim.api.nvim_buf_line_count(output_buffer) - 1
+
+        vim.api.nvim_buf_set_lines(output_buffer, line_count, line_count, true, { data })
+      end
+    end)
+  end
 
   job:new({
-    command = 'cmake',
-    args = { '--build', '.', '--target', selection.value, '--parallel' },
-    cwd = get_build_dir(vim.fn.getcwd()),
+    command = opts.command,
+    args = opts.args,
+    cwd = opts.cwd,
+    on_stdout = send_output_to_buffer,
+    on_stderr = send_output_to_buffer,
   }):start()
+end
+
+local function select_cmake_target(prompt_bufnr, build_dir)
+  local selection = action_state.get_selected_entry()
+
+  run_aysnc_job_and_stream_output({
+    command = "cmake",
+    args = { '--build', '.', '--target', selection.value, '--parallel' },
+    cwd = build_dir,
+  })
 
   actions.close(prompt_bufnr)
 end
 
-local M              = {}
+local M                 = {}
 
-M.show_cmake_targets = function(opts)
+M.show_cmake_targets    = function(opts)
   opts = opts or {}
+
   local root = opts.root or vim.fn.getcwd()
 
-  if not check_is_cmake_root(root) then
+  local build_dir = get_build_dir(root)
+
+  if not check_is_cmake_project(root, build_dir) then
     error('directory must be the root directory of a cmake project')
   end
 
-  pickers.new(opts, {
-    finder = create_new_finder(get_build_dir(root)),
-    sorter = create_new_sorter(opts),
-    previewer = create_new_previewer(),
-    attach_mappings = function(_, map)
-      map('i', '<cr>', select_cmake_target)
-      map('i', '<c-y>', select_cmake_target)
+  local function on_select_cmake_target(prompt_bufnr)
+    select_cmake_target(prompt_bufnr, build_dir)
+  end
 
-      map('n', '<cr>', select_cmake_target)
-      map('n', '<c-y>', select_cmake_target)
+  pickers.new(opts, {
+    finder = create_cmake_target_finder(build_dir),
+    sorter = create_sorter(opts),
+    attach_mappings = function(_, map)
+      map('i', '<cr>', on_select_cmake_target)
+      map('i', '<c-y>', on_select_cmake_target)
+
+      map('n', '<cr>', on_select_cmake_target)
+      map('n', '<c-y>', on_select_cmake_target)
+
       return true
     end,
   }):find()
 end
 
+M.show_cmake_generators = function(opts)
+  error('function show_cmake_generators is not implemented')
+end
+
+M.show_ctest_tests      = function(opts)
+  -- TODO(mmead): use "ctest --show-only=json-v1"
+  error('function show_ctest_tests is not implemented')
+end
+
 return require('telescope').register_extension {
   setup = function(_) end,
   exports = {
-    show_cmake_targets = M.show_cmake_targets
+    show_cmake_targets = M.show_cmake_targets,
+    show_cmake_generators = M.show_cmake_generators,
+    show_ctest_tests = M.show_ctest_tests,
   },
 }
