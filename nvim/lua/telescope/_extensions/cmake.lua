@@ -1,8 +1,12 @@
+-- TODO
+--
+-- [x] Build CMake target via telescope selection
+-- [ ] Show all CMake generators via telescope
+-- [ ] Run CTest tests via telescope
+-- [ ] Persist CMake settings via project specified save file in share directory
 local pickers      = require('telescope.pickers')
 local config       = require('telescope.config').values
 local finders      = require('telescope.finders')
-local previewers   = require('telescope.previewers')
-local utils        = require('telescope.previewers.utils')
 local action_state = require('telescope.actions.state')
 local actions      = require('telescope.actions')
 local job          = require 'plenary.job'
@@ -10,10 +14,11 @@ local job          = require 'plenary.job'
 local logger       = require('plenary.log'):new()
 logger.level       = 'debug'
 
-local function get_build_dir(dir)
-  return dir .. '/build'
-end
 
+--- Check if the project is a cmake project
+--- @param dir string
+--- @param build_dir string
+--- @return boolean
 local function check_is_cmake_project(dir, build_dir)
   local cmakelists = dir .. '/CMakeLists.txt'
 
@@ -30,6 +35,9 @@ local function check_is_cmake_project(dir, build_dir)
   return true
 end
 
+--- Create a new telescope finder for finding cmake targets
+--- @param build_dir string
+--- @return table
 local function create_cmake_target_finder(build_dir)
   return finders.new_async_job({
     cwd = build_dir,
@@ -49,11 +57,20 @@ local function create_cmake_target_finder(build_dir)
   })
 end
 
+--- Create a new telescope sorter
+--- @param opts table
+--- @return table
 local function create_sorter(opts)
   return config.generic_sorter(opts)
 end
 
+--- Run an async job using plenary and send the output to a new window.
+---
+--- By default, the buffer will be a horizontal split below the current buffer.
+--- @param opts table
 local function run_aysnc_job_and_stream_output(opts)
+  local layout_command = opts.layout_command or "botright split"
+
   local output_buffer = -1
 
   local function send_output_to_buffer(err, data)
@@ -63,7 +80,7 @@ local function run_aysnc_job_and_stream_output(opts)
 
     vim.schedule(function()
       if output_buffer == -1 then
-        vim.cmd("botright split")
+        vim.cmd(layout_command)
 
         local window = vim.api.nvim_get_current_win()
         output_buffer = vim.api.nvim_create_buf(true, true)
@@ -88,6 +105,10 @@ local function run_aysnc_job_and_stream_output(opts)
   }):start()
 end
 
+--- Select and build a cmake target via telescope
+---
+--- @param prompt_bufnr integer
+--- @param build_dir string
 local function select_cmake_target(prompt_bufnr, build_dir)
   local selection = action_state.get_selected_entry()
 
@@ -107,7 +128,7 @@ M.show_cmake_targets    = function(opts)
 
   local root = opts.root or vim.fn.getcwd()
 
-  local build_dir = get_build_dir(root)
+  local build_dir = root .. '/build'
 
   if not check_is_cmake_project(root, build_dir) then
     error('directory must be the root directory of a cmake project')
