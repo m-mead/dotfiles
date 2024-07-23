@@ -25,5 +25,6 @@ end
 
 -- load_colorscheme("catppuccin", 'catppuccin-latte', {})
 -- load_colorscheme("rose-pine", 'rose-pine', {})
-load_colorscheme("gruvbox", 'gruvbox', {})
+-- load_colorscheme("gruvbox", 'gruvbox', {})
+load_colorscheme("nightfox", 'nordfox', {})
 

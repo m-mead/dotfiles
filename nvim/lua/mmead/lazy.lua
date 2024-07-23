@@ -43,5 +43,5 @@ require("lazy").setup({
   'tpope/vim-surround',
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
-  { "ellisonleao/gruvbox.nvim", priority = 1000 },
+  { "EdenEast/nightfox.nvim", priority = 1000 },
 })
