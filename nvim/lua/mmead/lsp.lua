@@ -31,6 +31,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map('gD', vim.lsp.buf.declaration, 'LSP [G]oto [D]eclaration')
     map('gI', require('telescope.builtin').lsp_implementations, 'LSP [G]oto [I]mplementation')
     map('gd', require('telescope.builtin').lsp_definitions, 'LSP [G]oto [D]efinition')
+    map('grr', require('telescope.builtin').lsp_references, 'LSP [G]oto [R]eferences')
 
     -- Highlight LSP references on CursorHold
     local client = vim.lsp.get_client_by_id(event.data.client_id)
