@@ -94,26 +94,15 @@
 (use-package magit)
 
 ;; ------------------------------------------------------------------------------
-;; evil
+;; diff-hl
 ;;
-;; Evil is an extensible vi layer for Emacs.
+;; diff-hl highlights vcs changes in the gutter.
 ;;
-;; See https://github.com/emacs-evil/evil
+;; See https://github.com/dgutov/diff-hl
 ;; ------------------------------------------------------------------------------
-(use-package evil
-  :ensure t
-  :init
-  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  :config
-  (evil-mode 1))
-
-(use-package evil-collection
-  :after evil
-  :ensure t
-  :config
-  (evil-collection-init))
+(use-package diff-hl
+  :straight t)
+(global-diff-hl-mode)
 
 ;; ------------------------------------------------------------------------------
 ;; consult
@@ -457,7 +446,7 @@
 ;; See https://github.com/editorconfig/editorconfig-emacs
 ;; ------------------------------------------------------------------------------
 (use-package editorconfig
-  :ensure t
+  :straight t
   :config
   (editorconfig-mode 1))
 
@@ -476,8 +465,7 @@
 	(python "https://github.com/tree-sitter/tree-sitter-python")
 	(rust "https://github.com/tree-sitter/tree-sitter-rust")
 	(toml "https://github.com/tree-sitter/tree-sitter-toml")
-	(typescript "https://github.com/tree-sitter/tree-sitter-typecsript")
-	(yaml "https://github.com/tree-sitter/tree-sitter-yml")))
+	(typescript "https://github.com/tree-sitter/tree-sitter-typecsript")))
 
 ;; Automatically install and use tree-sitter major modes.
 ;; Requires Emacs >= 29.
