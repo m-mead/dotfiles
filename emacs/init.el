@@ -490,3 +490,9 @@
 
 ;; Disable inlay hints by default
 (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
+
+;; ------------------------------------------------------------------------------
+;; breadcrumb
+;; ------------------------------------------------------------------------------
+(use-package breadcrumb
+  :straight t)
