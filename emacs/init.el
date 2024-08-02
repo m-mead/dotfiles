@@ -57,6 +57,8 @@
   :custom
   (straight-use-package-by-default t))
 
+(straight-use-package 'project)
+
 ;; ------------------------------------------------------------------------------
 ;; theme
 ;; ------------------------------------------------------------------------------
@@ -483,10 +485,12 @@
 ;;
 ;; The built-in (since >= 29) LSP client for Emacs.
 ;; ------------------------------------------------------------------------------
-(add-hook 'c-mode-common-hook 'eglot-ensure)
-(add-hook 'go-ts-mode-hook 'eglot-ensure)
-(add-hook 'python-ts-mode-hook 'eglot-ensure)
-(add-hook 'rust-ts-mode-hook 'eglot-ensure)
+
+
+;;(add-hook 'c-mode-common-hook 'eglot-ensure)
+;;(add-hook 'go-ts-mode-hook 'eglot-ensure)
+;;(add-hook 'python-ts-mode-hook 'eglot-ensure)
+;;(add-hook 'rust-ts-mode-hook 'eglot-ensure)
 
 ;; Disable inlay hints by default
 (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
@@ -494,5 +498,4 @@
 ;; ------------------------------------------------------------------------------
 ;; breadcrumb
 ;; ------------------------------------------------------------------------------
-(use-package breadcrumb
-  :straight t)
+(use-package breadcrumb)
