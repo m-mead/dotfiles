@@ -57,6 +57,8 @@
   :custom
   (straight-use-package-by-default t))
 
+;; Required for eglot to work with straight
+;; https://github.com/radian-software/straight.el/issues/1146
 (straight-use-package 'project)
 
 ;; ------------------------------------------------------------------------------
