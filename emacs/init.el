@@ -30,6 +30,9 @@
 
 (add-to-list 'mode-line-misc-info '("@" system-name) t)
 
+;; Stop creating lockfiles
+(setq create-lockfiles nil)
+
 ;; ------------------------------------------------------------------------------
 ;; package management
 ;;
