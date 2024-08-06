@@ -22,5 +22,6 @@ emacs/tramp
 emacs/tree-sitter/
 emacs/projects
 emacs/history
+emacs/custom-vars.el
 
 deps/
