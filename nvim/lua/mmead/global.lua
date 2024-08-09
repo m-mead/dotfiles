@@ -37,13 +37,12 @@ vim.o.backspace = 'indent,eol,start'
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.incsearch = true
-vim.o.hlsearch = false
 vim.o.wildignore = '.pyc,.swp,*/.git/*,*/.DS_Store,*/build/*,*/tmp/*,*/venv/*'
 vim.o.wildmode = 'longest:full,full'
 vim.o.swapfile = false
 vim.o.timeout = true
 vim.o.timeoutlen = 500
-vim.o.ttimeoutlen = 50
+vim.o.ttimeoutlen = 100
 vim.o.signcolumn = 'yes'
 vim.o.mouse = 'a'
 vim.o.scrolloff = 8
@@ -109,3 +108,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- Easier terminal exit
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+-- Clear hlsearch on escape
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
