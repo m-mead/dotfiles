@@ -47,6 +47,7 @@ vim.o.signcolumn = 'yes'
 vim.o.mouse = 'a'
 vim.o.scrolloff = 8
 vim.o.cursorline = true
+vim.o.hlsearch = false
 -- vim.o.termguicolors = true
 vim.o.pumheight = 8
 vim.o.laststatus = 3
@@ -110,4 +111,4 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- Clear hlsearch on escape
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+-- vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')

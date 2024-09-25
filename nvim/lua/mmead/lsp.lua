@@ -98,7 +98,7 @@ local lsp_servers = { 'clangd', 'lua_ls', 'gopls', 'marksman' }
 
 if vim.fn.executable("npm") == 1 then
   table.insert(lsp_servers, 'pyright')
-  table.insert(lsp_servers, 'tsserver')
+  table.insert(lsp_servers, 'ts_ls')
 end
 
 -- local mason_lspconfig = require 'mason-lspconfig'
