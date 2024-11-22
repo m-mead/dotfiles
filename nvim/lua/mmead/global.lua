@@ -2,26 +2,6 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- Copilot settings
--- These seem to need to be set before any mappings are created.
-vim.g.copilot_no_tab_map = true
-vim.g.copilot_assume_mapped = true
-vim.keymap.set('i', '<M-J>', 'copilot#Accept("<CR>")', { expr = true, replace_keycodes = false, silent = true, })
-vim.api.nvim_set_keymap("i", "<M-N>", 'copilot#Previous()', { silent = true, expr = true })
-vim.api.nvim_set_keymap("i", "<M-P>", 'copilot#Next()', { silent = true, expr = true })
-
-vim.g.copilot_filetypes = {
-  ["*"] = false,
-  ["c"] = true,
-  ["cpp"] = true,
-  ["go"] = true,
-  ["javascript"] = true,
-  ["lua"] = true,
-  ["python"] = true,
-  ["rust"] = true,
-  ["typescript"] = true,
-}
-
 -- Basic settings
 vim.o.filetype = 'on'
 vim.o.wrap = false
@@ -109,6 +89,3 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- Easier terminal exit
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-
--- Clear hlsearch on escape
--- vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')

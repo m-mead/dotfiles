@@ -24,7 +24,6 @@ require("lazy").setup({
   'hrsh7th/nvim-cmp',
   'hrsh7th/vim-vsnip',
   'lewis6991/gitsigns.nvim',
-  'mfussenegger/nvim-dap',
   'neovim/nvim-lspconfig',
   'nvim-lua/plenary.nvim',
   'nvim-lualine/lualine.nvim',
@@ -43,5 +42,4 @@ require("lazy").setup({
   'tpope/vim-surround',
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
-  { "EdenEast/nightfox.nvim", priority = 1000 },
 })

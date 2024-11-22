@@ -28,9 +28,6 @@ zsh_add_file "keybindings.zsh"
 zsh_add_file "fzf.zsh"
 zsh_add_file "nvm.zsh"
 
-zsh_add_plugin "zsh-users/zsh-autosuggestions"
-zsh_add_plugin "zsh-users/zsh-syntax-highlighting"
-
 compinit
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
