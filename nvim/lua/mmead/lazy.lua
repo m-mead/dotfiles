@@ -35,5 +35,4 @@ require("lazy").setup({
   'tpope/vim-surround',
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
-  { "rose-pine/neovim", name = "rose-pine" },
 })
