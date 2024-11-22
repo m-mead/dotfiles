@@ -15,4 +15,4 @@ precmd() {
 
 setopt prompt_subst
 
-PROMPT='[%F{blue}%n:%m] %1~%F{34}${vcs_info_msg_0_}%F{white} '%F{208}$'\U03BB '
+PROMPT='[%F{blue}%n:%m] %1~%F{34}${vcs_info_msg_0_}%F{white} '%F{208}$'\U03BB %f%k'
