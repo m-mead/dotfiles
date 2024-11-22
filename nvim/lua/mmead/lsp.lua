@@ -1,8 +1,4 @@
 -- Automcplete for nvim APIs -- must be setup before lspconfig.
-require("neodev").setup({})
-
-require('mason').setup()
-require('mason-lspconfig').setup()
 
 -- Diagnostic keymappings
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap = true, silent = true })
@@ -73,46 +69,42 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 })
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
--- capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
 -- Server configurations:
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-local servers = {
-  clangd = {},
-  gopls = {},
-  lua_ls = {
-    Lua = {
-      workspace = { checkThirdParty = false },
-      telemetry = { enable = false },
-      hint = { enable = true },
-    },
-  },
-  marksman = {},
-  pyright = {},
-  rust_analyzer = {},
-  solargraph = {},
-}
 
-local lsp_servers = { 'clangd', 'lua_ls', 'gopls', 'marksman' }
+local lspconfig = require'lspconfig'
 
-if vim.fn.executable("npm") == 1 then
-  table.insert(lsp_servers, 'pyright')
-  table.insert(lsp_servers, 'ts_ls')
+-- C/C++
+if vim.fn.executable('clangd') == 1 then
+  lspconfig.clangd.setup{}
 end
 
-require('mason-lspconfig').setup {
-  ensure_installed = lsp_servers,
-  handlers = {
-    function(server_name)
-      local server = servers[server_name] or {}
-      -- This handles overriding only values explicitly passed
-      -- by the server configuration above. Useful when disabling
-      -- certain features of an LSP (for example, turning off formatting for tsserver)
-      server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-      require('lspconfig')[server_name].setup(server)
-    end,
-  },
-}
+-- Golang
+if vim.fn.executable('gopls') == 1 then
+  lspconfig.gopls.setup{}
+end
+
+-- Lua
+if vim.fn.executable('lua-language-server') == 1 then
+  lspconfig.lua_ls.setup {
+    settings = {
+      Lua = {
+        workspace = { checkThirdParty = false },
+        telemetry = { enable = false },
+        hint = { enable = true },
+      },
+    }
+  }
+end
+
+-- Python
+if vim.fn.executable('pyright') == 1 then
+  lspconfig.pyright.setup{}
+end
+
+-- Rust
+if vim.fn.executable('rust-analyzer') == 1 then
+  lspconfig.rust_analyzer.setup{}
+end
 
 require('mini.completion').setup()

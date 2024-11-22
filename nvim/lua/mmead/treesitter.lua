@@ -2,21 +2,14 @@
 local treesitter_grammars = {
   'bash',
   'c',
-  'cmake',
   'cpp',
-  'dockerfile',
-  'doxygen',
   'go',
   'javascript',
   'json',
   'lua',
   'markdown',
   'python',
-  'query',
-  'ruby',
-  'toml',
   'typescript',
-  'vimdoc',
   'yaml',
 }
 

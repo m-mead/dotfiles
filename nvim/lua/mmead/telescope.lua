@@ -73,6 +73,3 @@ vim.keymap.set('n', '<leader>/', function()
     previewer = false,
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
-
--- Extensions
-require('telescope').load_extension('fzf')
