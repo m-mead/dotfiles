@@ -16,13 +16,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Lazy load plugins
 require("lazy").setup({
   'folke/neodev.nvim',
-  'hrsh7th/cmp-buffer',
-  'hrsh7th/cmp-nvim-lsp',
-  'hrsh7th/cmp-nvim-lsp-signature-help',
-  'hrsh7th/cmp-path',
-  'hrsh7th/cmp-vsnip',
-  'hrsh7th/nvim-cmp',
-  'hrsh7th/vim-vsnip',
+  { 'echasnovski/mini.completion', version = '*' },
   'lewis6991/gitsigns.nvim',
   'neovim/nvim-lspconfig',
   'nvim-lua/plenary.nvim',
@@ -33,7 +27,6 @@ require("lazy").setup({
     'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
   },
   'nvim-telescope/telescope.nvim',
-  'nvim-tree/nvim-web-devicons',
   'nvim-treesitter/nvim-treesitter',
   'nvim-treesitter/nvim-treesitter-context',
   'stevearc/oil.nvim',
@@ -42,4 +35,5 @@ require("lazy").setup({
   'tpope/vim-surround',
   'williamboman/mason-lspconfig.nvim',
   'williamboman/mason.nvim',
+  { "rose-pine/neovim", name = "rose-pine" },
 })

@@ -74,7 +74,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+-- capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- Server configurations:
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
@@ -101,13 +101,6 @@ if vim.fn.executable("npm") == 1 then
   table.insert(lsp_servers, 'ts_ls')
 end
 
--- local mason_lspconfig = require 'mason-lspconfig'
--- mason_lspconfig.setup { ensure_installed = lsp_servers }
---
--- for server, _ in pairs(servers) do
---   server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
---   require('lspconfig')[server].setup(server)
--- end
 require('mason-lspconfig').setup {
   ensure_installed = lsp_servers,
   handlers = {
@@ -122,82 +115,4 @@ require('mason-lspconfig').setup {
   },
 }
 
--- Setup autocompletion using nvim-cmp.
-local cmp = require('cmp')
-
-local feedkey = function(key, mode)
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
-end
-
-cmp.setup({
-  mapping = {
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ["<Down>"] = cmp.mapping.select_next_item(),
-    ["<Up>"] = cmp.mapping.select_prev_item(),
-    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-e>'] = cmp.mapping.abort(),
-    ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    -- Move right in snippet
-    ['<C-l>'] = cmp.mapping(function()
-      if vim.fn["vsnip#available"](1) == 1 then
-        feedkey("<Plug>(vsnip-expand-or-jump)", "")
-      end
-    end, { 'i', 's' }),
-    -- Move left in snippet
-    ['<C-h>'] = cmp.mapping(function()
-      if vim.fn["vsnip#jumpable"](-1) == 1 then
-        feedkey("<Plug>(vsnip-jump-prev)", "")
-      end
-    end, { 'i', 's' }),
-  },
-  -- Completion sources -- order matters
-  sources = {
-    {
-      name = 'nvim_lsp'
-    },
-    {
-      name = 'nvim_lsp_signature_help'
-    },
-    {
-      name = 'buffer',
-      keyword_length = 3
-    },
-    {
-      name = 'path',
-    },
-  },
-  snippet = {
-    expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body)
-    end,
-  },
-  formatting = {
-    expandable_indicator = false,
-    fields = { 'abbr', 'kind', 'menu' },
-    format = function(entry, vim_item)
-      -- Truncate menu items
-      local truncated_trailer = '...'
-      local max_item_length = 43 - truncated_trailer:len()
-      if vim_item.abbr:len() >= max_item_length then
-        vim_item.abbr = string.sub(vim_item.abbr, 1, max_item_length) .. truncated_trailer
-      end
-
-      vim_item.menu = ({ nvim_lsp = "[LSP]", buffer = "[Buf]", path = "[Path]" })[entry.source.name]
-
-      return vim_item
-    end
-  },
-})
-
-vim.api.nvim_create_user_command('InstallDebugAdapaters', function(_)
-  local mason_debug_adapters = { cpptools = 'OpenDebugAD7' }
-
-  for adapter, adapter_executable in pairs(mason_debug_adapters) do
-    if vim.fn.executable(adapter_executable) == 0 then
-      vim.cmd('MasonInstall ' .. adapter)
-    end
-  end
-end, { nargs = 0 })
+require('mini.completion').setup()
