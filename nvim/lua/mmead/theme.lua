@@ -10,3 +10,5 @@ require('lualine').setup({
     }
   }
 })
+
+vim.cmd([[colorscheme tokyonight-night]])
