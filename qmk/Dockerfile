@@ -9,7 +9,6 @@ RUN DEBIAN_FRONTEND='noninteractive' apt-get update -y && \
         binutils-riscv64-unknown-elf \
         build-essential \
         ca-certificates \
-        ca-certificates \
         dfu-programmer \
         dfu-util \
         dos2unix \
@@ -18,16 +17,13 @@ RUN DEBIAN_FRONTEND='noninteractive' apt-get update -y && \
         gcc-avr \
         gcc-riscv64-unknown-elf \
         git \
-        git \
         libfl2 \
         libnewlib-arm-none-eabi \
         picolibc-riscv64-unknown-elf \
         python3 \
         python3-pip \
-        python3-pip \
         python3-venv \
         software-properties-common \
-        tar \
         tar \
         teensy-loader-cli \
         unzip \
