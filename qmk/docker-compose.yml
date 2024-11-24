@@ -1,0 +1,14 @@
+services:
+  qmk:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ${QMK_DIR:-${HOME}/src/qmk_firmware}:/workspace
+      - ./bin:/qmk_bin
+    working_dir: /workspace
+    environment:
+      - KEYBOARD=lily58
+      - KEYMAP=default
+      # See https://docs.qmk.fm/feature_converters#converters
+      - CONVERT_TO=promicro_rp2040
