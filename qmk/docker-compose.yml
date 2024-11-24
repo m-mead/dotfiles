@@ -8,7 +8,9 @@ services:
       - ./bin:/qmk_bin
     working_dir: /workspace
     environment:
+      # Required
       - KEYBOARD=lily58
       - KEYMAP=default
+      # Optional
       # See https://docs.qmk.fm/feature_converters#converters
       - CONVERT_TO=promicro_rp2040
