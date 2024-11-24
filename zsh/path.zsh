@@ -26,6 +26,7 @@ if [ -d "$HOME/src/dotfiles/bin" ]; then
     export PATH="$PATH:$HOME/src/dotfiles/bin"
 fi
 
+# fzf
 if [[ "$(uname)" == darwin* ]]; then
     # fzf
     if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
@@ -40,4 +41,9 @@ fi
 
 if [ -f "/usr/share/doc/fzf/examples/key-bindings.zsh" ]; then
     source /usr/share/doc/fzf/examples/key-bindings.zsh
+fi
+
+# docker
+if [ -d "/usr/local/lib/docker/cli-plugins/" ]; then
+    export PATH=$PATH:/usr/local/lib/docker/cli-plugins
 fi
