@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ${QMK_DIR:-${HOME}/src/qmk_firmware}:/workspace
+      - ${QMK_HOME:-${HOME}/src/qmk_firmware}:/workspace
       - ./bin:/qmk_bin
     working_dir: /workspace
     environment:

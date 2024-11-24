@@ -5,11 +5,10 @@ It is only intended to work with my keyboards.
 
 ## Usage
 
-First, checkout the [qmk_firmware](https://github.com/qmk/qmk_firmware) submodule.
-> The location of the checkout can be changed by updating `docker-compose.yml` or specifying a `QMK_DIR` environment variable.
+Install the dependencies
 
 ```shell
-git clone git@github.com:m-mead/qmk_firmware.git ~/src/qmk_firmware
+make dep
 ```
 
 ## Building keyboard firmware
