@@ -102,6 +102,10 @@ if vim.fn.executable('pyright') == 1 then
   lspconfig.pyright.setup{}
 end
 
+if vim.fn.executable('ruff') == 1 then
+  lspconfig.ruff.setup{}
+end
+
 -- Rust
 if vim.fn.executable('rust-analyzer') == 1 then
   lspconfig.rust_analyzer.setup{}
