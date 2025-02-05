@@ -123,4 +123,10 @@ if vim.fn.executable('rust-analyzer') == 1 then
   lspconfig.rust_analyzer.setup {}
 end
 
+-- Ruby
+if vim.fn.executable('ruby-lsp') == 1 then
+  lspconfig.ruby_lsp.setup{}
+end
+
+-- Completion
 require('mini.completion').setup()
