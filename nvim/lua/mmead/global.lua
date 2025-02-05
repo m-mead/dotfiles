@@ -59,12 +59,6 @@ vim.api.nvim_set_keymap('n', '<leader>tp', ':tabprev<cr>', { noremap = true, sil
 vim.api.nvim_set_keymap('n', '<S-h>', ':bprev<cr>', { noremap = true, silent = true, desc = 'buffer previous' })
 vim.api.nvim_set_keymap('n', '<S-l>', ':bnext<cr>', { noremap = true, silent = true, desc = 'buffer next' })
 
--- Keybindings for moving around windows.
-vim.api.nvim_set_keymap('n', '<C-J>', '<C-W>j', { noremap = true, silent = true, desc = 'window down' })
-vim.api.nvim_set_keymap('n', '<C-k>', '<C-W>k', { noremap = true, silent = true, desc = 'window up' })
-vim.api.nvim_set_keymap('n', '<C-h>', '<C-W>h', { noremap = true, silent = true, desc = 'window left' })
-vim.api.nvim_set_keymap('n', '<C-l>', '<C-W>l', { noremap = true, silent = true, desc = 'window right' })
-
 -- Insert blank characters without leaving insert mode.
 vim.api.nvim_set_keymap('n', 'zj', 'o<esc>^Dk', { noremap = true, silent = true, desc = 'insert blank link below' })
 vim.api.nvim_set_keymap('n', 'zk', 'O<esc>^Dj', { noremap = true, silent = true, desc = 'insert blank line above' })
@@ -89,3 +83,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- Easier terminal exit
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+-- Jump between quickfix list items
+vim.keymap.set('n', '<M-j>', '<cmd>cnext<cr>', { desc = 'next quickfix list item' })
+vim.keymap.set('n', '<M-k>', '<cmd>cprevious<cr>', { desc = 'previous quickfix list item' })
