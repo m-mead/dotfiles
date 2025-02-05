@@ -72,16 +72,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Server configurations:
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 
-local lspconfig = require'lspconfig'
+local lspconfig = require 'lspconfig'
 
 -- C/C++
 if vim.fn.executable('clangd') == 1 then
-  lspconfig.clangd.setup{}
+  lspconfig.clangd.setup {}
 end
 
 -- Golang
 if vim.fn.executable('gopls') == 1 then
-  lspconfig.gopls.setup{}
+  lspconfig.gopls.setup {}
 end
 
 -- Lua
@@ -89,26 +89,38 @@ if vim.fn.executable('lua-language-server') == 1 then
   lspconfig.lua_ls.setup {
     settings = {
       Lua = {
-        workspace = { checkThirdParty = false },
-        telemetry = { enable = false },
-        hint = { enable = true },
+        runtime = {
+          version = 'LuaJIT',
+        },
+        diagnostics = {
+          globals = {
+            'vim',
+            'require'
+          },
+        },
+        workspace = {
+          library = vim.api.nvim_get_runtime_file("", true),
+        },
+        telemetry = {
+          enable = false,
+        },
       },
-    }
+    },
   }
 end
 
 -- Python
 if vim.fn.executable('pyright') == 1 then
-  lspconfig.pyright.setup{}
+  lspconfig.pyright.setup {}
 end
 
 if vim.fn.executable('ruff') == 1 then
-  lspconfig.ruff.setup{}
+  lspconfig.ruff.setup {}
 end
 
 -- Rust
 if vim.fn.executable('rust-analyzer') == 1 then
-  lspconfig.rust_analyzer.setup{}
+  lspconfig.rust_analyzer.setup {}
 end
 
 require('mini.completion').setup()
