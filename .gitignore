@@ -4,7 +4,6 @@
 .zsh_sessions/
 .vscode/
 venv/
-nvim/plugin/
 nvim/spell/
 
 # emacs
