@@ -14,6 +14,4 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- Setup plugins
-require("lazy").setup({
-  { import = 'mmead.plugins' },
-})
+require("lazy").setup('custom.plugins')
