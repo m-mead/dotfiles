@@ -25,3 +25,6 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 -- Jump between quickfix list items
 vim.keymap.set('n', '<M-j>', '<cmd>cnext<cr>', { desc = 'next quickfix list item' })
 vim.keymap.set('n', '<M-k>', '<cmd>cprevious<cr>', { desc = 'previous quickfix list item' })
+
+-- Diagnostic keymappings
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap = true, silent = true })

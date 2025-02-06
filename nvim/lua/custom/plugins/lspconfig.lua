@@ -2,18 +2,6 @@ return {
   'neovim/nvim-lspconfig',
   version = '1.6.0',
   config = function()
-    -- Diagnostic keymappings
-    vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap = true, silent = true })
-
-    -- Keybindings (see :h lsp-defaults)
-    --
-    -- Conditional mappings
-    -- - |K| is mapped to |vim.lsp.buf.hover()| unless |'keywordprg'| is customized or a custom keymap for `K` exists.
-    -- Unconditional mappings
-    -- - "grn" is mapped in Normal mode to |vim.lsp.buf.rename()|
-    -- - "gra" is mapped in Normal and Visual mode to |vim.lsp.buf.code_action()|
-    -- - "grr" is mapped in Normal mode to |vim.lsp.buf.references()|
-    -- - CTRL-S is mapped in Insert mode to |vim.lsp.buf.signature_help()|
     vim.api.nvim_create_autocmd('LspAttach', {
       group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
       callback = function(event)
