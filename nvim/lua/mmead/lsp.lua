@@ -127,6 +127,3 @@ end
 if vim.fn.executable('ruby-lsp') == 1 then
   lspconfig.ruby_lsp.setup{}
 end
-
--- Completion
-require('mini.completion').setup()
