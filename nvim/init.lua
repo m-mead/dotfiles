@@ -2,7 +2,6 @@
 require('mmead.global')
 require('mmead.lazy')
 require('mmead.cmake')
-require('mmead.git')
 require('mmead.lsp')
 require('mmead.python')
 require('mmead.telescope')
