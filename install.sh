@@ -94,7 +94,6 @@ function install_neovim() {
 }
 
 function install_dotfiles() {
-    symlink_dir_if_not_present ${PWD}/emacs ${HOME}/.config/emacs
     symlink_dir_if_not_present ${PWD}/nvim ${HOME}/.config/nvim
     symlink_dir_if_not_present ${PWD}/wezterm ${HOME}/.config/wezterm
 
