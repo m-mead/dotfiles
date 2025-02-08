@@ -1,3 +1,10 @@
+-- This plugin implements a basic custom statusline.
+-- It shows the normal nvim info and optionally shows diagnostics info and git info.
+--
+-- Requirements
+--  - gitsigns
+--
+-- Reference guide: https://nuxsh.is-a.dev/blog/custom-nvim-statusline.html
 local M = {}
 
 function M.mode()
