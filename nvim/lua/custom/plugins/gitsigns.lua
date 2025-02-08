@@ -1,6 +1,6 @@
 return {
   'lewis6991/gitsigns.nvim',
-  version = '0.9.0',
+  version = '1.0.0',
   config = function()
     require('gitsigns').setup({
       signcolumn = true,
