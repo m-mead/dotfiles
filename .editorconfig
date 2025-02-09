@@ -8,6 +8,7 @@ insert_final_newline = true
 [*.lua]
 indent_size = 2
 max_line_length = 120
+quote_style = double
 
 [*.py]
 indent_size = 4
