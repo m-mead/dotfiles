@@ -51,7 +51,6 @@ local GitHubProvider = {
       opts.path,
       opts.line)
   end
-
 }
 
 --- @type gitlink.Provider
@@ -65,8 +64,6 @@ local GitLabProvider = {
       opts.path,
       opts.line)
   end
-
-
 }
 
 local GitLink = {
@@ -207,30 +204,27 @@ local Commands = {
   show = GitLink.show,
 }
 
-local function complete_command(_, line)
-  local words = vim.split(line, "%s+")
-  local n = #words
-
-  if n ~= 2 then
-    return {}
-  end
-
-  local matches = {}
-
-  for k, _ in pairs(Commands) do
-    if vim.startswith(k, words[2]) then
-      vim.list_extend(matches, { k })
-    end
-  end
-
-  return matches
-end
-
 vim.api.nvim_create_user_command("GitLink",
   function(opts) Commands[unpack(opts.fargs)]() end,
   {
     nargs = "?",
-    complete = complete_command,
+    complete = function(_, line)
+      local words = vim.split(line, "%s+")
+      local n = #words
+
+      if n ~= 2 then
+        return {}
+      end
+
+      local matches = {}
+      for k, _ in pairs(Commands) do
+        if vim.startswith(k, words[2]) then
+          vim.list_extend(matches, { k })
+        end
+      end
+
+      return matches
+    end
   })
 
 return GitLink
