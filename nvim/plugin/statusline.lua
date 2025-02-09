@@ -34,7 +34,7 @@ function M.mode()
 end
 
 function M.filename()
-  return vim.api.nvim_buf_get_name(0):gsub(vim.fn.getcwd() .. "/", "")
+  return vim.fn.expand('%:.')
 end
 
 function M.diagnostics()
