@@ -58,22 +58,22 @@ function M.diagnostics()
   local has_diagnostics = false
 
   if diagnostics.error ~= 0 then
-    error_count = " %#DiagnosticError#" .. string.format("%s ", diagnostics.error)
+    error_count = " %#DiagnosticError#" .. string.format("%i ", diagnostics.error)
     has_diagnostics = true
   end
 
   if diagnostics.warn ~= 0 then
-    warn_count = " %#DiagnosticWarn#" .. string.format("%s", diagnostics.warn)
+    warn_count = " %#DiagnosticWarn#" .. string.format("%i ", diagnostics.warn)
     has_diagnostics = true
   end
 
   if diagnostics.hint ~= 0 then
-    hint_count = " %#DiagnosticHint#" .. string.format("%s ", diagnostics.hint)
+    hint_count = " %#DiagnosticHint#" .. string.format("%i ", diagnostics.hint)
     has_diagnostics = true
   end
 
   if diagnostics.info ~= 0 then
-    info_count = " %#DiagnosticInfo#" .. string.format("%s", levels.info)
+    info_count = " %#DiagnosticInfo#" .. string.format("%i ", levels.info)
     has_diagnostics = true
   end
 

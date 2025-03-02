@@ -27,6 +27,7 @@ vim.o.termguicolors = true
 vim.o.pumheight = 8
 vim.o.laststatus = 3
 vim.o.spelllang = "en_us"
+vim.o.spelloptions = "camel"
 vim.o.spell = true
 
 -- Stop inserting comments on new lines when previous line is commented.
