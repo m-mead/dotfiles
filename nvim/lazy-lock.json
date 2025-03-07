@@ -1,10 +1,10 @@
 {
-  "gitsigns.nvim": { "branch": "main", "commit": "c23bbd3ed2c7a3fdc3399e97e24f9e158f57612f" },
+  "gitsigns.nvim": { "branch": "main", "commit": "6668f379ca634c36b8e11453118590b91bf8b295" },
   "lazy.nvim": { "branch": "main", "commit": "6c3bda4aca61a13a9c63f1c1d1b16b9d3be90d7a" },
   "mini.completion": { "branch": "main", "commit": "6eb9546685c4e1c4af2365b87166d4afa39d8a1b" },
-  "nvim-lspconfig": { "branch": "master", "commit": "bf81bef7d75a0f4a0cf61462b318ea00b3c97cc8" },
+  "nvim-lspconfig": { "branch": "master", "commit": "6b63bdf2399b9bedf93297d98419550523a9ad68" },
   "nvim-treesitter": { "branch": "master", "commit": "cfc6f2c117aaaa82f19bcce44deec2c194d900ab" },
-  "oil.nvim": { "branch": "master", "commit": "ba858b662599eab8ef1cba9ab745afded99cb180" },
+  "oil.nvim": { "branch": "master", "commit": "975a77cce3c8cb742bc1b3629f4328f5ca977dad" },
   "plenary.nvim": { "branch": "master", "commit": "2d9b06177a975543726ce5c73fca176cedbffe9d" },
   "telescope.nvim": { "branch": "master", "commit": "a0bbec21143c7bc5f8bb02e0005fa0b982edc026" },
   "tokyonight.nvim": { "branch": "main", "commit": "b262293ef481b0d1f7a14c708ea7ca649672e200" },
