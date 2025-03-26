@@ -136,5 +136,9 @@ return {
     if vim.fn.executable("ruby-lsp") == 1 then
       lspconfig.ruby_lsp.setup {}
     end
+
+    if vim.fn.executable("tsserver") == 1 then
+      lspconfig.ts_ls.setup{}
+    end
   end
 }

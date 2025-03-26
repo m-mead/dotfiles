@@ -1,5 +1,5 @@
 {
-  "gitsigns.nvim": { "branch": "main", "commit": "6668f379ca634c36b8e11453118590b91bf8b295" },
+  "gitsigns.nvim": { "branch": "main", "commit": "7010000889bfb6c26065e0b0f7f1e6aa9163edd9" },
   "lazy.nvim": { "branch": "main", "commit": "6c3bda4aca61a13a9c63f1c1d1b16b9d3be90d7a" },
   "mini.completion": { "branch": "main", "commit": "6eb9546685c4e1c4af2365b87166d4afa39d8a1b" },
   "nvim-lspconfig": { "branch": "master", "commit": "6b63bdf2399b9bedf93297d98419550523a9ad68" },
