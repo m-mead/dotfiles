@@ -47,6 +47,18 @@ return {
           })
         end
 
+        -- Format on save
+        if client and not client:supports_method('textDocument/willSaveWaitUntil')
+            and client:supports_method('textDocument/formatting') then
+          vim.api.nvim_create_autocmd('BufWritePre', {
+            group = vim.api.nvim_create_augroup('lsp-attach', { clear = false }),
+            buffer = event.buf,
+            callback = function()
+              vim.lsp.buf.format({ bufnr = event.buf, id = client.id, timeout_ms = 1000 })
+            end,
+          })
+        end
+
         -- Inlay hints
         if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
           map("<leader>hh", function()
