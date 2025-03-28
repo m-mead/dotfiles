@@ -19,8 +19,11 @@ return {
         map("gd", require("telescope.builtin").lsp_definitions, "LSP [G]oto [D]efinition")
         map("grr", require("telescope.builtin").lsp_references, "LSP [G]oto [R]eferences")
 
+        vim.diagnostic.config({ virtual_text = true })
+
         -- Highlight LSP references on CursorHold
         local client = vim.lsp.get_client_by_id(event.data.client_id)
+
         if client and client.server_capabilities.documentHighlightProvider then
           local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
           vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
@@ -138,7 +141,7 @@ return {
     end
 
     if vim.fn.executable("tsserver") == 1 then
-      lspconfig.ts_ls.setup{}
+      lspconfig.ts_ls.setup {}
     end
   end
 }
