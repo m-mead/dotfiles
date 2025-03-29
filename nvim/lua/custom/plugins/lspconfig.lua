@@ -61,6 +61,7 @@ return {
 
         -- Inlay hints
         if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+          vim.lsp.inlay_hint.enable(true)
           map("<leader>hh", function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
           end, "LSP toggle inlay [H]ints")
@@ -154,6 +155,11 @@ return {
 
     if vim.fn.executable("tsserver") == 1 then
       lspconfig.ts_ls.setup {}
+    end
+
+    -- Swift
+    if vim.fn.executable("sourcekit-lsp") == 1 then
+      lspconfig.sourcekit.setup {}
     end
   end
 }
