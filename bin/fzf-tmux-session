@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+selection=$(tmux list-sessions | fzf)
+
+if [[ ! -z "$selection" ]]; then
+    session=$(echo $selection | cut -d ':' -f 1)
+    tmux attach-session -t $session
+fi
