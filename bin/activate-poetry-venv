@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+poetry_dir=$HOME/.cache/pypoetry/virtualenvs
+
+if [[ ! -d "$poetry_dir" ]]; then
+    echo "no poetry virtual environments found"
+    exit 0
+fi
+
+selection=$(ls $poetry_dir | fzf)
+
+if [[ ! -z "$selection" ]]; then
+    source $poetry_dir/$selection/bin/activate
+fi
