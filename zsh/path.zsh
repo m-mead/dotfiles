@@ -39,10 +39,6 @@ if [[ "$(uname)" == darwin* ]]; then
     fi
 fi
 
-if [ -f "/usr/share/doc/fzf/examples/key-bindings.zsh" ]; then
-    source /usr/share/doc/fzf/examples/key-bindings.zsh
-fi
-
 # docker
 if [ -d "/usr/local/lib/docker/cli-plugins/" ]; then
     export PATH=$PATH:/usr/local/lib/docker/cli-plugins

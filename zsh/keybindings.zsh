@@ -1,9 +1,10 @@
-bindkey '^R' history-incremental-search-backward
+# Ctrl+arrow
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
 
-# Vim keybindings
+# Vim
 bindkey -v
 
-# Block cursor on normal mode; line on insert
 function zle-keymap-select {
   case $KEYMAP in
     vicmd)      echo -ne '\e[1 q' ;;
@@ -25,3 +26,12 @@ function zle-line-init {
 
 zle -N zle-keymap-select
 zle -N zle-line-init
+
+# fzf
+if [ -f "/usr/share/doc/fzf/examples/key-bindings.zsh" ]; then
+    source /usr/share/doc/fzf/examples/key-bindings.zsh
+elif [ -x "$(command -v fzf)" ]; then
+    source <(fzf --zsh)
+else
+    bindkey '^R' history-incremental-search-backward
+fi
