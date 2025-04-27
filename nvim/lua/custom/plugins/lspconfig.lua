@@ -1,6 +1,6 @@
 return {
   "neovim/nvim-lspconfig",
-  version = "1.7.0",
+  version = "2.1.0",
   config = function()
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
