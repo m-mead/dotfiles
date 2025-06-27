@@ -1,6 +1,6 @@
 return {
   "neovim/nvim-lspconfig",
-  version = "2.1.0",
+  version = "2.3.0",
   config = function()
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
@@ -48,10 +48,10 @@ return {
         end
 
         -- Format on save
-        if client and not client:supports_method('textDocument/willSaveWaitUntil')
-            and client:supports_method('textDocument/formatting') then
-          vim.api.nvim_create_autocmd('BufWritePre', {
-            group = vim.api.nvim_create_augroup('lsp-attach', { clear = false }),
+        if client and not client:supports_method("textDocument/willSaveWaitUntil")
+            and client:supports_method("textDocument/formatting") then
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            group = vim.api.nvim_create_augroup("lsp-attach", { clear = false }),
             buffer = event.buf,
             callback = function()
               vim.lsp.buf.format({ bufnr = event.buf, id = client.id, timeout_ms = 1000 })
