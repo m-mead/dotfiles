@@ -9,8 +9,8 @@ services:
     working_dir: /workspace
     environment:
       # Required
-      - KEYBOARD=lily58
-      - KEYMAP=default
+      - KEYBOARD=${KEYBOARD:-crkbd/rev1}
+      - KEYMAP=${KEYMAP:-default}
       # Optional
       # See https://docs.qmk.fm/feature_converters#converters
       - CONVERT_TO=promicro_rp2040
