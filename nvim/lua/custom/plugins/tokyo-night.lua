@@ -1,7 +1,7 @@
 return {
   "folke/tokyonight.nvim",
-  version = "4.11.0",
+  version = "4.14.1",
   config = function()
-    vim.cmd([[colorscheme tokyonight-day]])
+    vim.cmd([[colorscheme tokyonight-night]])
   end
 }

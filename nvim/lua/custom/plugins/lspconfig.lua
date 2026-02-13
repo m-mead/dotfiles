@@ -1,6 +1,6 @@
 return {
   "neovim/nvim-lspconfig",
-  version = "2.3.0",
+  version = "2.6.0",
   config = function()
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
@@ -47,21 +47,9 @@ return {
           })
         end
 
-        -- Format on save
-        if client and not client:supports_method("textDocument/willSaveWaitUntil")
-            and client:supports_method("textDocument/formatting") then
-          vim.api.nvim_create_autocmd("BufWritePre", {
-            group = vim.api.nvim_create_augroup("lsp-attach", { clear = false }),
-            buffer = event.buf,
-            callback = function()
-              vim.lsp.buf.format({ bufnr = event.buf, id = client.id, timeout_ms = 1000 })
-            end,
-          })
-        end
-
         -- Inlay hints
         if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
-          vim.lsp.inlay_hint.enable(true)
+          vim.lsp.inlay_hint.enable(false)
           map("<leader>hh", function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
           end, "LSP toggle inlay [H]ints")
@@ -77,11 +65,9 @@ return {
     -- Server configurations:
     -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/config.md
 
-    local lspconfig = require "lspconfig"
-
     -- C/C++
     if vim.fn.executable("clangd") == 1 then
-      lspconfig.clangd.setup {
+      vim.lsp.config("clangd", {
         capabilities = {
           textDocument = {
             completion = {
@@ -91,17 +77,18 @@ return {
             }
           }
         }
-      }
+      })
+      vim.lsp.enable("clangd", true)
     end
 
     -- Golang
     if vim.fn.executable("gopls") == 1 then
-      lspconfig.gopls.setup {}
+      vim.lsp.enable("gopls", true)
     end
 
     -- Lua
     if vim.fn.executable("lua-language-server") == 1 then
-      lspconfig.lua_ls.setup {
+      vim.lsp.config("lua_ls", {
         settings = {
           Lua = {
             runtime = {
@@ -121,21 +108,22 @@ return {
             },
           },
         },
-      }
+      })
+      vim.lsp.enable("lua_ls", true)
     end
 
     -- Python
     if vim.fn.executable("pyright") == 1 then
-      lspconfig.pyright.setup {}
+      vim.lsp.enable("pyright", true)
     end
 
     if vim.fn.executable("ruff") == 1 then
-      lspconfig.ruff.setup {}
+      vim.lsp.enable("ruff", true)
     end
 
     -- Rust
     if vim.fn.executable("rust-analyzer") == 1 then
-      lspconfig.rust_analyzer.setup {
+      vim.lsp.config("rust_analyzer", {
         capabilities = {
           textDocument = {
             completion = {
@@ -145,21 +133,19 @@ return {
             }
           }
         }
-      }
+      })
+      vim.lsp.enable("rust_analyzer", true)
     end
 
     -- Ruby
     if vim.fn.executable("ruby-lsp") == 1 then
-      lspconfig.ruby_lsp.setup {}
+      vim.lsp.config("ruby_lsp", {})
+      vim.lsp.enable("ruby_lsp", true)
     end
 
-    if vim.fn.executable("tsserver") == 1 then
-      lspconfig.ts_ls.setup {}
-    end
-
-    -- Swift
-    if vim.fn.executable("sourcekit-lsp") == 1 then
-      lspconfig.sourcekit.setup {}
+    if vim.fn.executable("typescript-language-server") == 1 then
+      vim.lsp.config("ts_ls", {})
+      vim.lsp.enable("ts_ls", true)
     end
   end
 }
