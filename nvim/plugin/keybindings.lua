@@ -28,3 +28,6 @@ vim.keymap.set('n', '<M-k>', '<cmd>cprevious<cr>', { desc = 'previous quickfix l
 
 -- Diagnostic keymappings
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap = true, silent = true })
+
+-- Yanking
+vim.api.nvim_set_keymap('v', '<leader>ys', '"*y', { noremap = true, silent = true, desc = 'yank selection to system clipboard' })
