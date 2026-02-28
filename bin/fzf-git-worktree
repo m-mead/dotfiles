@@ -16,7 +16,7 @@ open_worktree() {
     repo=$(cd "$worktree" && basename -s .git "$(git remote get-url origin)")
     worktree_name=$(basename "$worktree")
 
-    session=$(echo "${repo}-${worktree_name}" | tr -c "a-zA-Z0-9_-" "_")
+    session="${repo}-${worktree_name}"
 
     if [ -n "$TMUX" ]; then
         if tmux has-session -t "$session" 2>/dev/null; then
