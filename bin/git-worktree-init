@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+remote=$1
+
+if [[ -z "$remote" ]]; then
+    echo -e "usage: git-worktree-init [remote]"
+    exit 1
+fi
+
+git clone --bare $remote .bare
+echo "gitdir: ./.bare" >> .git
