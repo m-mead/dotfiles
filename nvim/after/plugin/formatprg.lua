@@ -35,5 +35,5 @@ vim.api.nvim_create_autocmd("FileType", {
     "javascript",
     "javascriptreact",
   },
-  callback = set_typescript_formatprg()
+  callback = set_typescript_formatprg
 })
