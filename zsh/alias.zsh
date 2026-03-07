@@ -28,7 +28,6 @@ alias gd="git diff"
 
 # Python
 alias actv=". venv/bin/activate"
-alias actv-poetry="source $(poetry env info --path)/bin/activate"
 
 # Devcontainers
 alias devc-up="devcontainer up --workspace-folder ."
