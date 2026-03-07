@@ -1,7 +1,7 @@
 local M = {
-  target = 'all',
-  build_dir = 'build',
-  configure_flags = '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON',
+  target = "all",
+  build_dir = "build",
+  configure_flags = "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
   num_jobs = nil,
 }
 
@@ -24,53 +24,50 @@ function M.setup(args)
 end
 
 local function dispatch(args)
-  vim.cmd(':Dispatch ' .. args)
+  vim.system({ vim.o.shell, vim.o.shellcmdflag, args }, { text = true }, function(obj)
+    vim.schedule(function()
+      if obj.stdout and obj.stdout ~= "" then
+        vim.notify(obj.stdout, vim.log.levels.INFO)
+      end
+      if obj.stderr and obj.stderr ~= "" then
+        vim.notify(obj.stderr, vim.log.levels.ERROR)
+      end
+    end)
+  end)
 end
 
 function M.cmake_configure(args)
   local flags = args or M.configure_flags
-  dispatch('mkdir -p build && cd build && cmake .. ' .. flags)
+  dispatch("mkdir -p build && cd build && cmake .. " .. flags)
 end
 
 function M.cmake_build(args)
   local target = args or M.target
 
-  local parallel_flag = '--parallel'
+  local parallel_flag = "--parallel"
   if M.num_jobs then
-    parallel_flag = parallel_flag .. ' ' .. M.num_jobs
+    parallel_flag = parallel_flag .. " " .. M.num_jobs
   end
 
-  dispatch('cd build && cmake --build . --target ' .. target .. ' ' .. parallel_flag)
+  dispatch("cd build && cmake --build . --target " .. target .. " " .. parallel_flag)
 end
 
 function M.cmake_list_targets(build_dir)
-  build_dir = build_dir or vim.fn.getcwd() .. '/' .. M.build_dir
+  build_dir = build_dir or vim.fn.getcwd() .. "/" .. M.build_dir
 
-  local Job = require 'plenary.job'
+  local obj = vim.system(
+    { "cmake", "--build", ".", "--target", "help" },
+    { cwd = build_dir, text = true }
+  ):wait()
 
-  local stdout = {}
-  local is_okay = false
-
-  Job:new({
-    command = 'cmake',
-    args = { '--build', '.', '--target', 'help' },
-    cwd = build_dir,
-    on_exit = function(_, return_val)
-      is_okay = (return_val == 0)
-    end,
-    on_stdout = function(_, data)
-      vim.list_extend(stdout, { data })
-    end,
-  }):sync()
-
-  if not is_okay then
+  if obj.code ~= 0 then
     return {}
   end
 
   local targets = {}
-  for _, v in ipairs(stdout) do
-    if vim.startswith(v, '...') then
-      vim.list_extend(targets, { vim.split(v, ' ')[2] })
+  for _, v in ipairs(vim.split(obj.stdout or "", "\n", { trimempty = true })) do
+    if vim.startswith(v, "...") then
+      vim.list_extend(targets, { vim.split(v, " ")[2] })
     end
   end
 
@@ -78,7 +75,7 @@ function M.cmake_list_targets(build_dir)
 end
 
 function complete_target(arglead, line)
-  local words = vim.split(line, '%s+')
+  local words = vim.split(line, "%s+")
   local n = #words
 
   if n ~= 2 then
@@ -96,55 +93,51 @@ function complete_target(arglead, line)
   return matches
 end
 
-vim.api.nvim_create_user_command('CMakeConfigure', function(opts)
+vim.api.nvim_create_user_command("CMakeConfigure", function(opts)
   M.cmake_configure(unpack(opts.fargs))
-end, { nargs = '?' })
+end, { nargs = "?" })
 
-vim.api.nvim_create_user_command('CMakeBuild', function(opts)
+vim.api.nvim_create_user_command("CMakeBuild", function(opts)
   M.cmake_build(unpack(opts.fargs))
-end, { nargs = '?', complete = complete_target })
+end, { nargs = "?", complete = complete_target })
 
-vim.api.nvim_create_user_command('CMakeClean', function()
-  M.cmake_build('--target clean')
+vim.api.nvim_create_user_command("CMakeClean", function()
+  M.cmake_build("--target clean")
 end, { nargs = 0 })
 
-vim.api.nvim_create_user_command('CMakeListTargets', function()
-  M.cmake_build('--target help')
+vim.api.nvim_create_user_command("CTest", function()
+  dispatch("cd build && ctest")
 end, { nargs = 0 })
 
-vim.api.nvim_create_user_command('CTest', function()
-  dispatch('cd build && ctest')
-end, { nargs = 0 })
-
-vim.api.nvim_create_user_command('CMakeListTargets', function(opts)
+vim.api.nvim_create_user_command("CMakeListTargets", function(opts)
   local targets = M.cmake_list_targets(unpack(opts.fargs))
   for _, v in ipairs(targets) do
     print(v)
   end
-end, { nargs = '?' })
+end, { nargs = "?" })
 
-vim.api.nvim_create_user_command('CMakeSetTarget', function(opts) M.target = opts.fargs[1] end,
+vim.api.nvim_create_user_command("CMakeSetTarget", function(opts) M.target = opts.fargs[1] end,
   { nargs = 1, complete = complete_target })
 
-vim.api.nvim_create_user_command('CMakeGetTarget', function(_) print(M.target) end,
+vim.api.nvim_create_user_command("CMakeGetTarget", function(_) print(M.target) end,
   { nargs = 0 })
 
-vim.api.nvim_create_user_command('CMakeSetBuildDir', function(opts) M.build_dir = opts.fargs[1] end,
+vim.api.nvim_create_user_command("CMakeSetBuildDir", function(opts) M.build_dir = opts.fargs[1] end,
   { nargs = 1 })
 
-vim.api.nvim_create_user_command('CMakeGetBuildDir', function(_) print(M.build_dir) end,
+vim.api.nvim_create_user_command("CMakeGetBuildDir", function(_) print(M.build_dir) end,
   { nargs = 0 })
 
-vim.api.nvim_create_user_command('CMakeSetConfigureFlags', function(opts) M.configure_flags = opts.fargs[1] end,
+vim.api.nvim_create_user_command("CMakeSetConfigureFlags", function(opts) M.configure_flags = opts.fargs[1] end,
   { nargs = 1 })
 
-vim.api.nvim_create_user_command('CMakeGetConfigureFlags', function(_) print(M.configure_flags) end,
+vim.api.nvim_create_user_command("CMakeGetConfigureFlags", function(_) print(M.configure_flags) end,
   { nargs = 0 })
 
-vim.api.nvim_create_user_command('CMakeSetNumJobs', function(opts) M.num_jobs = opts.fargs[1] end,
+vim.api.nvim_create_user_command("CMakeSetNumJobs", function(opts) M.num_jobs = opts.fargs[1] end,
   { nargs = 1 })
 
-vim.api.nvim_create_user_command('CMakeGetNumJobs', function(_) print(M.num_jobs) end,
+vim.api.nvim_create_user_command("CMakeGetNumJobs", function(_) print(M.num_jobs) end,
   { nargs = 0 })
 
 return M
