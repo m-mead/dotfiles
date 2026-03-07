@@ -9,15 +9,15 @@ return {
           vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
         end
 
-        map("<leader>D", require("telescope.builtin").lsp_type_definitions, "LSP type [D]efinition")
-        map("<leader>cf", vim.lsp.buf.format, "[C]ode [F]ormat")
-        map("<leader>gS", require("telescope.builtin").lsp_dynamic_workspace_symbols, "LSP workspace symbols")
-        map("<leader>gs", require("telescope.builtin").lsp_document_symbols, "LSP document symbols")
-        map("E", function() require("telescope.builtin").diagnostics({ bufnr = 0 }) end, "LSP [E]rrors")
-        map("gD", vim.lsp.buf.declaration, "LSP [G]oto [D]eclaration")
-        map("gI", require("telescope.builtin").lsp_implementations, "LSP [G]oto [I]mplementation")
-        map("gd", require("telescope.builtin").lsp_definitions, "LSP [G]oto [D]efinition")
-        map("grr", require("telescope.builtin").lsp_references, "LSP [G]oto [R]eferences")
+        -- Keymaps
+        map("<leader>D", vim.lsp.buf.type_definition, "type definition")
+        map("<leader>cf", vim.lsp.buf.format, "code format")
+        map("<leader>gs", vim.lsp.buf.workspace_symbol, "workspace symbols")
+        map("E", function() vim.diagnostic.setloclist({ open = true }) end, "errors")
+        map("gD", vim.lsp.buf.declaration, "declaration")
+        map("gI", vim.lsp.buf.implementation, "implementation")
+        map("gd", vim.lsp.buf.definition, "definition")
+        map("grr", vim.lsp.buf.references, "references")
 
         vim.diagnostic.config({ virtual_text = true })
 
