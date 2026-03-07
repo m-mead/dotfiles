@@ -101,7 +101,9 @@ return {
               },
             },
             workspace = {
-              library = vim.api.nvim_get_runtime_file("", true),
+              library = {
+                vim.env.VIMRUNTIME,
+              }
             },
             telemetry = {
               enable = false,
