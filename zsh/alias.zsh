@@ -42,6 +42,3 @@ alias port-grep='lsof -i -P -n | grep'
 
 # Processes
 alias fkill="ps -ef | sed 1d | fzf -m | awk '{print $2}' | xargs kill -9"
-
-# Docker
-alias fexec="docker exec -it $(docker ps | sed 1d | fzf | awk '{print $1}') /bin/bash"
