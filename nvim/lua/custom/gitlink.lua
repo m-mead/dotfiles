@@ -77,23 +77,15 @@ local GitLink = {
 
 --- @return string
 function GitLink.remote()
-  local url = nil
+  local result = vim.system(
+    { "git", "remote", "get-url", GitLink.origin },
+    { text = true }
+  ):wait()
 
-  require("plenary.job"):new({
-    command = "git",
-    args = { "remote", "get-url", GitLink.origin },
-    on_exit = function(_, return_val)
-      if return_val ~= 0 then
-        url = nil
-      end
-    end,
-    on_stdout = function(_, data)
-      url = data
-    end,
-  }):sync()
+  local url = result.stdout and result.stdout:gsub("%s+$", "") or nil
 
-  if url == nil then
-    error("could not determine git remote: " .. GitLink.opts.remote_name)
+  if result.code ~= 0 or url == nil or url == "" then
+    error("could not determine git remote: " .. GitLink.origin)
   end
 
   return url
@@ -101,22 +93,14 @@ end
 
 --- @return string
 function GitLink.branch()
-  local branch = nil
+  local result = vim.system(
+    { "git", "rev-parse", "--abbrev-ref", "HEAD" },
+    { text = true }
+  ):wait()
 
-  require("plenary.job"):new({
-    command = "git",
-    args = { "rev-parse", "--abbrev-ref", "HEAD" },
-    on_exit = function(_, return_val)
-      if return_val ~= 0 then
-        branch = nil
-      end
-    end,
-    on_stdout = function(_, data)
-      branch = data
-    end,
-  }):sync()
+  local branch = result.stdout and result.stdout:gsub("%s+$", "") or nil
 
-  if branch == nil then
+  if result.code ~= 0 or branch == nil or branch == "" then
     error("could not determine git branch")
   end
 
