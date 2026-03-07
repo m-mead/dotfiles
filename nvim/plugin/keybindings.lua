@@ -31,3 +31,6 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap = true, si
 
 -- Yanking
 vim.api.nvim_set_keymap('v', '<leader>ys', '"*y', { noremap = true, silent = true, desc = 'yank selection to system clipboard' })
+
+-- File explorer
+vim.api.nvim_set_keymap('n', '<leader>e', ':Ex<cr>', { noremap = true, silent = true, desc = 'open netrw' })
