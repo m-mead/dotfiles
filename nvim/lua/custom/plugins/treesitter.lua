@@ -3,6 +3,7 @@ return {
   version = "0.10.0",
   config = function()
     -- Setup treesitter syntax highlighting.
+    ---@type string[]
     local treesitter_grammars = {
       "bash",
       "c",
@@ -18,10 +19,11 @@ return {
     }
 
     -- Building the rust grammer requires cargo or install will hang.
-    if vim.fn.executable("cargo") then
+    if vim.fn.executable("cargo") == 1 then
       vim.list_extend(treesitter_grammars, { "rust" })
     end
 
+    ---@diagnostic disable-next-line: missing-fields
     require("nvim-treesitter.configs").setup({
       ensure_installed = treesitter_grammars,
       highlight = {
