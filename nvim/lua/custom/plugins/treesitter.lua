@@ -1,36 +1,13 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  version = "0.10.0",
-  config = function()
-    -- Setup treesitter syntax highlighting.
-    ---@type string[]
-    local treesitter_grammars = {
-      "bash",
-      "c",
-      "cpp",
-      "go",
-      "javascript",
-      "json",
-      "lua",
-      "markdown",
-      "python",
-      "typescript",
-      "yaml",
-    }
-
-    -- Building the rust grammer requires cargo or install will hang.
-    if vim.fn.executable("cargo") == 1 then
-      vim.list_extend(treesitter_grammars, { "rust" })
-    end
-
-    ---@diagnostic disable-next-line: missing-fields
-    require("nvim-treesitter.configs").setup({
-      ensure_installed = treesitter_grammars,
-      highlight = {
-        enable = true,
-        -- additional_vim_regex_highlighting = false,
-      },
-      indent = { enable = false },
+  version = "v0.10.0",
+  build = ":TSUpdate",
+  event = { "BufReadPost", "BufNewFile" },
+  opts = function()
+    return {
+      ensure_installed = {},
+      auto_install = false,
+      highlight = { enable = true },
       incremental_selection = {
         enable = true,
         keymaps = {
@@ -40,50 +17,10 @@ return {
           node_decremental = "<M-space>",
         },
       },
-      textobjects = {
-        select = {
-          enable = true,
-          lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-          keymaps = {
-            -- You can use the capture groups defined in textobjects.scm
-            ["aa"] = "@parameter.outer",
-            ["ia"] = "@parameter.inner",
-            ["af"] = "@function.outer",
-            ["if"] = "@function.inner",
-            ["ac"] = "@class.outer",
-            ["ic"] = "@class.inner",
-          },
-        },
-        move = {
-          enable = true,
-          set_jumps = true, -- whether to set jumps in the jumplist
-          goto_next_start = {
-            ["]m"] = "@function.outer",
-            ["]]"] = "@class.outer",
-          },
-          goto_next_end = {
-            ["]M"] = "@function.outer",
-            ["]["] = "@class.outer",
-          },
-          goto_previous_start = {
-            ["[m"] = "@function.outer",
-            ["[["] = "@class.outer",
-          },
-          goto_previous_end = {
-            ["[M"] = "@function.outer",
-            ["[]"] = "@class.outer",
-          },
-        },
-        swap = {
-          enable = true,
-          swap_next = {
-            ["<leader>a"] = "@parameter.inner",
-          },
-          swap_previous = {
-            ["<leader>A"] = "@parameter.inner",
-          },
-        },
-      },
-    })
-  end
+    }
+  end,
+  config = function(_, opts)
+    ---@diagnostic disable-next-line: missing-fields
+    require("nvim-treesitter.configs").setup(opts)
+  end,
 }
