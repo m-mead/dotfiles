@@ -1,6 +1,6 @@
 return {
   "nvim-mini/mini.completion",
-  version = "v0.17.0",
+  commit = "7c5edfc0e479dd4edd898cc9ddd1920d8c1ce420", -- v0.17.0
   config = function()
     require("mini.completion").setup()
   end,

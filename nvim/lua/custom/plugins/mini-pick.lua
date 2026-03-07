@@ -1,7 +1,7 @@
 return {
   {
     "nvim-mini/mini.pick",
-    version = "v0.17.0",
+    commit = "6b7974543b17cf2e294993fc3d8545a342258232", -- v0.17.0
     config = function()
       local pick = require("mini.pick")
       pick.setup({ source = { show = pick.default_show } })
