@@ -22,24 +22,32 @@ if [ -f "$HOME/.cargo/env" ]; then
     source "$HOME/.cargo/env"
 fi
 
+# Dotfiles
 if [ -d "$HOME/src/dotfiles/bin" ]; then
     export PATH="$PATH:$HOME/src/dotfiles/bin"
 fi
 
-# fzf
+# MacOS
 if [[ "$(uname)" == darwin* ]]; then
     # fzf
     if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
         PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
     fi
 
-    # Homebrew sbin
-    if [[ ! "$PATH" == */usr/local/sbin* ]]; then
-        export PATH="/usr/local/sbin:$PATH"
+    # Homebrew
+    if [[ -d "/opt/homebrew/bin" ]]; then
+        export PATH="$PATH:/opt/homebrew/bin"
     fi
 fi
 
-# docker
+# Docker
 if [ -d "/usr/local/lib/docker/cli-plugins/" ]; then
     export PATH=$PATH:/usr/local/lib/docker/cli-plugins
+fi
+
+# Pyenv
+if [ -d "$HOME/.pyenv" ]; then
+    export PYENV_ROOT="$HOME/.pyenv"
+    [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
 fi
