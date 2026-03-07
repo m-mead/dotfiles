@@ -2,7 +2,7 @@
 -- It shows the normal nvim info and optionally shows diagnostics info and git info.
 --
 -- Requirements
---  - gitsigns
+--  - mini.diff
 --
 -- Reference guide: https://nuxsh.is-a.dev/blog/custom-nvim-statusline.html
 local M = {}
@@ -239,19 +239,34 @@ function M.lineinfo()
 end
 
 function M.git()
-  local ok, _ = pcall(require, "gitsigns")
+  local ok, _ = pcall(require, "mini.diff")
   if not ok then
     return ""
   end
 
-  local git_info = vim.b.gitsigns_status_dict
-  if not git_info or not git_info.head or git_info.head == "" then
+  local git_info = vim.b.minidiff_summary
+  if not git_info then
     return ""
   end
 
-  local added = git_info.added or 0
-  local changed = git_info.changed or 0
-  local removed = git_info.removed or 0
+  local added = git_info.add or 0
+  local changed = git_info.change or 0
+  local removed = git_info.delete or 0
+  local branch = vim.b.statusline_git_branch
+
+  if not branch then
+    local root = vim.fs.root(0, ".git")
+    if root then
+      local result = vim.system(
+        { "git", "rev-parse", "--abbrev-ref", "HEAD" },
+        { text = true, cwd = root }
+      ):wait()
+      if result.code == 0 and result.stdout then
+        branch = result.stdout:gsub("%s+$", "")
+        vim.b.statusline_git_branch = branch
+      end
+    end
+  end
 
   local parts = { " " }
 
@@ -265,9 +280,11 @@ function M.git()
     table.insert(parts, "%#StatusLineGitDelete#-" .. removed .. " ")
   end
 
-  table.insert(parts, "%#StatusLineGitBranch#🌳 ")
-  table.insert(parts, git_info.head)
-  table.insert(parts, " ")
+  if branch and branch ~= "" then
+    table.insert(parts, "%#StatusLineGitBranch#🌳 ")
+    table.insert(parts, branch)
+    table.insert(parts, " ")
+  end
   table.insert(parts, "%#StatusLine#")
 
   return table.concat(parts)
