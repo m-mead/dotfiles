@@ -41,7 +41,6 @@ local filetype_icons = {
   ruby            = "",
   rust            = "",
   scala           = "",
-  sh              = "",
   sql             = "",
   svelte          = "",
   swift           = "",
