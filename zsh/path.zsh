@@ -27,17 +27,14 @@ if [ -d "$HOME/src/dotfiles/bin" ]; then
     export PATH="$PATH:$HOME/src/dotfiles/bin"
 fi
 
-# MacOS
-if [[ "$(uname)" == darwin* ]]; then
-    # fzf
-    if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
-        PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
-    fi
+# Fzf
+if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
+    PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
+fi
 
-    # Homebrew
-    if [[ -d "/opt/homebrew/bin" ]]; then
-        export PATH="$PATH:/opt/homebrew/bin"
-    fi
+# Homebrew
+if [[ -d "/opt/homebrew/bin" ]]; then
+    export PATH="$PATH:/opt/homebrew/bin"
 fi
 
 # Docker
