@@ -25,3 +25,5 @@ require("lazy").setup(
       notify = false,
     },
   })
+
+require("custom.lsp").setup()
