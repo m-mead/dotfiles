@@ -1,7 +1,6 @@
 -- Keybindings for moving around tabs.
-vim.keymap.set("n", "<leader>to", "<cmd>tabnew<cr>", { noremap = true, silent = true, desc = "tab open" })
-vim.keymap.set("n", "<leader>tn", "<cmd>tabnext<cr>", { noremap = true, silent = true, desc = "tab next" })
-vim.keymap.set("n", "<leader>tp", "<cmd>tabprev<cr>", { noremap = true, silent = true, desc = "tab previous" })
+vim.keymap.set("n", "]t", "<cmd>tabnext<cr>", { noremap = true, silent = true, desc = "tab next" })
+vim.keymap.set("n", "[t", "<cmd>tabprev<cr>", { noremap = true, silent = true, desc = "tab previous" })
 
 -- Keybindings for moving around buffers.
 vim.keymap.set("n", "]b", "<cmd>bnext<cr>", { noremap = true, silent = true, desc = "buffer next" })
@@ -33,10 +32,10 @@ vim.keymap.set("n", "<leader>e", "<cmd>Ex<cr>", { noremap = true, silent = true,
 
 -- Spelling
 vim.keymap.set("n", "yos", "<cmd>setlocal spell!<bar>setlocal spell?<cr>",
-  { noremap = true, silent = true, desc = "toggle spelling" })
+  { noremap = true, silent = true, desc = "spell toggle" })
 
 vim.keymap.set("n", "]os", "<cmd>setlocal spell<bar>setlocal spell?<cr>",
-  { noremap = true, silent = true, desc = "enable spelling" })
+  { noremap = true, silent = true, desc = "spell on" })
 
 vim.keymap.set("n", "[os", "<cmd>setlocal nospell<bar>setlocal spell?<cr>",
-  { noremap = true, silent = true, desc = "disable spelling" })
+  { noremap = true, silent = true, desc = "spell off" })
