@@ -190,6 +190,13 @@ function M.lsp()
   return " LSP "
 end
 
+function M.spell()
+  if vim.wo.spell then
+    return " SPELL "
+  end
+  return ""
+end
+
 function M.lineinfo()
   if vim.bo.filetype == "alpha" then
     return ""
@@ -260,6 +267,7 @@ function M.render()
     M.git(),
     "%=%#StatusLineMeta#",
     M.lsp(),
+    M.spell(),
     M.filetype(),
     M.lineinfo(),
   })
