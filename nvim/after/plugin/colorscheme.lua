@@ -1,6 +1,5 @@
 -- mini.nvim highlighting
 local mini_group = vim.api.nvim_create_augroup("CustomMiniHighlights", { clear = true })
-
 vim.api.nvim_create_autocmd("ColorScheme", {
   group = mini_group,
   pattern = "*",
