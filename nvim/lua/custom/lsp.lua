@@ -128,6 +128,7 @@ function M.setup()
 
   setup_lsp_attach()
   setup_user_commands()
+  enable_servers()
 
   -- Keybindings
   vim.keymap.set("n", "<leader>l", function()

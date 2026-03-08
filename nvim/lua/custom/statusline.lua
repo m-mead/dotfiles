@@ -95,7 +95,7 @@ function M.setup_highlights()
   })
 
   vim.api.nvim_set_hl(0, "StatusLineMeta", {
-    fg = get_highlight({ "Comment" }).fg or normal.fg,
+    fg = normal.fg,
     bg = normal.bg,
     reverse = false,
   })
