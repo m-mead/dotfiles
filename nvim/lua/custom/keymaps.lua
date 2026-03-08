@@ -39,20 +39,22 @@ vim.keymap.set("n", "<leader>e", function()
   vim.cmd("Explore " .. vim.fn.fnameescape(directory))
 
   -- Move the cursor to the current file
-  if filename ~= "" then
-    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-    local function normalize_entry(name)
-      return name:gsub("%s+%-%>.*$", ""):gsub("/$", ""):gsub("[*@|=]$", "")
-    end
+  if filename == "" then
+    return
+  end
 
-    for lnum, line in ipairs(lines) do
-      local text = vim.trim(line)
-      local entry = normalize_entry(text)
-      local last_field = text:match("([^%s]+)$")
-      if entry == filename or (last_field and normalize_entry(last_field) == filename) then
-        vim.api.nvim_win_set_cursor(0, { lnum, 0 })
-        break
-      end
+  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  local function normalize_entry(name)
+    return name:gsub("%s+%-%>.*$", ""):gsub("/$", ""):gsub("[*@|=]$", "")
+  end
+
+  for lnum, line in ipairs(lines) do
+    local text = vim.trim(line)
+    local entry = normalize_entry(text)
+    local last_field = text:match("([^%s]+)$")
+    if entry == filename or (last_field and normalize_entry(last_field) == filename) then
+      vim.api.nvim_win_set_cursor(0, { lnum, 0 })
+      break
     end
   end
 end, { noremap = true, silent = true, desc = "open netrw at current file" })
