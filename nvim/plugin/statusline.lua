@@ -7,11 +7,21 @@ end
 
 vim.opt.statusline = "%!v:lua.CustomStatusLine()"
 
--- Setup highlights on colorscheme load
+-- Autocommands
 local group = vim.api.nvim_create_augroup("CustomStatusLine", { clear = true })
+
+-- Setup highlights on colorscheme load
 vim.api.nvim_create_autocmd("ColorScheme", {
   group = group,
   callback = function()
     statusline.setup_highlights()
+  end,
+})
+
+-- Redraw status on lsp events
+vim.api.nvim_create_autocmd({ "LspAttach", "LspDetach", "DiagnosticChanged" }, {
+  group = group,
+  callback = function()
+    vim.cmd("redrawstatus")
   end,
 })

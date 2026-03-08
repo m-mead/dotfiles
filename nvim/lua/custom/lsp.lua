@@ -81,9 +81,25 @@ local function setup_user_commands()
     vim.cmd("checkhealth vim.lsp")
   end, { desc = "Show LSP info" })
 
-  vim.api.nvim_create_user_command("LspEnable", function()
+  vim.api.nvim_create_user_command("LspClearLog", function()
+    local log_path = vim.lsp.get_log_path()
+    local ok, err = pcall(vim.fn.writefile, {}, log_path)
+    if not ok then
+      vim.notify("Failed to clear LSP log: " .. tostring(err), vim.log.levels.ERROR)
+      return
+    end
+  end, { desc = "Clear LSP log" })
+
+  vim.api.nvim_create_user_command("LspStart", function()
     enable_servers()
-  end, { desc = "Enable LSP servers" })
+  end, { desc = "Start LSP" })
+
+  vim.api.nvim_create_user_command("LspStop", function()
+    local clients = vim.lsp.get_clients()
+    for _, client in ipairs(clients) do
+      client:stop(true)
+    end
+  end, { desc = "Stop LSP" })
 end
 
 
