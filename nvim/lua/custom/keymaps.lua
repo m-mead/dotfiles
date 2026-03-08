@@ -4,14 +4,12 @@ vim.keymap.set("n", "<leader>tn", "<cmd>tabnext<cr>", { noremap = true, silent =
 vim.keymap.set("n", "<leader>tp", "<cmd>tabprev<cr>", { noremap = true, silent = true, desc = "tab previous" })
 
 -- Keybindings for moving around buffers.
-vim.keymap.set("n", "<S-h>", "<cmd>bprev<cr>", { noremap = true, silent = true, desc = "buffer previous" })
-vim.keymap.set("n", "<S-l>", "<cmd>bnext<cr>", { noremap = true, silent = true, desc = "buffer next" })
+vim.keymap.set("n", "]b", "<cmd>bnext<cr>", { noremap = true, silent = true, desc = "buffer next" })
+vim.keymap.set("n", "[b", "<cmd>bprev<cr>", { noremap = true, silent = true, desc = "buffer previous" })
 
 -- Insert blank characters without leaving insert mode.
-vim.keymap.set("n", "zj", "o<esc>^Dk", { noremap = true, silent = true, desc = "insert blank link below" })
-vim.keymap.set("n", "zk", "O<esc>^Dj", { noremap = true, silent = true, desc = "insert blank line above" })
-vim.keymap.set("n", "zh", "i<space><esc>l", { noremap = true, silent = true, desc = "insert blank character right" })
-vim.keymap.set("n", "zl", "a<space><esc>h", { noremap = true, silent = true, desc = "insert blank character left" })
+vim.keymap.set("n", "]<Space>", "o<Esc>k", { noremap = true, silent = true, desc = "insert blank line below" })
+vim.keymap.set("n", "[<Space>", "O<Esc>j", { noremap = true, silent = true, desc = "insert blank line above" })
 
 -- Indent selection without leaving visual mode.
 vim.keymap.set("v", "<", "<gv", { noremap = true, silent = true, desc = "shift selection left and hold on" })
@@ -35,5 +33,5 @@ vim.keymap.set("n", "<leader>e", "<cmd>Ex<cr>", { noremap = true, silent = true,
 
 -- Spelling
 vim.keymap.set("n", "yos", "<cmd>setlocal spell!<bar>setlocal spell?<cr>", { desc = "Toggle spell" })
-vim.keymap.set("n", "[os", "<cmd>setlocal spell<bar>setlocal spell?<cr>", { desc = "Enable spell" })
-vim.keymap.set("n", "]os", "<cmd>setlocal nospell<bar>setlocal spell?<cr>", { desc = "Disable spell" })
+vim.keymap.set("n", "]os", "<cmd>setlocal spell<bar>setlocal spell?<cr>", { desc = "Enable spell" })
+vim.keymap.set("n", "[os", "<cmd>setlocal nospell<bar>setlocal spell?<cr>", { desc = "Disable spell" })
