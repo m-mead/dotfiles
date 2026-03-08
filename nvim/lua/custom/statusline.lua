@@ -234,6 +234,14 @@ function M.filetype()
   return string.format(" %s %s ", icon, ft)
 end
 
+function M.lsp()
+  local clients = vim.lsp.get_clients({ bufnr = 0 })
+  if #clients == 0 then
+    return ""
+  end
+  return " LSP "
+end
+
 function M.lineinfo()
   if vim.bo.filetype == "alpha" then
     return ""
@@ -303,6 +311,7 @@ function M.render()
     M.diagnostics(),
     M.git(),
     "%=%#StatusLineMeta#",
+    M.lsp(),
     M.filetype(),
     M.lineinfo(),
   })
