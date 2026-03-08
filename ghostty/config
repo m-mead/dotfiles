@@ -48,6 +48,6 @@
 # # Just for example:
 # resize-overlay-duration = 4s 200ms
 
-theme = Nvim Dark
+theme = TokyoNight Night
 font-family = JetBrainsMono Nerd Font
 font-size = 13
