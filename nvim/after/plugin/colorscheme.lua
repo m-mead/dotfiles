@@ -1,7 +1,20 @@
-local group = vim.api.nvim_create_augroup("ColorschemeTreesitterHighlights", { clear = true })
+-- mini.pick highlighting
+local mini_pick_group = vim.api.nvim_create_augroup("ColorschemeMiniPickHighlights", { clear = true })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
-  group = group,
+  group = mini_pick_group,
+  pattern = "*",
+  callback = function()
+    vim.api.nvim_set_hl(0, "MiniPickNormal", { link = "Normal" })
+    vim.api.nvim_set_hl(0, "MiniPickBorder", { link = "FloatBorder" })
+    vim.api.nvim_set_hl(0, "MiniPickMatchCurrent", { link = "Visual" })
+  end,
+})
+
+-- Treesitter highlighting
+local treesitter_group = vim.api.nvim_create_augroup("ColorschemeTreesitterHighlights", { clear = true })
+vim.api.nvim_create_autocmd("ColorScheme", {
+  group = treesitter_group,
   pattern = { "default", "habamax" },
   callback = function()
     local treesitter_to_vim_map = {
@@ -26,8 +39,8 @@ vim.api.nvim_create_autocmd("ColorScheme", {
       ["@type.builtin"] = "Type",
       ["@variable"] = "Identifier",
     }
-    for treesitter_group, vim_group in pairs(treesitter_to_vim_map) do
-      vim.api.nvim_set_hl(0, treesitter_group, { link = vim_group })
+    for g, vim_group in pairs(treesitter_to_vim_map) do
+      vim.api.nvim_set_hl(0, g, { link = vim_group })
     end
   end
 })
