@@ -7,56 +7,6 @@
 -- Reference guide: https://nuxsh.is-a.dev/blog/custom-nvim-statusline.html
 local M = {}
 
--- Minimal set of icons from nvmi-web-devicons.
--- Reference: https://github.com/nvim-tree/nvim-web-devicons/blob/master/lua/nvim-web-devicons/default/icons_by_file_extension.lua
-local filetype_icons = {
-  bash            = "",
-  bat             = "",
-  c               = "",
-  cmake           = "",
-  conf            = "󰈙",
-  cpp             = "",
-  css             = "",
-  csv             = "",
-  cuda            = "",
-  dockerfile      = "󰡨",
-  go              = "",
-  graphql         = "",
-  html            = "",
-  java            = "",
-  javascript      = "",
-  javascriptreact = "",
-  json            = "",
-  json5           = "",
-  jsonc           = "",
-  lua             = "",
-  make            = "",
-  markdown        = "",
-  md              = "",
-  mysql           = "",
-  objc            = "",
-  odin            = "󰟢",
-  php             = "",
-  python          = "",
-  ruby            = "",
-  rust            = "",
-  scala           = "",
-  sql             = "",
-  svelte          = "",
-  swift           = "",
-  template        = "",
-  terraform       = "",
-  text            = "󰈙",
-  toml            = "",
-  typescript      = "",
-  typescriptreact = "",
-  vim             = "",
-  xml             = "󰗀",
-  yaml            = "",
-  zig             = "",
-  zsh             = "",
-}
-
 local function get_highlight(options)
   for _, option in ipairs(options) do
     local value = vim.api.nvim_get_hl(0, { name = option, link = false })
@@ -229,9 +179,7 @@ function M.filetype()
   if ft == "" then
     return " text "
   end
-
-  local icon = filetype_icons[ft] or ""
-  return string.format(" %s %s ", icon, ft)
+  return string.format(" %s ", ft)
 end
 
 function M.lsp()
