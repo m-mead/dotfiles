@@ -1,2 +1,15 @@
-vim.api.nvim_create_user_command('Black', function(_) vim.cmd('!black %') end,
-  { nargs = 0 })
+vim.opt_local.expandtab = true
+vim.opt_local.shiftwidth = 4
+vim.opt_local.softtabstop = 4
+vim.opt_local.tabstop = 4
+
+local formatters = {
+  { executable = "ruff", command = "ruff format --stdin-filename % -" },
+  { exe = "black",       command = "black -q -" },
+}
+
+for _, formatter in ipairs(formatters) do
+  if vim.fn.executable(formatter.executable) == 1 then
+    vim.bo.formatprg = formatter.command
+  end
+end
