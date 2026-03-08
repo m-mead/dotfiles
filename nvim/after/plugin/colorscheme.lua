@@ -1,8 +1,8 @@
-local group = vim.api.nvim_create_augroup("DefaultColorschemeTreesitterHighlights", { clear = true })
+local group = vim.api.nvim_create_augroup("ColorschemeTreesitterHighlights", { clear = true })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
   group = group,
-  pattern = "default",
+  pattern = { "default", "habamax" },
   callback = function()
     local treesitter_to_vim_map = {
       ["@boolean"] = "Boolean",
@@ -32,4 +32,4 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   end
 })
 
-vim.cmd("colorscheme default")
+vim.cmd("colorscheme tokyonight-night")
