@@ -1,16 +1,16 @@
 local M = {}
 
-local function enable_servers()
-  local servers = {
-    "clangd",
-    "gopls",
-    "lua_ls",
-    "pyright",
-    "ruff",
-    "rust_analyzer",
-    "ts_ls",
-  }
+local servers = {
+  "clangd",
+  "gopls",
+  "lua_ls",
+  "pyright",
+  "ruff",
+  "rust_analyzer",
+  "ts_ls",
+}
 
+local function enable_servers()
   for _, server in ipairs(servers) do
     local config = vim.lsp.config[server]
     local command = config and config.cmd
@@ -19,6 +19,29 @@ local function enable_servers()
       vim.lsp.enable(server)
     end
   end
+end
+
+local function disable_servers()
+  local failures = {}
+  for _, server in ipairs(servers) do
+    local ok = pcall(vim.lsp.enable, server, false)
+    if not ok then
+      table.insert(failures, server)
+    end
+  end
+
+  if #failures > 0 then
+    vim.notify("Failed to disable servers: " .. table.concat(failures, ", "), vim.log.levels.ERROR)
+  end
+end
+
+local function any_server_enabled()
+  for _, server in ipairs(servers) do
+    if vim.lsp.is_enabled(server) then
+      return true
+    end
+  end
+  return false
 end
 
 local function setup_lsp_attach()
@@ -95,21 +118,25 @@ local function setup_user_commands()
   end, { desc = "Start LSP" })
 
   vim.api.nvim_create_user_command("LspStop", function()
-    local clients = vim.lsp.get_clients()
-    for _, client in ipairs(clients) do
-      client:stop(true)
-    end
+    disable_servers()
   end, { desc = "Stop LSP" })
 end
 
 
 function M.setup()
   vim.diagnostic.config({ virtual_text = true })
+
   setup_lsp_attach()
   setup_user_commands()
 
   -- Keybindings
-  vim.keymap.set("n", "<leader>l", enable_servers, { desc = "LSP: enable servers" })
+  vim.keymap.set("n", "<leader>l", function()
+    if any_server_enabled() then
+      disable_servers()
+    else
+      enable_servers()
+    end
+  end, { desc = "LSP toggle" })
 end
 
 return M
