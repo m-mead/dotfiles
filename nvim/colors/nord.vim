@@ -1,7 +1,9 @@
 " Copyright (c) 2016-present Sven Greb <development@svengreb.de>
 " This source code is licensed under the MIT license found in the license file.
 "
-" Source: https://github.com/nordtheme/vim/blob/f13f5dfbb784deddbc1d8195f34dfd9ec73e2295/colors/nord.vim
+" Forked for personal use to support new Neovim highlight groups.
+" Upstream: https://github.com/nordtheme/vim (colors/nord.vim)
+" Base commit: f13f5dfbb784deddbc1d8195f34dfd9ec73e2295
 
 if version > 580
   hi clear
@@ -145,8 +147,9 @@ call s:hi("PmenuSel", s:nord8_gui, s:nord3_gui, s:nord8_term, s:nord3_term, "", 
 call s:hi("PmenuThumb", s:nord8_gui, s:nord3_gui, "NONE", s:nord3_term, "", "")
 call s:hi("SpecialKey", s:nord3_gui, "", s:nord3_term, "", "", "")
 
-" Modified: Too distracting -- this will make types red
+" BEGIN(fork)
 "call s:hi("SpellBad", s:nord11_gui, s:nord0_gui, s:nord11_term, "NONE", "undercurl", s:nord11_gui)
+" END(fork)
 
 call s:hi("SpellCap", s:nord13_gui, s:nord0_gui, s:nord13_term, "NONE", "undercurl", s:nord13_gui)
 call s:hi("SpellLocal", s:nord5_gui, s:nord0_gui, s:nord5_term, "NONE", "undercurl", s:nord5_gui)
@@ -160,6 +163,7 @@ if has('terminal')
 endif
 
 if has('nvim')
+  " BEGIN(fork)
   "+- Neovim Terminal Colors -+
   let g:terminal_color_0 = s:nord1_gui
   let g:terminal_color_1 = s:nord11_gui
@@ -183,16 +187,52 @@ if has('nvim')
   call s:hi("healthSuccess", s:nord14_gui, s:nord1_gui, s:nord14_term, s:nord1_term, "", "")
   call s:hi("healthWarning", s:nord13_gui, s:nord1_gui, s:nord13_term, s:nord1_term, "", "")
   call s:hi("TermCursorNC", "", s:nord1_gui, "", s:nord1_term, "", "")
+  call s:hi("NormalNC", s:nord4_gui, s:nord0_gui, "NONE", "NONE", "", "")
+  call s:hi("NormalFloat", s:nord4_gui, s:nord1_gui, "NONE", s:nord1_term, "", "")
+  call s:hi("FloatBorder", s:nord3_gui_bright, s:nord1_gui, s:nord3_term, s:nord1_term, "", "")
+  call s:hi("FloatTitle", s:nord8_gui, s:nord1_gui, s:nord8_term, s:nord1_term, s:bold, "")
+  call s:hi("FloatFooter", s:nord8_gui, s:nord1_gui, s:nord8_term, s:nord1_term, "", "")
+  call s:hi("FloatShadow", "", s:nord1_gui, "", s:nord1_term, "", "")
+  call s:hi("FloatShadowThrough", "", s:nord0_gui, "", "NONE", "", "")
+  call s:hi("WinSeparator", s:nord2_gui, s:nord0_gui, s:nord3_term, "NONE", "NONE", "")
+  call s:hi("PmenuKind", s:nord4_gui, s:nord2_gui, "NONE", s:nord1_term, "NONE", "")
+  call s:hi("PmenuKindSel", s:nord8_gui, s:nord3_gui, s:nord8_term, s:nord3_term, "", "")
+  call s:hi("PmenuExtra", s:nord4_gui, s:nord2_gui, "NONE", s:nord1_term, "NONE", "")
+  call s:hi("PmenuExtraSel", s:nord8_gui, s:nord3_gui, s:nord8_term, s:nord3_term, "", "")
 
   "+- Neovim Diagnostics API -+
   call s:hi("DiagnosticWarn", s:nord13_gui, "", s:nord13_term, "", "", "")
   call s:hi("DiagnosticError" , s:nord11_gui, "", s:nord11_term, "", "", "")
   call s:hi("DiagnosticInfo" , s:nord8_gui, "", s:nord8_term, "", "", "")
   call s:hi("DiagnosticHint" , s:nord10_gui, "", s:nord10_term, "", "", "")
+  call s:hi("DiagnosticOk" , s:nord14_gui, "", s:nord14_term, "", "", "")
+  call s:hi("DiagnosticSignWarn", s:nord13_gui, "", s:nord13_term, "", "", "")
+  call s:hi("DiagnosticSignError" , s:nord11_gui, "", s:nord11_term, "", "", "")
+  call s:hi("DiagnosticSignInfo" , s:nord8_gui, "", s:nord8_term, "", "", "")
+  call s:hi("DiagnosticSignHint" , s:nord10_gui, "", s:nord10_term, "", "", "")
+  call s:hi("DiagnosticSignOk" , s:nord14_gui, "", s:nord14_term, "", "", "")
+  call s:hi("DiagnosticVirtualTextWarn", s:nord13_gui, s:nord1_gui, s:nord13_term, s:nord1_term, "", "")
+  call s:hi("DiagnosticVirtualTextError" , s:nord11_gui, s:nord1_gui, s:nord11_term, s:nord1_term, "", "")
+  call s:hi("DiagnosticVirtualTextInfo" , s:nord8_gui, s:nord1_gui, s:nord8_term, s:nord1_term, "", "")
+  call s:hi("DiagnosticVirtualTextHint" , s:nord10_gui, s:nord1_gui, s:nord10_term, s:nord1_term, "", "")
+  call s:hi("DiagnosticVirtualTextOk" , s:nord14_gui, s:nord1_gui, s:nord14_term, s:nord1_term, "", "")
+  call s:hi("DiagnosticVirtualLinesWarn", s:nord13_gui, "", s:nord13_term, "", "", "")
+  call s:hi("DiagnosticVirtualLinesError" , s:nord11_gui, "", s:nord11_term, "", "", "")
+  call s:hi("DiagnosticVirtualLinesInfo" , s:nord8_gui, "", s:nord8_term, "", "", "")
+  call s:hi("DiagnosticVirtualLinesHint" , s:nord10_gui, "", s:nord10_term, "", "", "")
+  call s:hi("DiagnosticVirtualLinesOk" , s:nord14_gui, "", s:nord14_term, "", "", "")
+  call s:hi("DiagnosticFloatingWarn", s:nord13_gui, "", s:nord13_term, "", "", "")
+  call s:hi("DiagnosticFloatingError" , s:nord11_gui, "", s:nord11_term, "", "", "")
+  call s:hi("DiagnosticFloatingInfo" , s:nord8_gui, "", s:nord8_term, "", "", "")
+  call s:hi("DiagnosticFloatingHint" , s:nord10_gui, "", s:nord10_term, "", "", "")
+  call s:hi("DiagnosticFloatingOk" , s:nord14_gui, "", s:nord14_term, "", "", "")
   call s:hi("DiagnosticUnderlineWarn" , s:nord13_gui, "", s:nord13_term, "", "undercurl", "")
   call s:hi("DiagnosticUnderlineError" , s:nord11_gui, "", s:nord11_term, "", "undercurl", "")
   call s:hi("DiagnosticUnderlineInfo" , s:nord8_gui, "", s:nord8_term, "", "undercurl", "")
   call s:hi("DiagnosticUnderlineHint" , s:nord10_gui, "", s:nord10_term, "", "undercurl", "")
+  call s:hi("DiagnosticUnderlineOk" , s:nord14_gui, "", s:nord14_term, "", "undercurl", "")
+  hi! link DiagnosticDeprecated Comment
+  hi! link DiagnosticUnnecessary Comment
 
   "+- Neovim DocumentHighlight -+
   call s:hi("LspReferenceText", "", s:nord3_gui, "", s:nord3_term, "", "")
@@ -201,6 +241,7 @@ if has('nvim')
 
   "+- Neovim LspSignatureHelp -+
   call s:hi("LspSignatureActiveParameter", s:nord8_gui, "", s:nord8_term, "", s:underline, "")
+  " END(fork)
 endif
 
 "+--- Gutter ---+
@@ -223,6 +264,8 @@ call s:hi("ErrorMsg", s:nord4_gui, s:nord11_gui, "NONE", s:nord11_term, "", "")
 call s:hi("ModeMsg", s:nord4_gui, "", "", "", "", "")
 call s:hi("MoreMsg", s:nord8_gui, "", s:nord8_term, "", "", "")
 call s:hi("Question", s:nord4_gui, "", "NONE", "", "", "")
+call s:hi("WinBar", s:nord4_gui, s:nord1_gui, "NONE", s:nord1_term, "NONE", "")
+call s:hi("WinBarNC", s:nord3_gui_bright, s:nord1_gui, s:nord3_term, s:nord1_term, "NONE", "")
 if g:nord_uniform_status_lines == 0
   call s:hi("StatusLine", s:nord8_gui, s:nord3_gui, s:nord8_term, s:nord3_term, "NONE", "")
   call s:hi("StatusLineNC", s:nord4_gui, s:nord1_gui, "NONE", s:nord1_term, "NONE", "")
@@ -240,6 +283,8 @@ call s:hi("WildMenu", s:nord8_gui, s:nord1_gui, s:nord8_term, s:nord1_term, "", 
 "+--- Search ---+
 call s:hi("IncSearch", s:nord6_gui, s:nord10_gui, s:nord6_term, s:nord10_term, s:underline, "")
 call s:hi("Search", s:nord1_gui, s:nord8_gui, s:nord1_term, s:nord8_term, "NONE", "")
+call s:hi("CurSearch", s:nord1_gui, s:nord13_gui, s:nord1_term, s:nord13_term, "NONE", "")
+call s:hi("Substitute", s:nord1_gui, s:nord7_gui, s:nord1_term, s:nord7_term, "NONE", "")
 
 "+--- Tabs ---+
 call s:hi("TabLine", s:nord4_gui, s:nord1_gui, "NONE", s:nord1_term, "NONE", "")
@@ -248,6 +293,8 @@ call s:hi("TabLineSel", s:nord8_gui, s:nord3_gui, s:nord8_term, s:nord3_term, "N
 
 "+--- Window ---+
 call s:hi("Title", s:nord4_gui, "", "NONE", "", "NONE", "")
+call s:hi("QuickFixLine", "", s:nord1_gui, "", s:nord1_term, "NONE", "")
+call s:hi("Whitespace", s:nord2_gui, "", s:nord3_term, "", "", "")
 
 if g:nord_bold_vertical_split_line == 0
   call s:hi("VertSplit", s:nord2_gui, s:nord0_gui, s:nord3_term, "NONE", "NONE", "")
@@ -572,6 +619,7 @@ if has('nvim')
   " Neovim LSP
   " > neovim/nvim-lspconfig
   call s:hi("LspCodeLens", s:nord3_gui_bright, "", s:nord3_term, "", "", "")
+  call s:hi("LspInlayHint", s:nord3_gui_bright, s:nord1_gui, s:nord3_term, s:nord1_term, s:italic, "")
   if has("nvim-0.5")
     call s:hi("LspDiagnosticsDefaultWarning", s:nord13_gui, "", s:nord13_term, "", "", "")
     call s:hi("LspDiagnosticsDefaultError" , s:nord11_gui, "", s:nord11_term, "", "", "")
@@ -738,6 +786,116 @@ if has('nvim')
   hi! link TSUnderline Underline
   hi! link TSVariable Variable
   hi! link TSVariableBuiltin Keyword
+
+  " BEGIN(fork)
+  " New tree-sitter capture names
+  hi! link @annotation Annotation
+  hi! link @attribute Decorator
+  hi! link @boolean Boolean
+  hi! link @character Character
+  hi! link @character.special SpecialChar
+  hi! link @comment Comment
+  hi! link @conditional Conditional
+  hi! link @constant Constant
+  hi! link @constant.builtin Constant
+  hi! link @constant.macro Define
+  hi! link @constructor Function
+  hi! link @exception Exception
+  hi! link @field Identifier
+  hi! link @float Float
+  hi! link @function Function
+  hi! link @function.builtin Function
+  hi! link @function.call Function
+  hi! link @function.macro Function
+  hi! link @include Include
+  hi! link @keyword Keyword
+  hi! link @keyword.function Keyword
+  hi! link @keyword.operator Operator
+  hi! link @keyword.return Keyword
+  hi! link @label Label
+  hi! link @method Function
+  hi! link @method.call Function
+  hi! link @module Include
+  hi! link @namespace Include
+  hi! link @number Number
+  hi! link @operator Operator
+  hi! link @parameter Identifier
+  hi! link @preproc PreProc
+  hi! link @property Identifier
+  hi! link @punctuation.bracket Delimiter
+  hi! link @punctuation.delimiter Delimiter
+  hi! link @punctuation.special SpecialChar
+  hi! link @repeat Repeat
+  hi! link @storageclass StorageClass
+  hi! link @string String
+  hi! link @string.escape SpecialChar
+  hi! link @string.regex SpecialChar
+  hi! link @string.special SpecialChar
+  hi! link @symbol Identifier
+  hi! link @tag Tag
+  hi! link @tag.attribute Identifier
+  hi! link @tag.delimiter Delimiter
+  hi! link @text.literal markdownCode
+  hi! link @text.reference markdownLinkText
+  hi! link @text.title markdownH1
+  hi! link @text.uri markdownUrl
+  hi! link @text.underline Underline
+  hi! link @text.strong Bold
+  hi! link @text.emphasis Italic
+  hi! link @text.todo Todo
+  hi! link @markup.heading markdownH1
+  hi! link @markup.strong Bold
+  hi! link @markup.italic Italic
+  hi! link @markup.strikethrough Comment
+  hi! link @markup.underline Underline
+  hi! link @markup.link markdownLinkText
+  hi! link @markup.link.url markdownUrl
+  hi! link @markup.raw markdownCode
+  hi! link @markup.raw.block markdownCode
+  hi! link @markup.quote markdownBlockquote
+  hi! link @markup.list markdownListMarker
+  hi! link @type Type
+  hi! link @type.builtin Type
+  hi! link @type.definition Typedef
+  hi! link @variable Variable
+  hi! link @variable.builtin Keyword
+  hi! link @variable.member Identifier
+
+  " Semantic token defaults
+  hi! link @lsp.type.class @type
+  hi! link @lsp.type.comment @comment
+  hi! link @lsp.type.decorator @attribute
+  hi! link @lsp.type.enum @type
+  hi! link @lsp.type.enumMember @constant
+  hi! link @lsp.type.function @function
+  hi! link @lsp.type.interface @type
+  hi! link @lsp.type.keyword @keyword
+  hi! link @lsp.type.macro @constant.macro
+  hi! link @lsp.type.method @method
+  hi! link @lsp.type.namespace @namespace
+  hi! link @lsp.type.number @number
+  hi! link @lsp.type.operator @operator
+  hi! link @lsp.type.parameter @parameter
+  hi! link @lsp.type.property @property
+  hi! link @lsp.type.string @string
+  hi! link @lsp.type.struct @type
+  hi! link @lsp.type.type @type
+  hi! link @lsp.type.typeParameter @type.definition
+  hi! link @lsp.type.variable @variable
+  hi! link @lsp.typemod.class.defaultLibrary @type.builtin
+  hi! link @lsp.typemod.enum.defaultLibrary @type.builtin
+  hi! link @lsp.typemod.enumMember.defaultLibrary @constant.builtin
+  hi! link @lsp.typemod.function.defaultLibrary @function.builtin
+  hi! link @lsp.typemod.keyword.async @keyword
+  hi! link @lsp.typemod.method.defaultLibrary @function.builtin
+  hi! link @lsp.typemod.operator.injected @operator
+  hi! link @lsp.typemod.property.readonly @constant
+  hi! link @lsp.typemod.variable.defaultLibrary @variable.builtin
+  hi! link @lsp.typemod.variable.readonly @constant
+  hi! link @lsp.typemod.variable.static @constant
+  hi! link @lsp.mod.deprecated DiagnosticDeprecated
+  hi! link @lsp.mod.readonly Constant
+  " END(fork)
 endif
 
 " TypeScript

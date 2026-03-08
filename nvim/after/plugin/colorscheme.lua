@@ -1,16 +1,3 @@
--- mini.pick highlighting
-local mini_pick_group = vim.api.nvim_create_augroup("ColorschemeMiniPickHighlights", { clear = true })
-
-vim.api.nvim_create_autocmd("ColorScheme", {
-  group = mini_pick_group,
-  pattern = "*",
-  callback = function()
-    vim.api.nvim_set_hl(0, "MiniPickNormal", { link = "Normal" })
-    vim.api.nvim_set_hl(0, "MiniPickBorder", { link = "FloatBorder" })
-    vim.api.nvim_set_hl(0, "MiniPickMatchCurrent", { link = "Visual" })
-  end,
-})
-
 -- Treesitter highlighting
 local treesitter_group = vim.api.nvim_create_augroup("ColorschemeTreesitterHighlights", { clear = true })
 vim.api.nvim_create_autocmd("ColorScheme", {
