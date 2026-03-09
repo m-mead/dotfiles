@@ -13,4 +13,4 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   end,
 })
 
-vim.cmd("colorscheme drift")
+vim.cmd("colorscheme eddy")
