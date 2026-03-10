@@ -4,7 +4,20 @@ return {
     commit = "6b7974543b17cf2e294993fc3d8545a342258232", -- v0.17.0
     config = function()
       local pick = require("mini.pick")
-      pick.setup({ source = { show = pick.default_show } })
+      pick.setup({
+        source = {
+          show = pick.default_show,
+        },
+        mappings = {
+          choose_all = {
+            char = "<C-q>",
+            func = function()
+              local mappings = pick.get_picker_opts().mappings
+              vim.api.nvim_input(mappings.mark_all .. mappings.choose_marked)
+            end
+          },
+        },
+      })
 
       -- Keymaps
       vim.keymap.set("n", "<leader><space>", pick.builtin.buffers)
