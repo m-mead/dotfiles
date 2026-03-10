@@ -24,9 +24,6 @@ vim.keymap.set("n", "<M-k>", "<cmd>cprevious<cr>", { desc = "previous quickfix l
 -- Diagnostic keymappings
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { noremap = true, silent = true })
 
--- Yanking
-vim.keymap.set("v", "<leader>ys", '"*y', { noremap = true, silent = true, desc = "yank selection to system clipboard" })
-
 -- Netrw
 vim.keymap.set("n", "<leader>e", function()
   local filename = vim.fn.expand("%:t")
