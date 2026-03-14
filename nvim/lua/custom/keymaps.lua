@@ -24,6 +24,10 @@ vim.keymap.set("n", "<M-k>", "<cmd>cprevious<cr>", { desc = "previous quickfix l
 -- Diagnostic keymappings
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { noremap = true, silent = true })
 
+-- System clipboard
+vim.keymap.set({ "n", "x" }, "<leader>y", '"+y', { noremap = true, silent = true })
+vim.keymap.set({ "n", "x" }, "<leader>p", '"+p', { noremap = true, silent = true })
+
 -- Netrw
 vim.keymap.set("n", "<leader>e", function()
   local filename = vim.fn.expand("%:t")
