@@ -4,10 +4,10 @@ local servers = {
   "clangd",
   "gopls",
   "lua_ls",
-  "pyright",
   "ruff",
   "rust_analyzer",
   "ts_ls",
+  "ty",
 }
 
 local function enable_servers()
