@@ -1,5 +1,5 @@
 {
-  "eddy.nvim": { "branch": "main", "commit": "d9dab7d4f9a0a5e4189a839807af36d705733d82" },
+  "eddy.nvim": { "branch": "main", "commit": "7582801553da93b9bf08fa58e836113da1135603" },
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
   "mini.completion": { "branch": "main", "commit": "7c5edfc0e479dd4edd898cc9ddd1920d8c1ce420" },
   "mini.diff": { "branch": "main", "commit": "fbb93ea1728e7c9d0944df8bd022a68402bd2e7e" },
