@@ -95,6 +95,10 @@ local function setup_lsp_attach()
           vim.lsp.inlay_hint.enable(not enabled, { bufnr = event.buf })
         end, "toggle inlay hints")
       end
+
+      if client and client.server_capabilities.semanticTokensProvider then
+        client.server_capabilities.semanticTokensProvider = nil
+      end
     end,
   })
 end
