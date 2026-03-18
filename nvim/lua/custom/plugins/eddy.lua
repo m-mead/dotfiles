@@ -1,4 +1,4 @@
 return {
   "m-mead/eddy.nvim",
-  commit = "21b1c80bd9ae6834744dc5e1608a31cb95c1dac4"
+  commit = "5d3490f3a9c53aaafaf5dcd05a9a5386c44e257a"
 }
