@@ -1,4 +1,7 @@
 return {
   "m-mead/eddy.nvim",
-  commit = "5d3490f3a9c53aaafaf5dcd05a9a5386c44e257a"
+  commit = "814eee108b357b92e63758902d9404670f2f4f38",
+  config = function()
+    vim.cmd.colorscheme("eddy")
+  end
 }
