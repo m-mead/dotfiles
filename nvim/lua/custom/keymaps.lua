@@ -69,3 +69,6 @@ vim.keymap.set("n", "]os", "<cmd>setlocal spell<bar>setlocal spell?<cr>",
 
 vim.keymap.set("n", "[os", "<cmd>setlocal nospell<bar>setlocal spell?<cr>",
   { noremap = true, silent = true, desc = "spell off" })
+
+-- Make
+vim.keymap.set("n", "<leader>M", "<cmd>make<cr>", { noremap = true, silent = true, desc = "make" })
