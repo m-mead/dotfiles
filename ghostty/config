@@ -1,2 +1,6 @@
 theme = eddy
 font-size = 13
+
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
