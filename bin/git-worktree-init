@@ -1,11 +1,14 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
+# frozen_string_literal: true
 
-remote=$1
+remote = ARGV[0]
 
-if [[ -z "$remote" ]]; then
-    echo -e "usage: git-worktree-init [remote]"
-    exit 1
-fi
+if remote.nil? || remote.empty?
+  warn 'usage: git-worktree-init [remote]'
+  exit 1
+end
 
-git clone --bare $remote .bare
-echo "gitdir: ./.bare" >> .git
+success = system('git', 'clone', '--bare', remote, '.bare')
+exit 1 unless success
+
+File.write('.git', "gitdir: ./.bare\n", mode: 'a')

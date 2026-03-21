@@ -1,0 +1,162 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "shellwords"
+
+CONFIG = File.expand_path("~/.config/tmux-switch-plus/config")
+
+def session_name(path)
+  path.split("/").reject(&:empty?).join("-").gsub(/[^[:alnum:]_-]/, "-")
+end
+
+def warn_invalid_config_path(entry)
+  warn "invalid path in #{CONFIG}: #{entry}"
+end
+
+def each_project_path
+  return enum_for(__method__) unless block_given?
+  return unless File.file?(CONFIG)
+
+  paths = []
+  config_dir = File.dirname(CONFIG)
+
+  File.foreach(CONFIG, chomp: true) do |entry|
+    next if entry.empty? || entry.start_with?("#")
+
+    begin
+      root = File.realpath(File.expand_path(entry, config_dir))
+      Dir.each_child(root) do |child|
+        next if child.start_with?(".")
+
+        path = File.join(root, child)
+        paths << path if File.directory?(path)
+      end
+    rescue Errno::ENOENT, Errno::EACCES
+      warn_invalid_config_path(entry)
+    end
+  end
+
+  paths.sort.uniq.each { |path| yield path }
+end
+
+def project_path_by_index(target)
+  return unless target.to_s.match?(/\A\d+\z/)
+
+  target_index = target.to_i
+
+  each_project_path.with_index do |path, index|
+    return path if index == target_index
+  end
+
+  nil
+end
+
+def tmux_session_exists?(session)
+  system("tmux", "has-session", "-t", session, out: File::NULL, err: File::NULL)
+end
+
+def project_row(index, path)
+  marker = tmux_session_exists?(session_name(path)) ? "*" : " "
+  [index, path, marker].join("\t")
+end
+
+def list_projects
+  each_project_path.with_index do |path, index|
+    puts project_row(index, path)
+  end
+end
+
+def kill_project_session(index)
+  path = project_path_by_index(index)
+  return false unless path
+
+  system("tmux", "kill-session", "-t", session_name(path), out: File::NULL, err: File::NULL)
+end
+
+def preview_project(index)
+  path = project_path_by_index(index)
+  return false unless path
+
+  session = session_name(path)
+
+  puts "project  #{path}"
+  puts "session  #{session}"
+  puts
+
+  unless tmux_session_exists?(session)
+    puts "no session"
+    return true
+  end
+
+  exec(
+    "tmux",
+    "list-windows",
+    "-t",
+    session,
+    "-F",
+    '#{?window_active,>, } #{window_index}: #{window_name}#{window_flags}  #{window_panes} panes'
+  )
+end
+
+def select_project(script_path)
+  command = [
+    "fzf",
+    "--header=enter: open/switch | ctrl-x: kill session | * = active session",
+    "--delimiter=\t",
+    "--with-nth=3,2",
+    "--preview",
+    "#{script_path} --preview {1}",
+    "--preview-window",
+    "right:60%",
+    "--bind",
+    "ctrl-x:execute-silent(#{script_path} --kill-session {1})+reload(#{script_path} --list)"
+  ]
+
+  IO.popen(command, "r+") do |io|
+    each_project_path.with_index do |path, index|
+      io.puts project_row(index, path)
+    end
+    io.close_write
+    io.read
+  end
+rescue Errno::ENOENT
+  warn "fzf is required"
+  nil
+end
+
+def activate_selection(selection)
+  return if selection.nil? || selection.empty?
+
+  _, path, = selection.split("\t", 3)
+  return unless path
+
+  session = session_name(path)
+  session_exists = tmux_session_exists?(session)
+
+  if ENV.key?("TMUX")
+    unless session_exists
+      system("tmux", "new-session", "-d", "-s", session, "-c", path)
+    end
+    system("tmux", "switch-client", "-t", session)
+  elsif session_exists
+    exec("tmux", "attach", "-t", session)
+  else
+    exec("tmux", "new-session", "-s", session, "-c", path)
+  end
+end
+
+command = ARGV.shift
+
+case command
+when "--list"
+  list_projects
+when "--kill-session"
+  exit(kill_project_session(ARGV.shift) ? 0 : 1)
+when "--preview"
+  exit(preview_project(ARGV.shift) ? 0 : 1)
+else
+  exit 1 unless File.file?(CONFIG)
+
+  script_path = Shellwords.escape(File.expand_path($PROGRAM_NAME))
+  activate_selection(select_project(script_path))
+end
