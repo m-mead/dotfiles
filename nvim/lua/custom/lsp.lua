@@ -4,6 +4,7 @@ local servers = {
   "clangd",
   "gopls",
   "lua_ls",
+  "ruby_lsp",
   "ruff",
   "rust_analyzer",
   "ts_ls",
@@ -12,12 +13,7 @@ local servers = {
 
 local function enable_servers()
   for _, server in ipairs(servers) do
-    local config = vim.lsp.config[server]
-    local command = config and config.cmd
-    local executable = type(command) == "table" and command[1] or command
-    if executable and vim.fn.executable(executable) == 1 then
-      vim.lsp.enable(server)
-    end
+    vim.lsp.enable(server)
   end
 end
 
