@@ -1,64 +1,88 @@
+--- @class mermaid.RenderOpts
+--- @field theme string|nil
+--- @field background string|nil
+
+--- @class mermaid.SetupOpts
+--- @field theme string|nil
+--- @field background string|nil
+--- @field file_patterns table[string]
+
 local M = {
   theme = nil,
   background = nil,
+  file_patterns = { "markdown", "mermaid", "text" },
 }
 
-function M.setup(config)
-  if not config then
-    return
-  end
-
-  M.theme = config.theme or M.theme
-  M.background = config.background or M.background
+--- @param opts mermaid.SetupOpts
+function M.setup(opts)
+  M.theme = opts.theme or M.theme
+  M.background = opts.background or M.background
+  M.file_patterns = opts.file_patterns or M.file_patterns
 end
 
-function M.render(lines, on_success)
+--- TODO: see `help: health-dev` and add health.lua.
+function M.check()
+  vim.health.start("mermaid report")
+
+  local ok = true
+
+  if vim.fn.executable("mmdc") ~= 0 then
+    vim.health.error("missing dependency: mmdc")
+    ok = false
+  end
+
+  if ok then
+    vim.health.ok("setup is correct")
+  end
+end
+
+--- @param lines table
+--- @param opts mermaid.RenderOpts|nil
+--- @param on_success function|nil
+function M.render(lines, opts, on_success)
   if not lines or vim.tbl_isempty(lines) then
-    vim.notify("No content", vim.log.levels.WARN)
+    vim.notify("No content", vim.log.levels.ERROR)
     return
   end
 
-  local input_file = vim.fn.tempname() .. ".mmd"
-  local default_output = vim.fn.expand("%:p:r") .. ".svg"
+  local default_output_path = vim.fn.expand("%:p:r") .. ".svg"
 
-  vim.ui.input({ prompt = "Output: ", default = default_output }, function(output_path)
-    if output_path == nil or output_path == "" then
+  vim.ui.input({ prompt = "Output: ", default = default_output_path }, function(output_path)
+    if not output_path then
       return
     end
 
-    vim.fn.writefile(lines, input_file)
+    local command = { "mmdc", "-i", "-", "-o", output_path }
 
-    local command = {
-      "mmdc",
-      "-i", input_file,
-      "-o", output_path,
-    }
-
-    if M.theme ~= nil then
+    local theme = opts and opts.theme or M.theme
+    if theme ~= nil then
       table.insert(command, "-t")
-      table.insert(command, M.theme)
+      table.insert(command, theme)
     end
 
-    if M.background ~= nil then
+    local background = opts and opts.background or M.background
+    if background ~= nil then
       table.insert(command, "-b")
-      table.insert(command, M.background)
+      table.insert(command, background)
     end
 
-    local result = vim.system({
-      "mmdc",
-      "-i", input_file,
-      "-o", output_path,
-    }, { text = true }):wait()
+    local result = vim.system(command, { text = true, stdin = table.concat(lines, "\n") }):wait()
 
     if result.code ~= 0 then
-      vim.notify(result.stderr or "Mermaid render failed", vim.log.levels.ERROR)
-      return
-    end
-
-    if on_success then
+      vim.notify(result.stderr or "Render failed", vim.log.levels.ERROR)
+    elseif on_success ~= nil then
       on_success(output_path)
     end
   end)
+end
+
+local function open_file(path)
+  for _, opener in pairs({ "open", "xdg-open" }) do
+    if vim.fn.executable(opener) then
+      vim.fn.jobstart({ opener, path }, { detach = true })
+      return
+    end
+  end
 end
 
 local function complete(arglead)
@@ -74,17 +98,11 @@ local function get_lines(opts)
   return vim.api.nvim_buf_get_lines(0, 0, -1, false)
 end
 
-local function open_file(path)
-  for _, opener in pairs({ "open", "xdg-open" }) do
-    if vim.fn.executable(opener) then
-      vim.fn.jobstart({ opener, path }, { detach = true })
-      return
-    end
-  end
-end
+local group = vim.api.nvim_create_augroup("Mermaid", { clear = true })
 
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown", "mermaid", "text" },
+  pattern = M.file_patterns,
+  group = group,
   callback = function()
     vim.api.nvim_buf_create_user_command(0, "Mermaid", function(opts)
       local action = opts.args ~= "" and opts.args or "render"
@@ -97,9 +115,9 @@ vim.api.nvim_create_autocmd("FileType", {
       local lines = get_lines(opts)
 
       if action == "render" then
-        M.Mrender(lines, nil)
+        M.render(lines, nil, nil)
       elseif action == "open" then
-        M.render(lines, open_file)
+        M.render(lines, nil, open_file)
       end
     end, {
       nargs = "?",
