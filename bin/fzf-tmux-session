@@ -1,28 +1,82 @@
 #!/usr/bin/env bash
 
-manifest="$HOME/.projects"
-[[ ! -f "$manifest" ]] && exit 1
+readonly manifest="$HOME/.projects"
+readonly unit_separator=$'\x1f'
 
-projects=()
-while IFS= read -r p; do
-    [[ -z "$p" || "$p" == \#* ]] && continue
+session_name() {
+    local path="$1"
+    local session=${path#$HOME/}
+    session=${session//\//-}
+    session=${session//[^[:alnum:]_-]/-}
+    printf '%s\n' "$session"
+}
 
-    p=$(printf '%s' "$p" | envsubst)
-    [[ ! -d "$p" ]] && continue
+list_projects() {
+    [[ -f "$manifest" ]] || return 1
 
-    while IFS= read -r d; do
-        projects+=("$d")
-    done < <(find "$p" -mindepth 1 -maxdepth 1 -type d ! -name '.*')
-done < "$manifest"
+    local p d session marker
 
-selection=$(printf '%s\n' "${projects[@]}" | sort -fu | fzf)
-[[ -z "$selection" ]] && exit 0
+    while IFS= read -r p; do
+        [[ -z "$p" || "$p" == \#* ]] && continue
 
-session=${selection##*/}
-session=${session//./-}
+        [[ -d "$p" ]] || {
+            printf 'Invalid path in %s: %s\n' "$manifest" "$p" >&2
+            continue
+        }
 
+        p=$(realpath "$p") || continue
 
-if [ -n "$TMUX" ]; then
+        while IFS= read -r d; do
+            session=$(session_name "$d")
+            if tmux has-session -t "$session" 2>/dev/null; then
+                marker='*'
+            else
+                marker=' '
+            fi
+            printf '%s%s%s\n' "$marker" "$unit_separator" "$d"
+        done < <(find "$p" -mindepth 1 -maxdepth 1 -type d ! -name '.*')
+    done < "$manifest" | sort -u
+}
+
+kill_project_session() {
+    local line="$1"
+    local marker path session
+
+    IFS="$unit_separator" read -r marker path <<< "$line"
+    session=$(session_name "$path")
+    tmux kill-session -t "$session" 2>/dev/null
+}
+
+if [[ "${1:-}" == "--list" ]]; then
+    list_projects
+    exit 0
+fi
+
+if [[ "${1:-}" == "--kill-session" ]]; then
+    kill_project_session "$2"
+    exit 0
+fi
+
+[[ -f "$manifest" ]] || exit 1
+
+script_path=$(printf '%q' "$0")
+
+selection=$(
+    list_projects | fzf \
+        --header='enter: open/switch | ctrl-x: kill session | * = active session' \
+        --delimiter="$unit_separator" \
+        --nth=2 \
+        --with-nth=1,2 \
+        --bind "ctrl-x:execute-silent($script_path --kill-session {})+reload($script_path --list)"
+)
+
+[[ -n "$selection" ]] || exit 0
+
+marker=
+IFS="$unit_separator" read -r marker selection <<< "$selection"
+session=$(session_name "$selection")
+
+if [[ -n "${TMUX:-}" ]]; then
     if tmux has-session -t "$session" 2>/dev/null; then
         tmux switch-client -t "$session"
     else
@@ -30,7 +84,9 @@ if [ -n "$TMUX" ]; then
         tmux switch-client -t "$session"
     fi
 else
-    tmux has-session -t "$session" 2>/dev/null && \
-        tmux attach -t "$session" || \
+    if tmux has-session -t "$session" 2>/dev/null; then
+        tmux attach -t "$session"
+    else
         tmux new-session -s "$session" -c "$selection"
+    fi
 fi
