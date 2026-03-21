@@ -1,8 +1,28 @@
 #!/usr/bin/env bash
 
-selection=$(tmux list-sessions | fzf)
+manifest="$HOME/.projects"
+[[ ! -f "$manifest" ]] && exit 1
 
-if [[ ! -z "$selection" ]]; then
-    session=$(echo $selection | cut -d ':' -f 1)
-    tmux attach-session -t $session
+projects=()
+while IFS= read -r p; do
+    [[ -z "$p" || "$p" == \#* ]] && continue
+
+    p=$(printf '%s' "$p" | envsubst)
+    [[ ! -d "$p" ]] && continue
+
+    while IFS= read -r d; do
+        projects+=("$d")
+    done < <(find "$p" -mindepth 1 -maxdepth 1 -type d ! -name '.*')
+done < "$manifest"
+
+selection=$(printf '%s\n' "${projects[@]}" | fzf)
+[[ -z "$selection" ]] && exit 0
+
+session=${selection##*/}
+session=${session//./-}
+
+if tmux has-session -t "$session" 2>/dev/null; then
+    [[ -n "$TMUX" ]] && tmux switch-client -t "$session" || tmux attach -t "$session"
+else
+    tmux new-session -s "$session" -c "$selection"
 fi
