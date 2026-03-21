@@ -14,7 +14,7 @@ fi
 
 # Ruby
 if [ -d "$HOME/.rbenv" ]; then
-    eval "$(rbenv init -)"
+    eval "$(rbenv init - zsh)"
 fi
 
 # Rust

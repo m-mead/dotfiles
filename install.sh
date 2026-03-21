@@ -23,11 +23,11 @@ function install_macos() {
     brew install coreutils
     brew install git-lfs
     brew install go
+    brew install neovim
     brew install pipx
+    brew install rbenv
+    brew install ruby-build
     brew install tmux
-
-    brew install --cask wezterm
-    brew install --head neovim
 
     brew tap homebrew/cask-fonts
     brew install font-fira-code-nerd-font
