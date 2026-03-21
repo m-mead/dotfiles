@@ -70,6 +70,26 @@ kill_project_session() {
     tmux kill-session -t "$session" 2>/dev/null
 }
 
+preview_project() {
+    local index="$1"
+    local path session
+
+    path=$(project_path_by_index "$index") || return 1
+    session=$(session_name "$path")
+
+    printf 'project  %s\n' "$path"
+    printf 'session  %s\n' "$session"
+    printf '\n'
+
+    if tmux has-session -t "$session" 2>/dev/null; then
+        tmux list-windows -t "$session" \
+            -F '#{?window_active,>, } #{window_index}: #{window_name}#{window_flags}  #{window_panes} panes'
+        return 0
+    fi
+
+    printf 'no session\n'
+}
+
 if [[ "${1:-}" == "--list" ]]; then
     list_projects
     exit 0
@@ -77,6 +97,11 @@ fi
 
 if [[ "${1:-}" == "--kill-session" ]]; then
     kill_project_session "$2"
+    exit 0
+fi
+
+if [[ "${1:-}" == "--preview" ]]; then
+    preview_project "$2"
     exit 0
 fi
 
@@ -89,6 +114,8 @@ selection=$(
         --header='enter: open/switch | ctrl-x: kill session | * = active session' \
         --delimiter=$'\t' \
         --with-nth=3,2 \
+        --preview "$script_path --preview {1}" \
+        --preview-window 'right:60%' \
         --bind "ctrl-x:execute-silent($script_path --kill-session {1})+reload($script_path --list)"
 )
 
