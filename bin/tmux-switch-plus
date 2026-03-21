@@ -123,7 +123,7 @@ def current_tmux_session
   end
 end
 
-def project_row(index, path)
+def project_row(index, path, include_hidden_path: false)
   session = session_name(path)
   marker = if !tmux_session_exists?(session)
     " "
@@ -133,12 +133,16 @@ def project_row(index, path)
     ACTIVE_SESSION_MARKER
   end
 
-  [index, display_path(path), marker].join("\t")
+  fields = [index]
+  fields << path if include_hidden_path
+  fields << display_path(path)
+  fields << marker
+  fields.join("\t")
 end
 
-def list_projects
+def list_projects(include_hidden_path: false)
   project_paths.each_with_index do |path, index|
-    puts project_row(index, path)
+    puts project_row(index, path, include_hidden_path: include_hidden_path)
   end
 end
 
@@ -180,18 +184,18 @@ def select_project(script_path)
     "--ansi",
     "--header=enter: open/switch | ctrl-x: kill session",
     "--delimiter=\t",
-    "--with-nth=3,2",
+    "--with-nth=4,3",
     "--preview",
     "#{script_path} --preview {1}",
     "--preview-window",
     "right:60%",
     "--bind",
-    "ctrl-x:execute-silent(#{script_path} --kill-session {1})+reload(#{script_path} --list)"
+    "ctrl-x:execute-silent(#{script_path} --kill-session {1})+reload(#{script_path} --list-fzf)"
   ]
 
   IO.popen(command, "r+") do |io|
     project_paths.each_with_index do |path, index|
-      io.puts project_row(index, path)
+      io.puts project_row(index, path, include_hidden_path: true)
     end
     io.close_write
     io.read
@@ -227,6 +231,8 @@ command = ARGV.shift
 case command
 when "--list"
   list_projects
+when "--list-fzf"
+  list_projects(include_hidden_path: true)
 when "--kill-session"
   exit(kill_project_session(ARGV.shift) ? 0 : 1)
 when "--preview"
