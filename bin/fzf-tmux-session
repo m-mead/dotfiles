@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 readonly manifest="$HOME/.projects"
-readonly unit_separator=$'\x1f'
 
 session_name() {
     local path="$1"
@@ -11,10 +10,10 @@ session_name() {
     printf '%s\n' "$session"
 }
 
-list_projects() {
+project_paths() {
     [[ -f "$manifest" ]] || return 1
 
-    local p d session marker
+    local p d
 
     while IFS= read -r p; do
         [[ -z "$p" || "$p" == \#* ]] && continue
@@ -26,23 +25,47 @@ list_projects() {
 
         p=$(realpath "$p") || continue
 
-        while IFS= read -r d; do
-            session=$(session_name "$d")
-            if tmux has-session -t "$session" 2>/dev/null; then
-                marker='*'
-            else
-                marker=' '
-            fi
-            printf '%s%s%s\n' "$marker" "$unit_separator" "$d"
-        done < <(find "$p" -mindepth 1 -maxdepth 1 -type d ! -name '.*')
+        find "$p" -mindepth 1 -maxdepth 1 -type d ! -name '.*'
     done < "$manifest" | sort -u
 }
 
-kill_project_session() {
-    local line="$1"
-    local marker path session
+project_path_by_index() {
+    local target="$1"
+    local index=0 path
 
-    IFS="$unit_separator" read -r marker path <<< "$line"
+    [[ "$target" =~ ^[0-9]+$ ]] || return 1
+
+    while IFS= read -r path; do
+        if [[ "$index" -eq "$target" ]]; then
+            printf '%s\n' "$path"
+            return 0
+        fi
+        ((index++))
+    done < <(project_paths)
+
+    return 1
+}
+
+list_projects() {
+    local index=0 path session marker
+
+    while IFS= read -r path; do
+        session=$(session_name "$path")
+        if tmux has-session -t "$session" 2>/dev/null; then
+            marker='*'
+        else
+            marker=' '
+        fi
+        printf '%s\t%s\t%s\n' "$index" "$path" "$marker"
+        ((index++))
+    done < <(project_paths)
+}
+
+kill_project_session() {
+    local index="$1"
+    local path session
+
+    path=$(project_path_by_index "$index") || return 1
     session=$(session_name "$path")
     tmux kill-session -t "$session" 2>/dev/null
 }
@@ -64,16 +87,15 @@ script_path=$(printf '%q' "$0")
 selection=$(
     list_projects | fzf \
         --header='enter: open/switch | ctrl-x: kill session | * = active session' \
-        --delimiter="$unit_separator" \
-        --nth=2 \
-        --with-nth=1,2 \
-        --bind "ctrl-x:execute-silent($script_path --kill-session {})+reload($script_path --list)"
+        --delimiter=$'\t' \
+        --with-nth=3,2 \
+        --bind "ctrl-x:execute-silent($script_path --kill-session {1})+reload($script_path --list)"
 )
 
 [[ -n "$selection" ]] || exit 0
 
-marker=
-IFS="$unit_separator" read -r marker selection <<< "$selection"
+selection=${selection#*$'\t'}
+selection=${selection%%$'\t'*}
 session=$(session_name "$selection")
 
 if [[ -n "${TMUX:-}" ]]; then
