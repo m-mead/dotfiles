@@ -4,7 +4,6 @@ local servers = {
   "clangd",
   "gopls",
   "lua_ls",
-  "marksman",
   "ruby_lsp",
   "ruff",
   "rust_analyzer",
