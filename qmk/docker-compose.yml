@@ -8,9 +8,6 @@ services:
       - ./bin:/qmk_bin
     working_dir: /workspace
     environment:
-      # Required
-      - KEYBOARD=${KEYBOARD:-crkbd/rev1}
-      - KEYMAP=${KEYMAP:-default}
-      # Optional
-      # See https://docs.qmk.fm/feature_converters#converters
-      - CONVERT_TO=promicro_rp2040
+      - KEYBOARD=${KEYBOARD}
+      - KEYMAP=${KEYMAP}
+      - CONVERT_TO=${CONVERT_TO}
