@@ -30,6 +30,4 @@ vim.o.spelloptions = "camel"
 vim.o.spell = false -- enabled by filetype
 
 -- Netrw
-vim.g.netrw_banner = 0
 vim.g.netrw_keepdir = 0
-vim.g.netrw_winsize = 30
