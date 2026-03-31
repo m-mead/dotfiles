@@ -48,16 +48,11 @@ local function setup_lsp_attach()
         vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
       end
 
-      map("<leader>D", vim.lsp.buf.type_definition, "type definition")
       map("<leader>cf", vim.lsp.buf.format, "code format")
       map("<leader>gs", vim.lsp.buf.workspace_symbol, "workspace symbols")
       map("E", function()
         vim.diagnostic.setloclist({ open = true })
       end, "errors")
-      map("gD", vim.lsp.buf.declaration, "declaration")
-      map("gI", vim.lsp.buf.implementation, "implementation")
-      map("gd", vim.lsp.buf.definition, "definition")
-      map("grr", vim.lsp.buf.references, "references")
 
       local client = vim.lsp.get_client_by_id(event.data.client_id)
 
@@ -101,7 +96,7 @@ local function setup_user_commands()
   end, { desc = "Show LSP info" })
 
   vim.api.nvim_create_user_command("LspClearLog", function()
-    local log_path = vim.lsp.get_log_path()
+    local log_path = vim.lsp.log.get_filename()
     local ok, err = pcall(vim.fn.writefile, {}, log_path)
     if not ok then
       vim.notify("Failed to clear LSP log: " .. tostring(err), vim.log.levels.ERROR)
