@@ -48,11 +48,19 @@ local function setup_lsp_attach()
         vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
       end
 
+      -- Default mappings (see :h lsp-defaults)
+      -- - "gra" (Normal and Visual mode) is mapped to |vim.lsp.buf.code_action()|
+      -- - "gri" is mapped to |vim.lsp.buf.implementation()|
+      -- - "grn" is mapped to |vim.lsp.buf.rename()|
+      -- - "grr" is mapped to |vim.lsp.buf.references()|
+      -- - "grt" is mapped to |vim.lsp.buf.type_definition()|
+      -- - "grx" is mapped to |vim.lsp.codelens.run()|
+      -- - "gO" is mapped to |vim.lsp.buf.document_symbol()|
+      -- - CTRL-S (Insert mode) is mapped to |vim.lsp.buf.signature_help()|
+      -- - |gx| handles `textDocument/documentLink`
       map("<leader>cf", vim.lsp.buf.format, "code format")
       map("<leader>gs", vim.lsp.buf.workspace_symbol, "workspace symbols")
-      map("E", function()
-        vim.diagnostic.setloclist({ open = true })
-      end, "errors")
+      map("E", function() vim.diagnostic.setloclist({ open = true }) end, "errors")
 
       local client = vim.lsp.get_client_by_id(event.data.client_id)
 
@@ -80,7 +88,7 @@ local function setup_lsp_attach()
       end
 
       if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
-        vim.lsp.inlay_hint.enable(false, { bufnr = event.buf })
+        vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
         map("<leader>hh", function()
           local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf })
           vim.lsp.inlay_hint.enable(not enabled, { bufnr = event.buf })
