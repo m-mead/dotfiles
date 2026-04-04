@@ -2,27 +2,28 @@
   "plugins": {
     "eddy.nvim": {
       "rev": "d6b72e02a2913717065ffa9bade7dca0bc69bc24",
-      "src": "https://github.com/m-mead/eddy.nvim"
+      "src": "https://github.com/m-mead/eddy.nvim",
+      "version": "'d6b72e02a2913717065ffa9bade7dca0bc69bc24'"
     },
     "mini.completion": {
       "rev": "7c5edfc0e479dd4edd898cc9ddd1920d8c1ce420",
-      "src": "https://github.com/nvim-mini/mini.completion"
+      "src": "https://github.com/nvim-mini/mini.completion",
+      "version": "'7c5edfc0e479dd4edd898cc9ddd1920d8c1ce420'"
     },
     "mini.diff": {
-      "rev": "ff3cd5e76e812fa18bde0f8126d6f3bb62008c79",
-      "src": "https://github.com/nvim-mini/mini.diff"
-    },
-    "mini.pairs": {
-      "rev": "42387c7fe68fc0b6e95eaf37f1bb76e7bffaa0d9",
-      "src": "https://github.com/nvim-mini/mini.pairs"
+      "rev": "fbb93ea1728e7c9d0944df8bd022a68402bd2e7e",
+      "src": "https://github.com/nvim-mini/mini.diff",
+      "version": "'fbb93ea1728e7c9d0944df8bd022a68402bd2e7e'"
     },
     "mini.pick": {
       "rev": "6b7974543b17cf2e294993fc3d8545a342258232",
-      "src": "https://github.com/nvim-mini/mini.pick"
+      "src": "https://github.com/nvim-mini/mini.pick",
+      "version": "'6b7974543b17cf2e294993fc3d8545a342258232'"
     },
     "vim-surround": {
       "rev": "aeb933272e72617f7c4d35e1f003be16836b948d",
-      "src": "https://github.com/tpope/vim-surround"
+      "src": "https://github.com/tpope/vim-surround",
+      "version": "'aeb933272e72617f7c4d35e1f003be16836b948d'"
     }
   }
 }

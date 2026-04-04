@@ -4,7 +4,6 @@ local plugins = {
   "eddy",
   "mini-completion",
   "mini-diff",
-  "mini-pairs",
   "mini-pick",
   "vim-surround",
 }
