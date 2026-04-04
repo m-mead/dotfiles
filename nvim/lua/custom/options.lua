@@ -18,7 +18,6 @@ vim.o.timeoutlen = 500
 vim.o.ttimeoutlen = 100
 vim.o.signcolumn = "yes"
 vim.o.mouse = "a"
-vim.o.scrolloff = 8
 vim.o.cursorline = true
 vim.o.hlsearch = false
 vim.o.termguicolors = true
@@ -29,4 +28,4 @@ vim.o.spelloptions = "camel"
 vim.o.spell = false -- enabled by filetype
 
 -- Netrw
-vim.g.netrw_keepdir = 0
+vim.g.netrw_keepdir = 1
