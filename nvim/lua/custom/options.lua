@@ -32,19 +32,3 @@ vim.o.spell = false -- enabled by filetype
 
 -- Netrw
 vim.g.netrw_keepdir = 1
-
--- Markdown
-vim.g.markdown_fenced_languages = {
-  "bash=sh",
-  "c",
-  "cpp",
-  "go",
-  "js=javascript",
-  "json",
-  "lua",
-  "python",
-  "rust",
-  "sh",
-  "ts=typescript",
-  "vim",
-}
