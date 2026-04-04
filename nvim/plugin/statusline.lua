@@ -8,7 +8,7 @@ end
 vim.opt.statusline = "%!v:lua.CustomStatusLine()"
 
 -- Autocommands
-local group = vim.api.nvim_create_augroup("CustomStatusLine", { clear = true })
+local group = vim.api.nvim_create_augroup("UserStatusLine", { clear = true })
 
 -- Setup highlights on colorscheme load
 vim.api.nvim_create_autocmd("ColorScheme", {
