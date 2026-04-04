@@ -52,6 +52,7 @@ local function setup_lsp_attach()
       map("<leader>cf", vim.lsp.buf.format, "code format")
       map("<leader>gs", vim.lsp.buf.workspace_symbol, "workspace symbols")
       map("E", function() vim.diagnostic.setloclist({ open = true }) end, "errors")
+      map("gd", vim.lsp.buf.definition, "go to definition")
 
       local client = vim.lsp.get_client_by_id(event.data.client_id)
 
