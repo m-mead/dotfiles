@@ -5,7 +5,6 @@ vim.o.wildmenu = true
 vim.o.errorbells = false
 vim.o.splitright = true
 vim.o.splitbelow = true
-vim.o.tabstop = 4
 vim.o.startofline = false
 vim.o.backspace = "indent,eol,start"
 vim.o.ignorecase = true
