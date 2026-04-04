@@ -1,3 +1,6 @@
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
 vim.o.wrap = false
 vim.o.number = true
 vim.o.relativenumber = true
