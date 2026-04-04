@@ -139,4 +139,6 @@ function M.setup()
   end, { desc = "LSP toggle" })
 end
 
+M.setup()
+
 return M
