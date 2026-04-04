@@ -31,15 +31,6 @@ local function disable_servers()
   end
 end
 
-local function any_server_enabled()
-  for _, server in ipairs(servers) do
-    if vim.lsp.is_enabled(server) then
-      return true
-    end
-  end
-  return false
-end
-
 local function setup_lsp_attach()
   vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
@@ -88,7 +79,6 @@ local function setup_lsp_attach()
       end
 
       if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
-        vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
         map("<leader>hh", function()
           local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf })
           vim.lsp.inlay_hint.enable(not enabled, { bufnr = event.buf })
@@ -124,19 +114,9 @@ end
 
 function M.setup()
   vim.diagnostic.config({ virtual_text = true })
-
   setup_lsp_attach()
   setup_user_commands()
   enable_servers()
-
-  -- Keybindings
-  vim.keymap.set("n", "<leader>l", function()
-    if any_server_enabled() then
-      disable_servers()
-    else
-      enable_servers()
-    end
-  end, { desc = "LSP toggle" })
 end
 
 M.setup()
