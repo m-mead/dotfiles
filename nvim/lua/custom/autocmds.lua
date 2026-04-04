@@ -1,15 +1,19 @@
--- Stop inserting comments on new lines when previous line is commented.
+-- General
+local general_group = vim.api.nvim_create_augroup("UserGeneral", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
+  group = general_group,
   pattern = "*",
   callback = function()
+    -- Stop inserting comment leader on new lines
     vim.opt.formatoptions:remove({ "c", "r", "o" })
   end,
 })
 
--- Remember the last position when reopening a file.
 vim.api.nvim_create_autocmd("BufReadPost", {
+  group = general_group,
   pattern = "*",
   callback = function()
+    -- Restore last edit position
     local line = vim.fn.line("'\"")
     if line > 0 and line <= vim.fn.line("$") then
       vim.cmd('normal! g`"')
@@ -17,10 +21,10 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
--- Highlight text on yank.
-local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+-- Yank
+local yank_group = vim.api.nvim_create_augroup("UserYank", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
-  group = highlight_group,
+  group = yank_group,
   pattern = "*",
   callback = function()
     vim.highlight.on_yank()
@@ -28,15 +32,13 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 -- Treesitter
-local treesitter_group = vim.api.nvim_create_augroup("TSAutoStart", { clear = true })
+local treesitter_group = vim.api.nvim_create_augroup("UserTreesitter", { clear = true })
 vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile", "FileType" }, {
   group = treesitter_group,
+  pattern = "*",
   callback = function()
     local ft = vim.bo.filetype
-    if ft == nil or ft == "" then
-      return
-    end
-
+    if ft == nil or ft == "" then return end
     if vim.treesitter.language.add(ft) then
       pcall(vim.treesitter.start, 0, ft)
     end
