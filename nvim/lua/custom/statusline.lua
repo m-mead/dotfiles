@@ -190,6 +190,14 @@ function M.lsp()
   return " LSP "
 end
 
+function M.treesitter()
+  local bufnr = vim.api.nvim_get_current_buf()
+  if vim.treesitter.highlighter.active[bufnr] == nil then
+    return ""
+  end
+  return " TS "
+end
+
 function M.spell()
   if vim.wo.spell then
     return " SPELL "
@@ -267,6 +275,7 @@ function M.render()
     M.git(),
     "%=%#StatusLineMeta#",
     M.lsp(),
+    M.treesitter(),
     M.spell(),
     M.filetype(),
     M.lineinfo(),
