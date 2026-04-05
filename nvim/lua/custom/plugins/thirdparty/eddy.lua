@@ -1,6 +1,6 @@
 return {
   src = "https://github.com/m-mead/eddy.nvim",
-  version = "d6b72e02a2913717065ffa9bade7dca0bc69bc24",
+  version = "5e1427ab3b9e2cf093a13e2f30856c0370696417",
   config = function()
     vim.cmd.colorscheme("eddy")
   end
