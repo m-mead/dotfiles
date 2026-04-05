@@ -31,6 +31,26 @@ local function disable_servers()
   end
 end
 
+local function setup_lsp_progress()
+  vim.api.nvim_create_autocmd("LspProgress", {
+    group = vim.api.nvim_create_augroup("UserLspProgress", { clear = true }),
+    callback = function(ev)
+      local value = ev.data.params.value
+      local history = false
+      local chunks = { { value.message or "done" } }
+      local opts = {
+        id = "lsp." .. ev.data.client_id,
+        kind = "progress",
+        source = "vim.lsp",
+        title = value.title,
+        status = value.kind ~= "end" and "running" or "success",
+        percent = value.percentage,
+      }
+      vim.api.nvim_echo(chunks, history, opts)
+    end
+  })
+end
+
 local function setup_lsp_attach()
   vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("UserLspAttach", { clear = true }),
@@ -115,6 +135,7 @@ end
 
 function M.setup()
   vim.diagnostic.config({ virtual_text = true })
+  setup_lsp_progress()
   setup_lsp_attach()
   setup_user_commands()
   enable_servers()

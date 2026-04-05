@@ -135,43 +135,7 @@ function M.filename()
 end
 
 function M.diagnostics()
-  local levels = {
-    error = vim.diagnostic.severity.ERROR,
-    warn = vim.diagnostic.severity.WARN,
-    info = vim.diagnostic.severity.INFO,
-    hint = vim.diagnostic.severity.HINT,
-  }
-
-  local diagnostics = {}
-  for key, severity in pairs(levels) do
-    diagnostics[key] = vim.tbl_count(vim.diagnostic.get(0, { severity = severity }))
-  end
-
-  local parts = {}
-
-  if diagnostics.error > 0 then
-    table.insert(parts, "%#StatusLineDiagError#" .. diagnostics.error .. " ")
-  end
-  if diagnostics.warn > 0 then
-    table.insert(parts, "%#StatusLineDiagWarn#" .. diagnostics.warn .. " ")
-  end
-  if diagnostics.info > 0 then
-    table.insert(parts, "%#StatusLineDiagInfo#" .. diagnostics.info .. " ")
-  end
-  if diagnostics.hint > 0 then
-    table.insert(parts, "%#StatusLineDiagHint#" .. diagnostics.hint .. " ")
-  end
-
-  if #parts == 0 then
-    return ""
-  end
-
-  return table.concat({
-    " ",
-    "%#StatusLine#💡 ",
-    table.concat(parts),
-    "%#StatusLine#",
-  })
+  return " " .. vim.diagnostic.status()
 end
 
 function M.filetype()

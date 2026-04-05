@@ -11,7 +11,11 @@ end
 local function setup_builtin()
   local builtin_dir = plugins_root .. ".builtin"
 
-  local plugins = { "nvim-undotree" }
+  local plugins = {
+    "nvim-undotree",
+    "nvim-difftool",
+  }
+
   local configs = {}
 
   for _, v in ipairs(plugins) do
