@@ -95,6 +95,7 @@ function Grammar.new(spec)
   end
 
   local data = vim.fn.stdpath("data")
+
   local cache = vim.fn.stdpath("cache")
 
   return setmetatable({
@@ -164,30 +165,50 @@ end
 function Grammar:build_cmd()
   local uname = uv.os_uname()
   local sysname = uname.sysname
-  local arch = uname.machine
-
-  local cmd = {
-    "cc",
-    "-fPIC",
-    "-I./src",
-    "src/parser.c",
-  }
-
-  if self:has_scanner() then
-    table.insert(cmd, "src/scanner.c")
-  end
 
   if sysname == "Darwin" then
+    if vim.fn.executable("clang") == 0 then
+      error("clang not found")
+    end
+
+    local cmd = {
+      "clang",
+      "-fPIC",
+      "-I./src",
+      "src/parser.c",
+    }
+
+    if self:has_scanner() then
+      table.insert(cmd, "src/scanner.c")
+    end
+
     table.insert(cmd, 2, "-dynamiclib")
+    table.insert(cmd, 3, "-O2")
     table.insert(cmd, "-o")
     table.insert(cmd, self.lib)
     table.insert(cmd, "-arch")
-    table.insert(cmd, arch)
+    table.insert(cmd, uname.machine)
     return cmd
   end
 
   if sysname == "Linux" then
+    if vim.fn.executable("gcc") == 0 then
+      error("gcc not found")
+    end
+
+    local cmd = {
+      "gcc",
+      "-fPIC",
+      "-I./src",
+      "src/parser.c",
+    }
+
+    if self:has_scanner() then
+      table.insert(cmd, "src/scanner.c")
+    end
+
     table.insert(cmd, 2, "-shared")
+    table.insert(cmd, 3, "-O2")
     table.insert(cmd, "-o")
     table.insert(cmd, self.lib)
     return cmd
