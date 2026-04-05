@@ -373,7 +373,7 @@ function Grammar:sync(done)
 
   local cmd
   if self.version then
-    cmd = { "git", "clone", "--progress", "--depth", "1", "--branch", self.version, self.src, self.cachedir }
+    cmd = { "git", "clone", "--progress", "--depth", "1", "--revision", self.version, self.src, self.cachedir }
   else
     cmd = { "git", "clone", "--progress", "--depth", "1", self.src, self.cachedir }
   end
