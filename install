@@ -1,5 +1,35 @@
 #!/bin/bash
 
-[[ ! -d "${HOME}/.config/nvim" ]] && ln -s "$(pwd)/nvim" "${HOME}/.config/nvim"
-[[ ! -d "${HOME}/.config/zsh" ]]  && ln -s "$(pwd)/zsh" "${HOME}/.config/zsh"
-[[ ! -f "${HOME}/.tmux.conf" ]]   && ln -s "$(pwd)/tmux/.tmux.conf" "${HOME}/.tmux.conf"
+directories=(
+    "nvim:${HOME}/.config/nvim"
+    "wezterm:${HOME}/.config/wezterm"
+    "zsh:${HOME}/.config/zsh"
+    "lazygit:${HOME}/Library/Application Support/lazygit"
+    "ghostty:${HOME}/Library/Application Support/com.mitchellh.ghostty"
+)
+
+files=(
+    "tmux/.tmux.conf:${HOME}/.tmux.conf"
+)
+
+for entry in "${directories[@]}"; do
+    src="${entry%%:*}"
+    dst="${entry#*:}"
+    if [[ -d "${dst}" ]]; then
+        echo -e "${src}: already linked"
+    else
+        ln -s "$(pwd)/${src}" "${dst}"
+        echo -e "linked ${src} -> ${dst}"
+    fi
+done
+
+for entry in "${files[@]}"; do
+    src="${entry%%:*}"
+    dst="${entry#*:}"
+    if [[ -f "$dst" ]]; then
+        echo -e "${src}: already linked"
+    else
+        ln -s "$(pwd)/$src" "$dst"
+        echo -e "linked ${src} -> ${dst}"
+    fi
+done
