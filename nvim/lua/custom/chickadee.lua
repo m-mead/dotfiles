@@ -4,6 +4,7 @@
 ---@field src string URL
 ---@field ft string Filetype
 ---@field version? string Version (branch, tag, or commit)
+---@field root? fun(p: string): string Callback that returns the grammar root
 
 ---@class chickadee.Grammar
 ---@field src string URL
@@ -102,6 +103,7 @@ function Grammar.new(spec)
     src = spec.src,
     ft = spec.ft,
     version = spec.version,
+    root = spec.root,
     lib = spec.ft .. ".so",
     cachedir = cache .. "/chickadee/" .. spec.ft,
     parserdir = data .. "/site/parser",
@@ -116,17 +118,29 @@ end
 
 ---@return string
 function Grammar:library_path()
-  return self.cachedir .. "/" .. self.lib
+  local d = self.cachedir
+  if self.root ~= nil then
+    d = self.root(self.cachedir)
+  end
+  return d .. "/" .. self.lib
 end
 
 ---@return string
 function Grammar:scanner_path()
-  return self.cachedir .. "/src/scanner.c"
+  local d = self.cachedir
+  if self.root ~= nil then
+    d = self.root(self.cachedir)
+  end
+  return d .. "/src/scanner.c"
 end
 
 ---@return string
 function Grammar:query_glob()
-  return self.cachedir .. "/queries/*.scm"
+  local d = self.cachedir
+  if self.root ~= nil then
+    d = self.root(self.cachedir)
+  end
+  return d .. "/queries/*.scm"
 end
 
 ---@return boolean
@@ -239,7 +253,12 @@ end
 ---@param complete fun(err?: string)
 ---@return nil
 function Grammar:build(complete)
-  local opts = { cwd = self.cachedir }
+  local cwd = self.cachedir
+  if self.root ~= nil then
+    cwd = self.root(self.cachedir)
+  end
+
+  local opts = { cwd = cwd }
 
   local complete_wrapper = function(err)
     if err then
@@ -320,6 +339,7 @@ local function sync_queue(grammars, i, failed)
 
   grammar:sync(function(err)
     if err then
+      vim.notify(err, vim.logs.levels.ERROR)
       table.insert(failed, grammar.ft)
     end
     sync_queue(grammars, i + 1, failed)
