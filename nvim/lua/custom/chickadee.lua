@@ -1,13 +1,4 @@
 --- *chickadee* Install Treesitter parsers
----
---- # Features:
---- - Install Treesitter parsers from source.
---- - Version specification via `version` option.
---- - Progress reporting with `nvim_echo(..., { kind = "progress" })`.
----
---- # Setup
---- Setup the module with `require('chickadee').setup(config)`.
---- See |chickadee.Spec| for configuration settings.
 
 ---@class chickadee.Spec
 ---@field src string URL
