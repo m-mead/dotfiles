@@ -1,0 +1,5 @@
+#!/bin/bash
+
+[[ ! -d "${HOME}/.config/nvim" ]] && ln -s "$(pwd)/nvim" "${HOME}/.config/nvim"
+[[ ! -d "${HOME}/.config/zsh" ]]  && ln -s "$(pwd)/zsh" "${HOME}/.config/zsh"
+[[ ! -f "${HOME}/.tmux.conf" ]]   && ln -s "$(pwd)/tmux/.tmux.conf" "${HOME}/.tmux.conf"
