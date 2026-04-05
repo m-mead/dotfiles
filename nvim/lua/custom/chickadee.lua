@@ -237,13 +237,13 @@ function Grammar:build(complete)
 
   local complete_wrapper = function(err)
     if err then
-      complete(err)
+      complete("build failed: " .. err)
       return
     end
 
     local ok, install_err = pcall(function() self:install() end)
     if not ok then
-      complete(install_err)
+      complete("install failed: " .. install_err)
       return
     end
 
@@ -271,7 +271,7 @@ function Grammar:sync(complete)
   local opts = { text = true }
   local complete_wrapper = function(err)
     if err then
-      complete(err)
+      complete("clone failed: " .. err)
       return
     end
     self:build(complete)
