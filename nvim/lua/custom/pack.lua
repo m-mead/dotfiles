@@ -31,7 +31,7 @@ local function setup_thirdparty()
     "mini-completion",
     "mini-diff",
     "mini-pick",
-    "vim-surround",
+    "mini-surround",
   }
 
   local specs = {}

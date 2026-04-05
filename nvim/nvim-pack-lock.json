@@ -20,10 +20,10 @@
       "src": "https://github.com/nvim-mini/mini.pick",
       "version": "'6b7974543b17cf2e294993fc3d8545a342258232'"
     },
-    "vim-surround": {
-      "rev": "aeb933272e72617f7c4d35e1f003be16836b948d",
-      "src": "https://github.com/tpope/vim-surround",
-      "version": "'aeb933272e72617f7c4d35e1f003be16836b948d'"
+    "mini.surround": {
+      "rev": "88c52297ed3e69ecf9f8652837888ecc727a28ee",
+      "src": "https://github.com/nvim-mini/mini.surround",
+      "version": "'88c52297ed3e69ecf9f8652837888ecc727a28ee'"
     }
   }
 }
