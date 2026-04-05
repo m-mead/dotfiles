@@ -1,5 +1,6 @@
 -- General
 local general_group = vim.api.nvim_create_augroup("UserGeneral", { clear = true })
+
 vim.api.nvim_create_autocmd("FileType", {
   group = general_group,
   pattern = "*",
@@ -21,6 +22,22 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
+vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
+  group = general_group,
+  pattern = "*",
+  callback = function(ev)
+    local ft = vim.bo[ev.buf].filetype
+    if ft == "" then
+      return
+    end
+
+    local lang = vim.treesitter.language.get_lang(ft) or ft
+    if vim.treesitter.language.add(lang) then
+      pcall(vim.treesitter.start, ev.buf, lang)
+    end
+  end,
+})
+
 -- Yank
 local yank_group = vim.api.nvim_create_augroup("UserYank", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -28,19 +45,5 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   pattern = "*",
   callback = function()
     vim.highlight.on_yank()
-  end,
-})
-
--- Treesitter
-local treesitter_group = vim.api.nvim_create_augroup("UserTreesitter", { clear = true })
-vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile", "FileType" }, {
-  group = treesitter_group,
-  pattern = "*",
-  callback = function()
-    local ft = vim.bo.filetype
-    if ft == nil or ft == "" then return end
-    if vim.treesitter.language.add(ft) then
-      pcall(vim.treesitter.start, 0, ft)
-    end
   end,
 })
