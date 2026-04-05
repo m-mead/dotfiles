@@ -182,12 +182,8 @@ function Grammar:build_cmd()
       table.insert(cmd, "src/scanner.c")
     end
 
-    table.insert(cmd, 2, "-dynamiclib")
-    table.insert(cmd, 3, "-O2")
-    table.insert(cmd, "-o")
-    table.insert(cmd, self.lib)
-    table.insert(cmd, "-arch")
-    table.insert(cmd, uname.machine)
+    vim.list_extend(cmd, { "-dynamiclib", "-O3", "-o", self.lib, "-arch", uname.machine })
+
     return cmd
   end
 
@@ -207,10 +203,8 @@ function Grammar:build_cmd()
       table.insert(cmd, "src/scanner.c")
     end
 
-    table.insert(cmd, 2, "-shared")
-    table.insert(cmd, 3, "-O2")
-    table.insert(cmd, "-o")
-    table.insert(cmd, self.lib)
+    vim.list_extend(cmd, { "-shared", "-O3", "-o", self.lib })
+
     return cmd
   end
 
