@@ -34,3 +34,6 @@ vim.o.pummaxwidth = 60
 
 -- Netrw
 vim.g.netrw_keepdir = 1
+
+-- UI2
+require('vim._core.ui2').enable({})
