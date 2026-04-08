@@ -5,5 +5,4 @@ vim.opt_local.tabstop = 2
 
 if vim.fn.executable("stylua") == 1 then
   vim.bo.formatprg = "stylua --search-parent-directories --stdin-filepath % -"
-  vim.b.undo_ftplugin = (vim.b.undo_ftplugin or "") .. "|setlocal formatprg<"
 end
