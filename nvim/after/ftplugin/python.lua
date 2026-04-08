@@ -11,6 +11,7 @@ local formatters = {
 for _, formatter in ipairs(formatters) do
   if vim.fn.executable(formatter.executable) == 1 then
     vim.bo.formatprg = formatter.command
+    vim.b.undo_ftplugin = (vim.b.undo_ftplugin or "") .. "|setlocal formatprg<"
     return
   end
 end
