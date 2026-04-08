@@ -17,20 +17,6 @@ local function enable_servers()
   end
 end
 
-local function disable_servers()
-  local failures = {}
-  for _, server in ipairs(servers) do
-    local ok = pcall(vim.lsp.enable, server, false)
-    if not ok then
-      table.insert(failures, server)
-    end
-  end
-
-  if #failures > 0 then
-    vim.notify("Failed to disable servers: " .. table.concat(failures, ", "), vim.log.levels.ERROR)
-  end
-end
-
 local function setup_lsp_progress()
   vim.api.nvim_create_autocmd("LspProgress", {
     group = vim.api.nvim_create_augroup("UserLspProgress", { clear = true }),
@@ -72,7 +58,7 @@ local function setup_lsp_attach()
       map("<leader>cf", vim.lsp.buf.format, "code format")
       map("<leader>gs", vim.lsp.buf.workspace_symbol, "workspace symbols")
       map("E", function() vim.diagnostic.setloclist({ open = true }) end, "errors")
-      map("gd", vim.lsp.buf.definition, "go to definition")
+      map("grd", vim.lsp.buf.definition, "go to definition")
 
       local client = vim.lsp.get_client_by_id(event.data.client_id)
 
@@ -122,14 +108,6 @@ local function setup_user_commands()
       return
     end
   end, { desc = "Clear LSP log" })
-
-  vim.api.nvim_create_user_command("LspStart", function()
-    enable_servers()
-  end, { desc = "Start LSP" })
-
-  vim.api.nvim_create_user_command("LspStop", function()
-    disable_servers()
-  end, { desc = "Stop LSP" })
 end
 
 

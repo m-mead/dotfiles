@@ -18,8 +18,8 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   end,
 })
 
--- Redraw status on lsp events
-vim.api.nvim_create_autocmd({ "LspAttach", "LspDetach", "DiagnosticChanged" }, {
+-- Redraw status on diagnostics and progress updates
+vim.api.nvim_create_autocmd({ "DiagnosticChanged", "LspAttach", "LspDetach", "Progress" }, {
   group = group,
   callback = function()
     vim.cmd("redrawstatus")
