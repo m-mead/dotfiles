@@ -14,7 +14,7 @@ echo "building qmk firmware for keyboard configuration ${KEYBOARD}:${KEYMAP} (co
 qmk setup
 qmk compile -kb ${KEYBOARD} -km ${KEYMAP} --clean -e CONVERT_TO=${CONVERT_TO}
 
-cp ${KEYBOARD}*.hex /qmk_bin > /dev/null 2>&1
-cp ${KEYBOARD}*.uf2 /qmk_bin > /dev/null 2>&1
+cp *.hex /qmk_bin > /dev/null 2>&1
+cp *.uf2 /qmk_bin > /dev/null 2>&1
 
 echo "firmware files: $(ls /qmk_bin)"
