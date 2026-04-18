@@ -23,7 +23,7 @@ return {
     vim.keymap.set("n", "<leader>sf", pick.builtin.files)
     vim.keymap.set("n", "<leader>sg", pick.builtin.grep_live)
     vim.keymap.set("n", "<leader>sh", pick.builtin.help)
-    vim.keymap.set("n", "sr", pick.builtin.resume)
+    vim.keymap.set("n", "<leader>sr", pick.builtin.resume)
 
     vim.keymap.set("n", "<leader>sw", function()
       pick.builtin.grep({ pattern = vim.fn.expand("<cword>") })
