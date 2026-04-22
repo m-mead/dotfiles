@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+
+usage() {
+        echo -e "usage: clone-git-worktree [url]"
+        exit 1
+}
+
+[[ -z "$1" ]] && usage
+
+repo="$1"
+git clone --bare "${repo}" .bare
+echo "gitdir: ./.bare" >> .git
