@@ -4,6 +4,7 @@
 	rs = restore
 	rss = restore --staged
 	fpush = push --force-with-lease
+	wt = "!f() { git worktree add -b \"$1\" \"../$1\" \"origin/$1\"; }; f"
 [core]
 	editor = nvim
 [init]
